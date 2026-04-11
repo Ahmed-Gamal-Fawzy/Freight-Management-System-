@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_freight_trip,access_freight_trip,model_freight_trip,base.group_user,1,1,1,1
+access_driver_advance,access_driver_advance,model_driver_advance,base.group_user,1,1,1,1
+access_trip_expense,access_trip_expense,model_trip_expense,group_trip_expenses_manager,1,1,1,1
+access_freight_trip_send_mail,access_freight_trip_send_mail,model_freight_trip_send_mail,base.group_user,1,1,1,1

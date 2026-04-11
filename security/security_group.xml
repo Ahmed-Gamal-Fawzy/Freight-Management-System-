@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Trip Expenses Manager -->
+    <record id="group_trip_expenses_manager" model="res.groups">
+        <field name="name">Allowed Trip expenses</field>
+    </record>
+
+        <!-- Trip Expenses Manager -->
+    <record id="group_trip_expenses_display" model="res.groups">
+        <field name="name">Allowed Show Trip expenses </field>
+    </record>
+</odoo>

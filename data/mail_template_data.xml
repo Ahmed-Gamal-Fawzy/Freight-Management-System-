@@ -1,0 +1,20 @@
+<odoo>
+<!-- Email Template -->
+    <record id="email_template_freight_waybill" model="mail.template">
+        <field name="name">Freight Trip - Waybill to Customer</field>
+        <field name="model_id" ref="model_freight_trip"/>
+        <field name="subject">Waybill - {{ object.name }}</field>
+        <field name="email_from">{{ (object.company_id.email or '') }}</field>
+        <field name="email_to">{{ (object.partner_id.email or '') }}</field>
+        <field name="body_html" type="html">
+            <div style="margin: 0px; padding: 0px;">
+                <p>Dear <t t-out="object.partner_id.name"/>,</p>
+                <p>Please find attached the waybill for trip <strong><t t-out="object.name"/></strong>.</p>
+                <p>Route: <t t-out="object.starting_point_id.name"/> → <t t-out="object.destination_id.name"/></p>
+                <p>Best regards,<br/><t t-out="object.company_id.name"/></p>
+            </div>
+        </field>
+        <field name="report_template_ids" eval="[(4, ref('freight_management_system.action_report_waybill'))]"/>
+        <field name="auto_delete" eval="True"/>
+    </record>
+</odoo>

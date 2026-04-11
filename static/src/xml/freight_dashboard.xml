@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="freight_management_system.FreightDashboard">
+        <div class="o_freight_dashboard">
+
+            <!-- ── Loading Spinner ──────────────────────────── -->
+            <t t-if="state.loading">
+                <div class="o_freight_loading">
+                    <i class="fa fa-spinner fa-spin fa-3x"/>
+                    <p>Loading Dashboard...</p>
+                </div>
+            </t>
+
+            <!-- ── Dashboard Content ───────────────────────── -->
+            <t t-else="">
+
+                <!-- Header -->
+                <div class="o_freight_header">
+                    <div class="o_freight_header_inner">
+                        <span class="o_freight_header_icon">
+                            <i class="fa fa-truck"/>
+                        </span>
+                        <div>
+                            <h1>Freight Management</h1>
+                            <p>Performance &amp; Profitability Dashboard</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ── Section: Trip Overview ───────────────── -->
+                <div class="o_freight_section">
+                    <h2 class="o_freight_section_title">
+                        <i class="fa fa-road me-2"/>
+                        Trip Overview
+                    </h2>
+
+                    <!-- KPI Cards Row -->
+                    <div class="o_freight_kpi_row">
+
+                        <!-- Total -->
+                        <div class="o_freight_kpi_card o_kpi_total"
+                             t-on-click="_openTrips.bind(this, null)">
+                            <div class="o_kpi_icon">
+                                <i class="fa fa-th-large"/>
+                            </div>
+                            <div class="o_kpi_body">
+                                <span class="o_kpi_value">
+                                    <t t-esc="state.tripCounts.total"/>
+                                </span>
+                                <span class="o_kpi_label">Total Trips</span>
+                            </div>
+                            <div class="o_kpi_arrow">
+                                <i class="fa fa-chevron-right"/>
+                            </div>
+                        </div>
+
+                        <!-- Draft -->
+                        <div class="o_freight_kpi_card o_kpi_draft"
+                             t-on-click="_openTrips.bind(this, 'draft')">
+                            <div class="o_kpi_icon">
+                                <i class="fa fa-pencil"/>
+                            </div>
+                            <div class="o_kpi_body">
+                                <span class="o_kpi_value">
+                                    <t t-esc="state.tripCounts.draft"/>
+                                </span>
+                                <span class="o_kpi_label">Draft</span>
+                            </div>
+                            <div class="o_kpi_arrow">
+                                <i class="fa fa-chevron-right"/>
+                            </div>
+                        </div>
+
+                        <!-- Confirmed -->
+                        <div class="o_freight_kpi_card o_kpi_confirmed"
+                             t-on-click="_openTrips.bind(this, 'confirmed')">
+                            <div class="o_kpi_icon">
+                                <i class="fa fa-check-circle"/>
+                            </div>
+                            <div class="o_kpi_body">
+                                <span class="o_kpi_value">
+                                    <t t-esc="state.tripCounts.confirmed"/>
+                                </span>
+                                <span class="o_kpi_label">Confirmed</span>
+                            </div>
+                            <div class="o_kpi_arrow">
+                                <i class="fa fa-chevron-right"/>
+                            </div>
+                        </div>
+
+                        <!-- In Transit -->
+                        <div class="o_freight_kpi_card o_kpi_transit"
+                             t-on-click="_openTrips.bind(this, 'in_transit')">
+                            <div class="o_kpi_icon">
+                                <i class="fa fa-truck"/>
+                            </div>
+                            <div class="o_kpi_body">
+                                <span class="o_kpi_value">
+                                    <t t-esc="state.tripCounts.in_transit"/>
+                                </span>
+                                <span class="o_kpi_label">In Transit</span>
+                            </div>
+                            <div class="o_kpi_arrow">
+                                <i class="fa fa-chevron-right"/>
+                            </div>
+                        </div>
+
+                        <!-- Delivered -->
+                        <div class="o_freight_kpi_card o_kpi_delivered"
+                             t-on-click="_openTrips.bind(this, 'delivered')">
+                            <div class="o_kpi_icon">
+                                <i class="fa fa-flag-checkered"/>
+                            </div>
+                            <div class="o_kpi_body">
+                                <span class="o_kpi_value">
+                                    <t t-esc="state.tripCounts.delivered"/>
+                                </span>
+                                <span class="o_kpi_label">Delivered</span>
+                            </div>
+                            <div class="o_kpi_arrow">
+                                <i class="fa fa-chevron-right"/>
+                            </div>
+                        </div>
+
+                        <!-- Invoiced -->
+                        <div class="o_freight_kpi_card o_kpi_invoiced"
+                             t-on-click="_openTrips.bind(this, 'invoiced')">
+                            <div class="o_kpi_icon">
+                                <i class="fa fa-file-text"/>
+                            </div>
+                            <div class="o_kpi_body">
+                                <span class="o_kpi_value">
+                                    <t t-esc="state.tripCounts.invoiced"/>
+                                </span>
+                                <span class="o_kpi_label">Invoiced</span>
+                            </div>
+                            <div class="o_kpi_arrow">
+                                <i class="fa fa-chevron-right"/>
+                            </div>
+                        </div>
+
+                    </div><!-- /o_freight_kpi_row -->
+
+                    <!-- Progress Bar: visual state distribution -->
+                    <t t-if="state.tripCounts.total > 0">
+                        <div class="o_freight_progress_wrap">
+                            <div class="o_freight_progress_bar">
+                                <t t-set="total" t-value="state.tripCounts.total"/>
+
+                                <div class="o_prog_seg o_seg_draft"
+                                     t-attf-style="width:#{(state.tripCounts.draft/total)*100}%"
+                                     t-att-title="'Draft: ' + state.tripCounts.draft"/>
+
+                                <div class="o_prog_seg o_seg_confirmed"
+                                     t-attf-style="width:#{(state.tripCounts.confirmed/total)*100}%"
+                                     t-att-title="'Confirmed: ' + state.tripCounts.confirmed"/>
+
+                                <div class="o_prog_seg o_seg_transit"
+                                     t-attf-style="width:#{(state.tripCounts.in_transit/total)*100}%"
+                                     t-att-title="'In Transit: ' + state.tripCounts.in_transit"/>
+
+                                <div class="o_prog_seg o_seg_delivered"
+                                     t-attf-style="width:#{(state.tripCounts.delivered/total)*100}%"
+                                     t-att-title="'Delivered: ' + state.tripCounts.delivered"/>
+
+                                <div class="o_prog_seg o_seg_invoiced"
+                                     t-attf-style="width:#{(state.tripCounts.invoiced/total)*100}%"
+                                     t-att-title="'Invoiced: ' + state.tripCounts.invoiced"/>
+                            </div>
+
+                            <!-- Legend -->
+                            <div class="o_freight_legend">
+                                <span class="o_legend_item">
+                                    <span class="o_legend_dot o_seg_draft"/>Draft
+                                </span>
+                                <span class="o_legend_item">
+                                    <span class="o_legend_dot o_seg_confirmed"/>Confirmed
+                                </span>
+                                <span class="o_legend_item">
+                                    <span class="o_legend_dot o_seg_transit"/>In Transit
+                                </span>
+                                <span class="o_legend_item">
+                                    <span class="o_legend_dot o_seg_delivered"/>Delivered
+                                </span>
+                                <span class="o_legend_item">
+                                    <span class="o_legend_dot o_seg_invoiced"/>Invoiced
+                                </span>
+                            </div>
+                        </div>
+                    </t>
+
+                </div><!-- /o_freight_section -->
+
+            </t><!-- /t-else loading -->
+        </div><!-- /o_freight_dashboard -->
+    </t>
+
+</templates>

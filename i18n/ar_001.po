@@ -1,0 +1,1457 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* freight_management_system
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-04-11 12:55+0000\n"
+"PO-Revision-Date: 2026-04-11 12:55+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: ar\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
+
+#. module: freight_management_system
+#: model:mail.template,body_html:freight_management_system.email_template_freight_waybill
+msgid ""
+"<div style=\"margin: 0px; padding: 0px;\">\n"
+"                <p>Dear <t t-out=\"object.partner_id.name\"/>,</p>\n"
+"                <p>Please find attached the waybill for trip <strong><t t-out=\"object.name\"/></strong>.</p>\n"
+"                <p>Route: <t t-out=\"object.starting_point_id.name\"/> → <t t-out=\"object.destination_id.name\"/></p>\n"
+"                <p>Best regards,<br/><t t-out=\"object.company_id.name\"/></p>\n"
+"            </div>\n"
+"        "
+msgstr ""
+"<div style=\"margin: 0px; padding: 0px;\">\n"
+"                <p>عزيزي <t t-out=\"object.partner_id.name\"/>,</p>\n"
+"                <p>مرفق بوليصة الشحن للرحلة <strong><t t-out=\"object.name\"/></strong>.</p>\n"
+"                <p>الطريق: <t t-out=\"object.starting_point_id.name\"/> → <t t-out=\"object.destination_id.name\"/></p>\n"
+"                <p>مع أطيب التحيات،<br/><t t-out=\"object.company_id.name\"/></p>\n"
+"            </div>\n"
+"        "
+
+#. module: freight_management_system
+#: model_terms:ir.ui.view,arch_db:freight_management_system.view_freight_trip_form
+msgid "<span class=\"o_stat_text\">Sales Order</span>"
+msgstr "<span class=\"o_stat_text\">أمر البيع</span>"
+
+#. module: freight_management_system
+#: model_terms:ir.ui.view,arch_db:freight_management_system.report_waybill_template
+msgid "<span style=\"color: #999; font-size: 12px;\">Stamp Area</span>"
+msgstr "<span style=\"color: #999; font-size: 12px;\">منطقة الختم</span>"
+
+#. module: freight_management_system
+#: model_terms:ir.ui.view,arch_db:freight_management_system.report_waybill_template
+msgid "<strong style=\"color: #2c3e50;\">🏢 Company Stamp</strong>"
+msgstr "<strong style=\"color: #2c3e50;\">🏢 ختم الشركة</strong>"
+
+#. module: freight_management_system
+#: model_terms:ir.ui.view,arch_db:freight_management_system.report_waybill_template
+msgid "<strong>Cargo Type:</strong>"
+msgstr "<strong>نوع الشحنة:</strong>"
+
+#. module: freight_management_system
+#: model_terms:ir.ui.view,arch_db:freight_management_system.report_waybill_template
+msgid "<strong>Container No:</strong>"
+msgstr "<strong>رقم الحاوية:</strong>"
+
+#. module: freight_management_system
+#: model_terms:ir.ui.view,arch_db:freight_management_system.view_freight_trip_kanban
+msgid "<strong>Customer: </strong>"
+msgstr "<strong>العميل: </strong>"
+
+#. module: freight_management_system
+#: model_terms:ir.ui.view,arch_db:freight_management_system.report_waybill_template
+msgid "<strong>Declaration No:</strong>"
+msgstr "<strong>رقم البيان:</strong>"
+
+#. module: freight_management_system
+#: model_terms:ir.ui.view,arch_db:freight_management_system.view_freight_trip_kanban
+msgid "<strong>Distance: </strong>"
+msgstr "<strong>المسافة: </strong>"
+
+#. module: freight_management_system
+#: model_terms:ir.ui.view,arch_db:freight_management_system.report_waybill_template
+msgid "<strong>Distance:</strong>"
+msgstr "<strong>المسافة:</strong>"
+
+#. module: freight_management_system
+#: model_terms:ir.ui.view,arch_db:freight_management_system.view_freight_trip_kanban
+msgid "<strong>Driver: </strong>"
+msgstr "<strong>السائق: </strong>"
+
+#. module: freight_management_system
+#: model_terms:ir.ui.view,arch_db:freight_management_system.report_waybill_template
+msgid "<strong>Driver:</strong>"
+msgstr "<strong>السائق:</strong>"
+
+#. module: freight_management_system
+#: model_terms:ir.ui.view,arch_db:freight_management_system.view_freight_trip_kanban
+msgid "<strong>From: </strong>"
+msgstr "<strong>من: </strong>"
+
+#. module: freight_management_system
+#: model_terms:ir.ui.view,arch_db:freight_management_system.report_waybill_template
+msgid "<strong>From:</strong>"
+msgstr "<strong>من:</strong>"
+
+#. module: freight_management_system
+#: model_terms:ir.ui.view,arch_db:freight_management_system.view_driver_advance_form
+msgid "<strong>Fully Settled</strong>"
+msgstr "<strong>تمت التسوية بالكامل</strong>"
+
+#. module: freight_management_system
+#: model_terms:ir.ui.view,arch_db:freight_management_system.report_waybill_template
+msgid "<strong>License Plate:</strong>"
+msgstr "<strong>رقم اللوحة:</strong>"
+
+#. module: freight_management_system
+#: model_terms:ir.ui.view,arch_db:freight_management_system.report_waybill_template
+msgid "<strong>Phone:</strong>"
+msgstr "<strong>الهاتف:</strong>"
+
+#. module: freight_management_system
+#: model_terms:ir.ui.view,arch_db:freight_management_system.view_driver_advance_form
+msgid "<strong>Rejected</strong>"
+msgstr "<strong>مرفوض</strong>"
+
+#. module: freight_management_system
+#: model_terms:ir.ui.view,arch_db:freight_management_system.view_freight_trip_kanban
+msgid "<strong>To: </strong>"
+msgstr "<strong>إلى: </strong>"
+
+#. module: freight_management_system
+#: model_terms:ir.ui.view,arch_db:freight_management_system.report_waybill_template
+msgid "<strong>To:</strong>"
+msgstr "<strong>إلى:</strong>"
+
+#. module: freight_management_system
+#: model_terms:ir.ui.view,arch_db:freight_management_system.view_freight_trip_kanban
+msgid "<strong>Vehicle: </strong>"
+msgstr "<strong>المركبة: </strong>"
+
+#. module: freight_management_system
+#: model_terms:ir.ui.view,arch_db:freight_management_system.report_waybill_template
+msgid "<strong>Vehicle:</strong>"
+msgstr "<strong>المركبة:</strong>"
+
+#. module: freight_management_system
+#: model_terms:ir.ui.view,arch_db:freight_management_system.report_waybill_template
+msgid "<strong>Weight:</strong>"
+msgstr "<strong>الوزن:</strong>"
+
+#. module: freight_management_system
+#: model_terms:ir.ui.view,arch_db:freight_management_system.view_driver_advance_form
+msgid "<strong>⬆ Company owes Driver: </strong>"
+msgstr "<strong>⬆ الشركة مدينة للسائق: </strong>"
+
+#. module: freight_management_system
+#: model_terms:ir.ui.view,arch_db:freight_management_system.view_driver_advance_form
+msgid "<strong>⬇ Driver owes Company: </strong>"
+msgstr "<strong>⬇ السائق مدين للشركة: </strong>"
+
+#. module: freight_management_system
+#: model:ir.model.fields.selection,name:freight_management_system.selection__trip_expense__expense_type__accommodation
+msgid "Accommodation"
+msgstr "إقامة"
+
+#. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_trip_expense__account_id
+msgid "Account"
+msgstr "الحساب"
+
+#. module: freight_management_system
+#: model_terms:ir.ui.view,arch_db:freight_management_system.res_config_settings_view_freight
+msgid "Accounting for Advances"
+msgstr "المحاسبة للتِرب"
+
+#. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_driver_advance__message_needaction
+#: model:ir.model.fields,field_description:freight_management_system.field_freight_trip__message_needaction
+#: model:ir.model.fields,field_description:freight_management_system.field_trip_expense__message_needaction
+msgid "Action Needed"
+msgstr "إجراء مطلوب"
+
+#. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_driver_advance__activity_ids
+#: model:ir.model.fields,field_description:freight_management_system.field_freight_trip__activity_ids
+#: model:ir.model.fields,field_description:freight_management_system.field_trip_expense__activity_ids
+msgid "Activities"
+msgstr "الأنشطة"
+
+#. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_driver_advance__activity_exception_decoration
+#: model:ir.model.fields,field_description:freight_management_system.field_freight_trip__activity_exception_decoration
+#: model:ir.model.fields,field_description:freight_management_system.field_trip_expense__activity_exception_decoration
+msgid "Activity Exception Decoration"
+msgstr "تزيين استثناء النشاط"
+
+#. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_driver_advance__activity_state
+#: model:ir.model.fields,field_description:freight_management_system.field_freight_trip__activity_state
+#: model:ir.model.fields,field_description:freight_management_system.field_trip_expense__activity_state
+msgid "Activity State"
+msgstr "حالة النشاط"
+
+#. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_driver_advance__activity_type_icon
+#: model:ir.model.fields,field_description:freight_management_system.field_freight_trip__activity_type_icon
+#: model:ir.model.fields,field_description:freight_management_system.field_trip_expense__activity_type_icon
+msgid "Activity Type Icon"
+msgstr "أيقونة نوع النشاط"
+
+#. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_freight_trip__additional_services_amount
+msgid "Additional Services"
+msgstr "خدمات إضافية"
+
+#. module: freight_management_system
+#: model_terms:ir.ui.view,arch_db:freight_management_system.view_driver_advance_form
+msgid "Advance Disbursed"
+msgstr "التِرب المصروف"
+
+#. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_driver_advance__name
+msgid "Advance Reference"
+msgstr "مرجع التِرب"
+
+#. module: freight_management_system
+#: model_terms:ir.ui.view,arch_db:freight_management_system.view_freight_trip_form
+msgid "Advances"
+msgstr "التِرب"
+
+#. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_freight_trip__advance_count
+msgid "Advances Count"
+msgstr "عدد التِرب"
+
+#. module: freight_management_system
+#: model:res.groups,name:freight_management_system.group_trip_expenses_display
+msgid "Allowed Show Trip expenses "
+msgstr "مسموح بعرض مصروفات الرحلة"
+
+#. module: freight_management_system
+#: model:res.groups,name:freight_management_system.group_trip_expenses_manager
+msgid "Allowed Trip expenses"
+msgstr "مسموح بمصروفات الرحلة"
+
+#. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_trip_expense__amount
+msgid "Amount"
+msgstr "المبلغ"
+
+#. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_driver_advance__amount
+msgid "Amount Disbursed"
+msgstr "المبلغ المصروف"
+
+#. module: freight_management_system
+#: model_terms:ir.ui.view,arch_db:freight_management_system.view_freight_trip_form
+msgid "Are you sure you want to create a customer invoice for this trip?"
+msgstr "هل أنت متأكد من رغبتك في إنشاء فاتورة عميل لهذه الرحلة؟"
+
+#. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_driver_advance__message_attachment_count
+#: model:ir.model.fields,field_description:freight_management_system.field_freight_trip__message_attachment_count
+#: model:ir.model.fields,field_description:freight_management_system.field_trip_expense__message_attachment_count
+msgid "Attachment Count"
+msgstr "عدد المرفقات"
+
+#. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_driver_advance__expense_difference
+msgid "Balance"
+msgstr "الرصيد"
+
+#. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_driver_advance__difference_type
+msgid "Balance Direction"
+msgstr "اتجاه الرصيد"
+
+#. module: freight_management_system
+#: model:ir.model.fields.selection,name:freight_management_system.selection__driver_advance__difference_type__balanced
+msgid "Balanced"
+msgstr "متوازن"
+
+#. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_freight_trip__barriers_doc
+#: model_terms:ir.ui.view,arch_db:freight_management_system.view_freight_trip_form
+msgid "Barriers"
+msgstr "الحواجز"
+
+#. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_freight_trip_send_mail__body
+msgid "Body"
+msgstr "المحتوى"
+
+#. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_freight_trip__brake_lights_doc
+msgid "Brake Lights"
+msgstr "إضاءة الفرامل"
+
+#. module: freight_management_system
+#: model_terms:ir.ui.view,arch_db:freight_management_system.view_freight_trip_form
+msgid "CONFIRM"
+msgstr "تأكيد"
+
+#. module: freight_management_system
+#: model_terms:ir.ui.view,arch_db:freight_management_system.view_freight_trip_send_mail_form
+#: model_terms:ir.ui.view,arch_db:freight_management_system.view_trip_expense_form
+msgid "Cancel"
+msgstr "إلغاء"
+
+#. module: freight_management_system
+#: model:ir.model.fields.selection,name:freight_management_system.selection__trip_expense__state__canceled
+msgid "Canceled"
+msgstr "ملغاة"
+
+#. module: freight_management_system
+#: model:ir.model.fields.selection,name:freight_management_system.selection__freight_trip__invoice_state__cancel
+msgid "Cancelled"
+msgstr "ملغاة"
+
+#. module: freight_management_system
+#. odoo-python
+#: code:addons/freight_management_system/models/freight_trip.py:0
+msgid ""
+"Cannot confirm trip!\n"
+"Please upload documents for:\n"
+msgstr ""
+"لا يمكن تأكيد الرحلة!\n"
+"يرجى تحميل المستندات لـ:\n"
+
+#. module: freight_management_system
+#. odoo-python
+#: code:addons/freight_management_system/models/driver_advance.py:0
+msgid "Cannot reject a fully paid advance!"
+msgstr "لا يمكن رض تِرب مدفوع بالكامل!"
+
+#. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_freight_trip__cargo_cover_doc
+#: model_terms:ir.ui.view,arch_db:freight_management_system.view_freight_trip_form
+msgid "Cargo Cover"
+msgstr "غطاء الشحنة"
+
+#. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_freight_trip__cargo_type
+msgid "Cargo Type"
+msgstr "نوع الشحنة"
+
+#. module: freight_management_system
+#: model_terms:ir.ui.view,arch_db:freight_management_system.view_freight_trip_form
+msgid "Carrier Info"
+msgstr "بيانات الناقل"
+
+#. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_freight_trip__company_id
+msgid "Company"
+msgstr "الشركة"
+
+#. module: freight_management_system
+#: model:ir.model.fields.selection,name:freight_management_system.selection__driver_advance__difference_type__in_favor_driver
+msgid "Company Owes Driver"
+msgstr "الشركة مدينة للسائق"
+
+#. module: freight_management_system
+#: model:ir.model,name:freight_management_system.model_res_config_settings
+msgid "Config Settings"
+msgstr "تهيئة الإعدادات"
+
+#. module: freight_management_system
+#: model_terms:ir.ui.view,arch_db:freight_management_system.view_driver_advance_form
+#: model_terms:ir.ui.view,arch_db:freight_management_system.view_trip_expense_form
+msgid "Confirm"
+msgstr "تأكيد"
+
+#. module: freight_management_system
+#. odoo-javascript
+#: code:addons/freight_management_system/static/src/xml/freight_dashboard.xml:0
+#: model:ir.model.fields.selection,name:freight_management_system.selection__freight_trip__state__confirmed
+#: model:ir.model.fields.selection,name:freight_management_system.selection__trip_expense__state__confirmed
+#: model_terms:ir.ui.view,arch_db:freight_management_system.view_trip_expense_search
+msgid "Confirmed"
+msgstr "مؤكد"
+
+#. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_trip_expense__confirmed_by
+msgid "Confirmed By"
+msgstr "مؤكد بواسطة"
+
+#. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_freight_trip__container_no
+msgid "Container No"
+msgstr "رقم الحاوية"
+
+#. module: freight_management_system
+#. odoo-python
+#: code:addons/freight_management_system/models/freight_trip.py:0
+msgid "Could not generate a new invoice. Please check product settings."
+msgstr "لم نتمكن من إنشاء فاتورة جديدة. يرجى التحقق من إعدادات المنتج."
+
+#. module: freight_management_system
+#: model_terms:ir.ui.view,arch_db:freight_management_system.view_freight_trip_form
+msgid "Create Customer Invoice"
+msgstr "إنشاء فاتورة العميل"
+
+#. module: freight_management_system
+#: model_terms:ir.actions.act_window,help:freight_management_system.action_freight_trip
+msgid "Create your first Freight Trip!"
+msgstr "أنشئ أول رحلة شحن لك!"
+
+#. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_driver_advance__create_uid
+#: model:ir.model.fields,field_description:freight_management_system.field_freight_trip__create_uid
+#: model:ir.model.fields,field_description:freight_management_system.field_freight_trip_send_mail__create_uid
+#: model:ir.model.fields,field_description:freight_management_system.field_trip_expense__create_uid
+msgid "Created by"
+msgstr "أنشأ بواسطة"
+
+#. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_driver_advance__create_date
+#: model:ir.model.fields,field_description:freight_management_system.field_freight_trip__create_date
+#: model:ir.model.fields,field_description:freight_management_system.field_freight_trip_send_mail__create_date
+#: model:ir.model.fields,field_description:freight_management_system.field_trip_expense__create_date
+msgid "Created on"
+msgstr "أنشئ في"
+
+#. module: freight_management_system
+#: model_terms:ir.ui.view,arch_db:freight_management_system.res_config_settings_view_freight
+msgid "Credit account for driver advance journal entries"
+msgstr "حساب الدائن لسجلات قيود تِرب السائق"
+
+#. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_driver_advance__currency_id
+#: model:ir.model.fields,field_description:freight_management_system.field_freight_trip__currency_id
+#: model:ir.model.fields,field_description:freight_management_system.field_trip_expense__currency_id
+msgid "Currency"
+msgstr "العملة"
+
+#. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_freight_trip__partner_id
+#: model_terms:ir.ui.view,arch_db:freight_management_system.view_freight_trip_search
+msgid "Customer"
+msgstr "العميل"
+
+#. module: freight_management_system
+#: model_terms:ir.ui.view,arch_db:freight_management_system.view_freight_trip_form
+msgid "Customer Billing"
+msgstr "فواتير العملاء"
+
+#. module: freight_management_system
+#. odoo-python
+#: code:addons/freight_management_system/models/freight_trip.py:0
+msgid "Customer Invoice"
+msgstr "فاتورة العميل"
+
+#. module: freight_management_system
+#. odoo-python
+#: code:addons/freight_management_system/models/freight_trip.py:0
+#: model:ir.model.fields,field_description:freight_management_system.field_freight_trip__invoice_ids
+msgid "Customer Invoices"
+msgstr "فواتير العملاء"
+
+#. module: freight_management_system
+#. odoo-python
+#: code:addons/freight_management_system/models/freight_trip.py:0
+#: code:addons/freight_management_system/wizard/send_mail_wizard.py:0
+msgid "Customer has no email address!"
+msgstr "العميل ليس لديه بريد إلكتروني!"
+
+#. module: freight_management_system
+#: model_terms:ir.ui.view,arch_db:freight_management_system.view_freight_trip_form
+msgid "Customs & Shipment Info"
+msgstr "معلومات الجمارك والشحن"
+
+#. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_freight_trip__customs_card_no
+msgid "Customs Card No"
+msgstr "رقم بطاقة الجمارك"
+
+#. module: freight_management_system
+#: model_terms:ir.ui.view,arch_db:freight_management_system.view_freight_trip_form
+msgid "DELIVERED"
+msgstr "تم التسليم"
+
+#. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_trip_expense__date
+msgid "Date"
+msgstr "التاريخ"
+
+#. module: freight_management_system
+#: model_terms:ir.ui.view,arch_db:freight_management_system.view_driver_advance_form
+msgid "Dates"
+msgstr "التواريخ"
+
+#. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_freight_trip__declaration_no
+msgid "Declaration No"
+msgstr "رقم البيان"
+
+#. module: freight_management_system
+#. odoo-javascript
+#: code:addons/freight_management_system/static/src/xml/freight_dashboard.xml:0
+#: model:ir.model.fields.selection,name:freight_management_system.selection__freight_trip__state__delivered
+msgid "Delivered"
+msgstr "تم التسليم"
+
+#. module: freight_management_system
+#: model_terms:ir.ui.view,arch_db:freight_management_system.view_trip_expense_form
+msgid "Description or notes..."
+msgstr "الوصف أو الملاحظات..."
+
+#. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_freight_trip__destination_id
+msgid "Destination"
+msgstr "الوجهة"
+
+#. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_driver_advance__disbursed_by
+msgid "Disbursed By"
+msgstr "صرف بواسطة"
+
+#. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_account_move__display_name
+#: model:ir.model.fields,field_description:freight_management_system.field_driver_advance__display_name
+#: model:ir.model.fields,field_description:freight_management_system.field_freight_trip__display_name
+#: model:ir.model.fields,field_description:freight_management_system.field_freight_trip_send_mail__display_name
+#: model:ir.model.fields,field_description:freight_management_system.field_res_config_settings__display_name
+#: model:ir.model.fields,field_description:freight_management_system.field_sale_order__display_name
+#: model:ir.model.fields,field_description:freight_management_system.field_sale_order_line__display_name
+#: model:ir.model.fields,field_description:freight_management_system.field_trip_expense__display_name
+msgid "Display Name"
+msgstr "اسم العرض"
+
+#. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_freight_trip__distance_km
+msgid "Distance (KM)"
+msgstr "المسافة (كم)"
+
+#. module: freight_management_system
+#. odoo-javascript
+#: code:addons/freight_management_system/static/src/xml/freight_dashboard.xml:0
+#: model:ir.model.fields.selection,name:freight_management_system.selection__driver_advance__state__draft
+#: model:ir.model.fields.selection,name:freight_management_system.selection__freight_trip__state__draft
+#: model:ir.model.fields.selection,name:freight_management_system.selection__trip_expense__state__draft
+#: model_terms:ir.ui.view,arch_db:freight_management_system.view_trip_expense_search
+msgid "Draft"
+msgstr "مسودة"
+
+#. module: freight_management_system
+#: model:ir.model.fields.selection,name:freight_management_system.selection__freight_trip__invoice_state__draft
+msgid "Draft Invoice"
+msgstr "فاتورة مسودة"
+
+#. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_driver_advance__driver_id
+#: model:ir.model.fields,field_description:freight_management_system.field_freight_trip__driver_id
+#: model:ir.model.fields,field_description:freight_management_system.field_trip_expense__driver_id
+#: model_terms:ir.ui.view,arch_db:freight_management_system.view_driver_advance_search
+#: model_terms:ir.ui.view,arch_db:freight_management_system.view_freight_trip_search
+#: model_terms:ir.ui.view,arch_db:freight_management_system.view_trip_expense_search
+msgid "Driver"
+msgstr "السائق"
+
+#. module: freight_management_system
+#: model:ir.model,name:freight_management_system.model_driver_advance
+#: model:ir.model.fields,field_description:freight_management_system.field_trip_expense__advance_id
+#: model:ir.ui.menu,name:freight_management_system.menu_driver_advance
+#: model_terms:ir.ui.view,arch_db:freight_management_system.view_driver_advance_form
+msgid "Driver Advance"
+msgstr "تِرب الرحلة"
+
+#. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_res_config_settings__driver_advance_account_id
+#: model_terms:ir.ui.view,arch_db:freight_management_system.res_config_settings_view_freight
+msgid "Driver Advance Account"
+msgstr "حساب تِرب الرحلة"
+
+#. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_res_config_settings__driver_advance_journal_id
+#: model_terms:ir.ui.view,arch_db:freight_management_system.res_config_settings_view_freight
+msgid "Driver Advance Journal"
+msgstr "دفتر يومية تِرب الرحلة"
+
+#. module: freight_management_system
+#: model:ir.actions.act_window,name:freight_management_system.action_driver_advance
+#: model_terms:ir.ui.view,arch_db:freight_management_system.view_driver_advance_tree
+msgid "Driver Advances"
+msgstr "تِرب الرحلة"
+
+#. module: freight_management_system
+#: model:ir.model.fields.selection,name:freight_management_system.selection__driver_advance__difference_type__in_favor_company
+msgid "Driver Owes Company"
+msgstr "السائق مدين للشركة"
+
+#. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_freight_trip__driver_phone
+msgid "Driver Phone"
+msgstr "هاتف السائق"
+
+#. module: freight_management_system
+#. odoo-python
+#: code:addons/freight_management_system/models/freight_trip.py:0
+msgid "Driver has no phone number!"
+msgstr "السائق ليس لديه رقم هاتف!"
+
+#. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_freight_trip__emergency_triangle_doc
+msgid "Emergency Triangle"
+msgstr "مثلث الطوارئ"
+
+#. module: freight_management_system
+#: model_terms:ir.ui.view,arch_db:freight_management_system.view_trip_expense_form
+msgid "Expense Info"
+msgstr "معلومات المصروف"
+
+#. module: freight_management_system
+#: model_terms:ir.ui.view,arch_db:freight_management_system.view_driver_advance_form
+msgid "Expense Summary"
+msgstr "ملخص المصروفات"
+
+#. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_trip_expense__expense_type
+#: model_terms:ir.ui.view,arch_db:freight_management_system.view_trip_expense_search
+msgid "Expense Type"
+msgstr "نوع المصروف"
+
+#. module: freight_management_system
+#. odoo-python
+#: code:addons/freight_management_system/models/trip_expense.py:0
+msgid "Expense amount must be greater than zero!"
+msgstr "يجب أن يكون مبلغ المصروف أكبر من صفر!"
+
+#. module: freight_management_system
+#: model_terms:ir.ui.view,arch_db:freight_management_system.view_freight_trip_form
+msgid "Expenses"
+msgstr "المصروفات"
+
+#. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_freight_trip__expense_count
+msgid "Expenses Count"
+msgstr "عدد المصروفات"
+
+#. module: freight_management_system
+#: model_terms:ir.ui.view,arch_db:freight_management_system.view_driver_advance_form
+#: model_terms:ir.ui.view,arch_db:freight_management_system.view_trip_expense_form
+msgid "Financial Info"
+msgstr "المعلومات المالية"
+
+#. module: freight_management_system
+#: model:ir.model.fields.selection,name:freight_management_system.selection__trip_expense__expense_type__fines
+msgid "Fines / Penalties"
+msgstr "غرامات / عقوبات"
+
+#. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_freight_trip__fire_extinguisher_doc
+msgid "Fire Extinguisher"
+msgstr "طفاية حريق"
+
+#. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_freight_trip__first_aid_kit_doc
+msgid "First Aid Kit"
+msgstr "حقيبة إسعافات أولية"
+
+#. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_driver_advance__message_follower_ids
+#: model:ir.model.fields,field_description:freight_management_system.field_freight_trip__message_follower_ids
+#: model:ir.model.fields,field_description:freight_management_system.field_trip_expense__message_follower_ids
+msgid "Followers"
+msgstr "المتابعون"
+
+#. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_driver_advance__message_partner_ids
+#: model:ir.model.fields,field_description:freight_management_system.field_freight_trip__message_partner_ids
+#: model:ir.model.fields,field_description:freight_management_system.field_trip_expense__message_partner_ids
+msgid "Followers (Partners)"
+msgstr "المتابعون (الشركاء)"
+
+#. module: freight_management_system
+#: model:ir.model.fields,help:freight_management_system.field_driver_advance__activity_type_icon
+#: model:ir.model.fields,help:freight_management_system.field_freight_trip__activity_type_icon
+#: model:ir.model.fields,help:freight_management_system.field_trip_expense__activity_type_icon
+msgid "Font awesome icon e.g. fa-tasks"
+msgstr "أيقونة Font Awesome مثل fa-tasks"
+
+#. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_freight_trip__freight_charge
+msgid "Freight Charge (Nawlon)"
+msgstr "قيمة النولون"
+
+#. module: freight_management_system
+#: model:ir.actions.client,name:freight_management_system.action_freight_dashboard
+#: model:ir.ui.menu,name:freight_management_system.menu_freight_dashboard
+msgid "Freight Dashboard"
+msgstr "لوحة تحكم الشحن"
+
+#. module: freight_management_system
+#. odoo-javascript
+#: code:addons/freight_management_system/static/src/xml/freight_dashboard.xml:0
+msgid "Freight Management"
+msgstr "إدارة الشحن"
+
+#. module: freight_management_system
+#: model:ir.ui.menu,name:freight_management_system.menu_freight_root
+#: model_terms:ir.ui.view,arch_db:freight_management_system.res_config_settings_view_freight
+msgid "Freight System"
+msgstr "نظام الشحن"
+
+#. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_account_bank_statement_line__freight_trip_id
+#: model:ir.model.fields,field_description:freight_management_system.field_account_move__freight_trip_id
+#: model:ir.model.fields,field_description:freight_management_system.field_sale_order__freight_trip_id
+#: model:ir.model.fields,field_description:freight_management_system.field_sale_order_line__freight_trip_id
+#: model_terms:ir.ui.view,arch_db:freight_management_system.view_freight_trip_form
+msgid "Freight Trip"
+msgstr "رحلة الشحن"
+
+#. module: freight_management_system
+#: model:mail.template,name:freight_management_system.email_template_freight_waybill
+msgid "Freight Trip - Waybill to Customer"
+msgstr "رحلة الشحن - بوليصة الشحن للعميل"
+
+#. module: freight_management_system
+#: model:ir.model,name:freight_management_system.model_freight_trip
+msgid "Freight Trip Management"
+msgstr "إدارة رحلات الشحن"
+
+#. module: freight_management_system
+#: model:ir.actions.act_window,name:freight_management_system.action_freight_trip
+#: model_terms:ir.ui.view,arch_db:freight_management_system.view_freight_trip_tree
+msgid "Freight Trips"
+msgstr "رحلات الشحن"
+
+#. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_freight_trip_send_mail__email_from
+msgid "From"
+msgstr "من"
+
+#. module: freight_management_system
+#: model_terms:ir.ui.view,arch_db:freight_management_system.view_trip_expense_search
+msgid "Fuel"
+msgstr "وقود"
+
+#. module: freight_management_system
+#: model:ir.model.fields.selection,name:freight_management_system.selection__trip_expense__expense_type__fuel
+msgid "Fuel / Diesel"
+msgstr "وقود / ديزل"
+
+#. module: freight_management_system
+#: model:ir.model.fields.selection,name:freight_management_system.selection__driver_advance__state__paid
+#: model_terms:ir.ui.view,arch_db:freight_management_system.view_driver_advance_search
+msgid "Fully Settled"
+msgstr "تمت التسوية بالكامل"
+
+#. module: freight_management_system
+#: model_terms:ir.ui.view,arch_db:freight_management_system.view_freight_trip_form
+msgid "GPS Location"
+msgstr "موقع GPS"
+
+#. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_driver_advance__has_message
+#: model:ir.model.fields,field_description:freight_management_system.field_freight_trip__has_message
+#: model:ir.model.fields,field_description:freight_management_system.field_trip_expense__has_message
+msgid "Has Message"
+msgstr "يحتوي على رسالة"
+
+#. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_account_move__id
+#: model:ir.model.fields,field_description:freight_management_system.field_driver_advance__id
+#: model:ir.model.fields,field_description:freight_management_system.field_freight_trip__id
+#: model:ir.model.fields,field_description:freight_management_system.field_freight_trip_send_mail__id
+#: model:ir.model.fields,field_description:freight_management_system.field_res_config_settings__id
+#: model:ir.model.fields,field_description:freight_management_system.field_sale_order__id
+#: model:ir.model.fields,field_description:freight_management_system.field_sale_order_line__id
+#: model:ir.model.fields,field_description:freight_management_system.field_trip_expense__id
+msgid "ID"
+msgstr "المُعرف"
+
+#. module: freight_management_system
+#: model_terms:ir.ui.view,arch_db:freight_management_system.view_freight_trip_form
+msgid "IN TRANSIT"
+msgstr "في الطريق"
+
+#. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_driver_advance__activity_exception_icon
+#: model:ir.model.fields,field_description:freight_management_system.field_freight_trip__activity_exception_icon
+#: model:ir.model.fields,field_description:freight_management_system.field_trip_expense__activity_exception_icon
+msgid "Icon"
+msgstr "أيقونة"
+
+#. module: freight_management_system
+#: model:ir.model.fields,help:freight_management_system.field_driver_advance__activity_exception_icon
+#: model:ir.model.fields,help:freight_management_system.field_freight_trip__activity_exception_icon
+#: model:ir.model.fields,help:freight_management_system.field_trip_expense__activity_exception_icon
+msgid "Icon to indicate an exception activity."
+msgstr "أيقونة للدلالة على نشاط استثنائي."
+
+#. module: freight_management_system
+#: model:ir.model.fields,help:freight_management_system.field_driver_advance__message_needaction
+#: model:ir.model.fields,help:freight_management_system.field_freight_trip__message_needaction
+#: model:ir.model.fields,help:freight_management_system.field_trip_expense__message_needaction
+msgid "If checked, new messages require your attention."
+msgstr "إذا تم تحديده، الرسائل الجديدة تحتاج إلى انتباهك."
+
+#. module: freight_management_system
+#: model:ir.model.fields,help:freight_management_system.field_driver_advance__message_has_error
+#: model:ir.model.fields,help:freight_management_system.field_driver_advance__message_has_sms_error
+#: model:ir.model.fields,help:freight_management_system.field_freight_trip__message_has_error
+#: model:ir.model.fields,help:freight_management_system.field_freight_trip__message_has_sms_error
+#: model:ir.model.fields,help:freight_management_system.field_trip_expense__message_has_error
+#: model:ir.model.fields,help:freight_management_system.field_trip_expense__message_has_sms_error
+msgid "If checked, some messages have a delivery error."
+msgstr "إذا تم تحديده، بعض الرسائل بها خطأ في التوصيل."
+
+#. module: freight_management_system
+#: model:ir.model.fields.selection,name:freight_management_system.selection__driver_advance__state__in_settlement
+#: model_terms:ir.ui.view,arch_db:freight_management_system.view_driver_advance_search
+msgid "In Settlement"
+msgstr "قيد التسوية"
+
+#. module: freight_management_system
+#. odoo-javascript
+#: code:addons/freight_management_system/static/src/xml/freight_dashboard.xml:0
+#: model:ir.model.fields.selection,name:freight_management_system.selection__freight_trip__state__in_transit
+msgid "In Transit"
+msgstr "في الطريق"
+
+#. module: freight_management_system
+#: model:ir.ui.menu,name:freight_management_system.menu_invoiced_list
+msgid "Invoice"
+msgstr "الفواتير"
+
+#. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_trip_expense__invoice_image
+msgid "Invoice / Receipt"
+msgstr "فاتورة / إيصال"
+
+#. module: freight_management_system
+#: model_terms:ir.ui.view,arch_db:freight_management_system.view_trip_expense_form
+msgid "Invoice / Receipt Attachments"
+msgstr "مرفقات الفاتورة / الإيصال"
+
+#. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_freight_trip__invoice_state
+msgid "Invoice Status"
+msgstr "حالة الفاتورة"
+
+#. module: freight_management_system
+#. odoo-javascript
+#: code:addons/freight_management_system/static/src/xml/freight_dashboard.xml:0
+#: model:ir.model.fields.selection,name:freight_management_system.selection__freight_trip__state__invoiced
+msgid "Invoiced"
+msgstr "مفوتر"
+
+#. module: freight_management_system
+#: model_terms:ir.ui.view,arch_db:freight_management_system.view_freight_trip_form
+msgid "Invoices"
+msgstr "الفواتير"
+
+#. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_freight_trip__invoice_count
+msgid "Invoices Count"
+msgstr "عدد الفواتير"
+
+#. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_driver_advance__message_is_follower
+#: model:ir.model.fields,field_description:freight_management_system.field_freight_trip__message_is_follower
+#: model:ir.model.fields,field_description:freight_management_system.field_trip_expense__message_is_follower
+msgid "Is Follower"
+msgstr "متابع"
+
+#. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_driver_advance__date
+msgid "Issue Date"
+msgstr "تاريخ الصرف"
+
+#. module: freight_management_system
+#: model:ir.model,name:freight_management_system.model_account_move
+msgid "Journal Entry"
+msgstr "قيد اليومية"
+
+#. module: freight_management_system
+#: model_terms:ir.ui.view,arch_db:freight_management_system.res_config_settings_view_freight
+msgid "Journal used for driver advance entries"
+msgstr "دفتر اليومية المستخدم لسجلات قيود تِرب السائق"
+
+#. module: freight_management_system
+#: model_terms:ir.ui.view,arch_db:freight_management_system.report_waybill_template
+msgid "KG"
+msgstr "كجم"
+
+#. module: freight_management_system
+#: model_terms:ir.ui.view,arch_db:freight_management_system.report_waybill_template
+#: model_terms:ir.ui.view,arch_db:freight_management_system.view_freight_trip_kanban
+msgid "KM"
+msgstr "كم"
+
+#. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_driver_advance__write_uid
+#: model:ir.model.fields,field_description:freight_management_system.field_freight_trip__write_uid
+#: model:ir.model.fields,field_description:freight_management_system.field_freight_trip_send_mail__write_uid
+#: model:ir.model.fields,field_description:freight_management_system.field_trip_expense__write_uid
+msgid "Last Updated by"
+msgstr "آخر تحديث بواسطة"
+
+#. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_driver_advance__write_date
+#: model:ir.model.fields,field_description:freight_management_system.field_freight_trip__write_date
+#: model:ir.model.fields,field_description:freight_management_system.field_freight_trip_send_mail__write_date
+#: model:ir.model.fields,field_description:freight_management_system.field_trip_expense__write_date
+msgid "Last Updated on"
+msgstr "آخر تحديث في"
+
+#. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_freight_trip__gps_latitude
+msgid "Latitude"
+msgstr "خط العرض"
+
+#. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_freight_trip__license_plate
+msgid "License Plate"
+msgstr "رقم اللوحة"
+
+#. module: freight_management_system
+#: model:ir.model.fields,help:freight_management_system.field_freight_trip__license_plate
+msgid "License plate number of the vehicle (i = plate number for a car)"
+msgstr "رقم لوحة المركبة"
+
+#. module: freight_management_system
+#: model:ir.model.fields.selection,name:freight_management_system.selection__trip_expense__expense_type__loading
+msgid "Loading / Unloading"
+msgstr "تحميل / تفريغ"
+
+#. module: freight_management_system
+#. odoo-javascript
+#: code:addons/freight_management_system/static/src/xml/freight_dashboard.xml:0
+msgid "Loading Dashboard..."
+msgstr "جاري تحميل لوحة التحكم..."
+
+#. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_freight_trip__gps_longitude
+msgid "Longitude"
+msgstr "خط الطول"
+
+#. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_freight_trip__gps_map_html
+msgid "Map"
+msgstr "الخريطة"
+
+#. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_driver_advance__message_has_error
+#: model:ir.model.fields,field_description:freight_management_system.field_freight_trip__message_has_error
+#: model:ir.model.fields,field_description:freight_management_system.field_trip_expense__message_has_error
+msgid "Message Delivery error"
+msgstr "خطأ في تسليم الرسالة"
+
+#. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_driver_advance__message_ids
+#: model:ir.model.fields,field_description:freight_management_system.field_freight_trip__message_ids
+#: model:ir.model.fields,field_description:freight_management_system.field_trip_expense__message_ids
+msgid "Messages"
+msgstr "الرسائل"
+
+#. module: freight_management_system
+#: model_terms:ir.ui.view,arch_db:freight_management_system.view_driver_advance_search
+#: model_terms:ir.ui.view,arch_db:freight_management_system.view_trip_expense_search
+msgid "Month"
+msgstr "الشهر"
+
+#. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_driver_advance__my_activity_date_deadline
+#: model:ir.model.fields,field_description:freight_management_system.field_freight_trip__my_activity_date_deadline
+#: model:ir.model.fields,field_description:freight_management_system.field_trip_expense__my_activity_date_deadline
+msgid "My Activity Deadline"
+msgstr "الموعد النهائي لنشاطي"
+
+#. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_driver_advance__activity_date_deadline
+#: model:ir.model.fields,field_description:freight_management_system.field_freight_trip__activity_date_deadline
+#: model:ir.model.fields,field_description:freight_management_system.field_trip_expense__activity_date_deadline
+msgid "Next Activity Deadline"
+msgstr "الموعد النهائي للنشاط التالي"
+
+#. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_driver_advance__activity_summary
+#: model:ir.model.fields,field_description:freight_management_system.field_freight_trip__activity_summary
+#: model:ir.model.fields,field_description:freight_management_system.field_trip_expense__activity_summary
+msgid "Next Activity Summary"
+msgstr "ملخص النشاط التالي"
+
+#. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_driver_advance__activity_type_id
+#: model:ir.model.fields,field_description:freight_management_system.field_freight_trip__activity_type_id
+#: model:ir.model.fields,field_description:freight_management_system.field_trip_expense__activity_type_id
+msgid "Next Activity Type"
+msgstr "نوع النشاط التالي"
+
+#. module: freight_management_system
+#: model_terms:ir.actions.act_window,help:freight_management_system.action_driver_advance
+msgid "No driver advances yet. Create one!"
+msgstr "لا توجد تِرب رحلة بعد. أنشئ واحدة!"
+
+#. module: freight_management_system
+#: model_terms:ir.actions.act_window,help:freight_management_system.action_trip_expense
+msgid "No trip expenses yet. Create one!"
+msgstr "لا توجد مصروفات رحلات بعد. أنشئ واحدة!"
+
+#. module: freight_management_system
+#: model:ir.model.fields.selection,name:freight_management_system.selection__freight_trip__invoice_state__not_created
+msgid "Not Created"
+msgstr "لم يتم الإنشاء"
+
+#. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_driver_advance__notes
+#: model_terms:ir.ui.view,arch_db:freight_management_system.view_trip_expense_form
+msgid "Notes"
+msgstr "ملاحظات"
+
+#. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_trip_expense__notes
+msgid "Notes / Description"
+msgstr "ملاحظات / وصف"
+
+#. module: freight_management_system
+#: model_terms:ir.ui.view,arch_db:freight_management_system.view_driver_advance_form
+msgid "Notes..."
+msgstr "ملاحظات..."
+
+#. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_driver_advance__message_needaction_counter
+#: model:ir.model.fields,field_description:freight_management_system.field_freight_trip__message_needaction_counter
+#: model:ir.model.fields,field_description:freight_management_system.field_trip_expense__message_needaction_counter
+msgid "Number of Actions"
+msgstr "عدد الإجراءات"
+
+#. module: freight_management_system
+#: model_terms:ir.ui.view,arch_db:freight_management_system.view_freight_trip_form
+msgid "Number of Invoices"
+msgstr "عدد الفواتير"
+
+#. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_driver_advance__message_has_error_counter
+#: model:ir.model.fields,field_description:freight_management_system.field_freight_trip__message_has_error_counter
+#: model:ir.model.fields,field_description:freight_management_system.field_trip_expense__message_has_error_counter
+msgid "Number of errors"
+msgstr "عدد الأخطاء"
+
+#. module: freight_management_system
+#: model:ir.model.fields,help:freight_management_system.field_driver_advance__message_needaction_counter
+#: model:ir.model.fields,help:freight_management_system.field_freight_trip__message_needaction_counter
+#: model:ir.model.fields,help:freight_management_system.field_trip_expense__message_needaction_counter
+msgid "Number of messages requiring action"
+msgstr "عدد الرسائل التي تحتاج إجراء"
+
+#. module: freight_management_system
+#: model:ir.model.fields,help:freight_management_system.field_driver_advance__message_has_error_counter
+#: model:ir.model.fields,help:freight_management_system.field_freight_trip__message_has_error_counter
+#: model:ir.model.fields,help:freight_management_system.field_trip_expense__message_has_error_counter
+msgid "Number of messages with delivery error"
+msgstr "عدد الرسائل التي بها خطأ في التوصيل"
+
+#. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_freight_trip__oil_level_doc
+msgid "Oil Level"
+msgstr "مستوى الزيت"
+
+#. module: freight_management_system
+#: model:ir.model.fields.selection,name:freight_management_system.selection__trip_expense__expense_type__other
+msgid "Other"
+msgstr "أخرى"
+
+#. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_driver_advance__journal_id
+msgid "Payment Method (Journal)"
+msgstr "طريقة الدفع (دفتر اليومية)"
+
+#. module: freight_management_system
+#. odoo-javascript
+#: code:addons/freight_management_system/static/src/xml/freight_dashboard.xml:0
+msgid "Performance & Profitability Dashboard"
+msgstr "لوحة تحكم الأداء والربحية"
+
+#. module: freight_management_system
+#. odoo-python
+#: code:addons/freight_management_system/models/freight_trip.py:0
+msgid "Please assign a driver first!"
+msgstr "يرجى تعيين سائق أولاً!"
+
+#. module: freight_management_system
+#. odoo-python
+#: code:addons/freight_management_system/models/trip_expense.py:0
+msgid "Please attach an invoice or receipt before confirming!"
+msgstr "يرجى إرفاق فاتورة أو إيصال قبل التأكيد!"
+
+#. module: freight_management_system
+#. odoo-python
+#: code:addons/freight_management_system/models/trip_expense.py:0
+msgid "Please configure Driver Advance Account and Journal in Settings!"
+msgstr "يرجى إعداد حساب تِرب الرحلة والسجل في الإعدادات!"
+
+#. module: freight_management_system
+#. odoo-python
+#: code:addons/freight_management_system/models/freight_trip.py:0
+msgid "Please select a Customer first!"
+msgstr "يرجى اختيار العميل أولاً!"
+
+#. module: freight_management_system
+#. odoo-python
+#: code:addons/freight_management_system/models/trip_expense.py:0
+msgid "Please select an account before confirming!"
+msgstr "يرجى اختيار حساب قبل التأكيد!"
+
+#. module: freight_management_system
+#: model:ir.model.fields,help:freight_management_system.field_driver_advance__expense_difference
+msgid "Positive = Driver owes company | Negative = Company owes driver"
+msgstr "موجب = السائق مدين للشركة | سالب = الشركة مدينة للسائق"
+
+#. module: freight_management_system
+#: model:ir.model.fields.selection,name:freight_management_system.selection__freight_trip__invoice_state__posted
+msgid "Posted"
+msgstr "تم النشر"
+
+#. module: freight_management_system
+#: model_terms:ir.ui.view,arch_db:freight_management_system.view_freight_trip_form
+msgid "RESET TO DRAFT"
+msgstr "إعادة إلى مسودة"
+
+#. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_trip_expense__name
+msgid "Reference"
+msgstr "المرجع"
+
+#. module: freight_management_system
+#: model_terms:ir.ui.view,arch_db:freight_management_system.view_driver_advance_form
+msgid "Reject"
+msgstr "رفض"
+
+#. module: freight_management_system
+#: model:ir.model.fields.selection,name:freight_management_system.selection__driver_advance__state__rejected
+#: model_terms:ir.ui.view,arch_db:freight_management_system.view_driver_advance_search
+msgid "Rejected"
+msgstr "مرفوض"
+
+#. module: freight_management_system
+#: model_terms:ir.ui.view,arch_db:freight_management_system.view_driver_advance_form
+#: model_terms:ir.ui.view,arch_db:freight_management_system.view_trip_expense_form
+msgid "Reset to Draft"
+msgstr "إعادة إلى مسودة"
+
+#. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_driver_advance__activity_user_id
+#: model:ir.model.fields,field_description:freight_management_system.field_freight_trip__activity_user_id
+#: model:ir.model.fields,field_description:freight_management_system.field_trip_expense__activity_user_id
+msgid "Responsible User"
+msgstr "المستخدم المسؤول"
+
+#. module: freight_management_system
+#: model_terms:ir.ui.view,arch_db:freight_management_system.view_trip_expense_search
+msgid "Road Fees"
+msgstr "رسوم الطرق"
+
+#. module: freight_management_system
+#: model:ir.model.fields.selection,name:freight_management_system.selection__trip_expense__expense_type__road_fees
+msgid "Road Fees / Tolls"
+msgstr "رسوم الطرق / الرسوم"
+
+#. module: freight_management_system
+#: model_terms:ir.ui.view,arch_db:freight_management_system.view_freight_trip_form
+msgid "Route Info"
+msgstr "معلومات الطريق"
+
+#. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_driver_advance__message_has_sms_error
+#: model:ir.model.fields,field_description:freight_management_system.field_freight_trip__message_has_sms_error
+#: model:ir.model.fields,field_description:freight_management_system.field_trip_expense__message_has_sms_error
+msgid "SMS Delivery error"
+msgstr "خطأ في تسليم الرسائل القصيرة"
+
+#. module: freight_management_system
+#: model_terms:ir.ui.view,arch_db:freight_management_system.view_freight_trip_form
+msgid "Safety & Compliance"
+msgstr "السلامة والامتثال"
+
+#. module: freight_management_system
+#: model_terms:ir.ui.view,arch_db:freight_management_system.view_freight_trip_form
+msgid "Safety Gear"
+msgstr "معدات السلامة"
+
+#. module: freight_management_system
+#. odoo-python
+#: code:addons/freight_management_system/models/freight_trip.py:0
+#: model:ir.model,name:freight_management_system.model_sale_order
+#: model:ir.model.fields,field_description:freight_management_system.field_freight_trip__sale_order_id
+msgid "Sales Order"
+msgstr "أمر البيع"
+
+#. module: freight_management_system
+#: model:ir.model,name:freight_management_system.model_sale_order_line
+msgid "Sales Order Line"
+msgstr "بند أمر المبيعات"
+
+#. module: freight_management_system
+#. odoo-python
+#: code:addons/freight_management_system/models/freight_trip.py:0
+#: model:ir.actions.act_window,name:freight_management_system.action_freight_trip_send_mail
+#: model:ir.model,name:freight_management_system.model_freight_trip_send_mail
+#: model_terms:ir.ui.view,arch_db:freight_management_system.view_freight_trip_send_mail_form
+msgid "Send Waybill by Email"
+msgstr "إرسال بوليصة الشحن بالبريد الإلكتروني"
+
+#. module: freight_management_system
+#: model_terms:ir.ui.view,arch_db:freight_management_system.view_driver_advance_form
+msgid "Settlement Summary"
+msgstr "ملخص التسوية"
+
+#. module: freight_management_system
+#: model_terms:ir.ui.view,arch_db:freight_management_system.view_freight_trip_form
+msgid "Shipment Info"
+msgstr "معلومات الشحنة"
+
+#. module: freight_management_system
+#: model:ir.ui.menu,name:freight_management_system.menu_freight_shipments
+msgid "Shipments"
+msgstr "الشحنات"
+
+#. module: freight_management_system
+#: model_terms:ir.ui.view,arch_db:freight_management_system.view_freight_trip_form
+msgid "Signatures"
+msgstr "التوقيعات"
+
+#. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_freight_trip__starting_point_id
+msgid "Starting Point"
+msgstr "نقطة البداية"
+
+#. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_driver_advance__state
+#: model:ir.model.fields,field_description:freight_management_system.field_freight_trip__state
+#: model:ir.model.fields,field_description:freight_management_system.field_trip_expense__state
+#: model_terms:ir.ui.view,arch_db:freight_management_system.view_freight_trip_search
+msgid "Status"
+msgstr "الحالة"
+
+#. module: freight_management_system
+#: model:ir.model.fields,help:freight_management_system.field_driver_advance__activity_state
+#: model:ir.model.fields,help:freight_management_system.field_freight_trip__activity_state
+#: model:ir.model.fields,help:freight_management_system.field_trip_expense__activity_state
+msgid ""
+"Status based on activities\n"
+"Overdue: Due date is already passed\n"
+"Today: Activity date is today\n"
+"Planned: Future activities."
+msgstr ""
+"الحالة بناءً على الأنشطة\n"
+"متأخر: تاريخ الاستحقاق مر\n"
+"اليوم: تاريخ النشاط هو اليوم\n"
+"مخطط: أنشطة مستقبلية."
+
+#. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_freight_trip_send_mail__subject
+msgid "Subject"
+msgstr "الموضوع"
+
+#. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_freight_trip__supervisor_signature
+#: model_terms:ir.ui.view,arch_db:freight_management_system.view_freight_trip_form
+msgid "Supervisor Signature"
+msgstr "توقيع المشرف"
+
+#. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_freight_trip__supervisor_signature_date
+msgid "Supervisor Signature Date"
+msgstr "تاريخ توقيع المشرف"
+
+#. module: freight_management_system
+#: model_terms:ir.ui.view,arch_db:freight_management_system.report_waybill_template
+msgid "This is a computer-generated waybill. No signature is required."
+msgstr "هذا بوليصة شحن مولدة بواسطة الحاسوب. لا يلزم التوقيع."
+
+#. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_freight_trip_send_mail__email_to
+msgid "To (Customer Email)"
+msgstr "إلى (بريد العميل)"
+
+#. module: freight_management_system
+#: model_terms:ir.ui.view,arch_db:freight_management_system.view_freight_trip_tree
+msgid "Total"
+msgstr "الإجمالي"
+
+#. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_driver_advance__total_expenses
+msgid "Total Expenses"
+msgstr "إجمالي المصروفات"
+
+#. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_freight_trip__total_invoice_amount
+msgid "Total Invoice Amount"
+msgstr "إجمالي قيمة الفاتورة"
+
+#. module: freight_management_system
+#. odoo-javascript
+#: code:addons/freight_management_system/static/src/xml/freight_dashboard.xml:0
+msgid "Total Trips"
+msgstr "إجمالي الرحلات"
+
+#. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_driver_advance__trip_id
+#: model:ir.model.fields,field_description:freight_management_system.field_freight_trip_send_mail__trip_id
+#: model:ir.model.fields,field_description:freight_management_system.field_trip_expense__trip_id
+#: model_terms:ir.ui.view,arch_db:freight_management_system.view_driver_advance_search
+#: model_terms:ir.ui.view,arch_db:freight_management_system.view_trip_expense_search
+msgid "Trip"
+msgstr "الرحلة"
+
+#. module: freight_management_system
+#: model:ir.model,name:freight_management_system.model_trip_expense
+#: model_terms:ir.ui.view,arch_db:freight_management_system.view_trip_expense_form
+msgid "Trip Expense"
+msgstr "مصروف الرحلة"
+
+#. module: freight_management_system
+#: model:ir.actions.act_window,name:freight_management_system.action_trip_expense
+#: model:ir.model.fields,field_description:freight_management_system.field_driver_advance__expense_ids
+#: model:ir.ui.menu,name:freight_management_system.menu_trip_expenses
+#: model_terms:ir.ui.view,arch_db:freight_management_system.view_driver_advance_form
+#: model_terms:ir.ui.view,arch_db:freight_management_system.view_trip_expense_tree
+msgid "Trip Expenses"
+msgstr "مصروفات الرحلة"
+
+#. module: freight_management_system
+#. odoo-javascript
+#: code:addons/freight_management_system/static/src/xml/freight_dashboard.xml:0
+msgid "Trip Overview"
+msgstr "نظرة عامة على الرحلات"
+
+#. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_freight_trip__name
+msgid "Trip Reference"
+msgstr "مرجع الرحلة"
+
+#. module: freight_management_system
+#: model_terms:ir.ui.view,arch_db:freight_management_system.view_driver_advance_form
+msgid "Trip and Driver Info"
+msgstr "معلومات الرحلة والسائق"
+
+#. module: freight_management_system
+#: model:ir.model.fields,help:freight_management_system.field_driver_advance__activity_exception_decoration
+#: model:ir.model.fields,help:freight_management_system.field_freight_trip__activity_exception_decoration
+#: model:ir.model.fields,help:freight_management_system.field_trip_expense__activity_exception_decoration
+msgid "Type of the exception activity on record."
+msgstr "نوع نشاط الاستثناء في السجل."
+
+#. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_freight_trip__tyre_pressure_check_doc
+msgid "Tyre Pressure Check"
+msgstr "فحص ضغط الإطارات"
+
+#. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_freight_trip__vehicle_id
+#: model_terms:ir.ui.view,arch_db:freight_management_system.view_freight_trip_search
+msgid "Vehicle"
+msgstr "المركبة"
+
+#. module: freight_management_system
+#: model_terms:ir.ui.view,arch_db:freight_management_system.view_freight_trip_form
+msgid "Vehicle Checks"
+msgstr "فحوصات المركبة"
+
+#. module: freight_management_system
+#: model:ir.model.fields.selection,name:freight_management_system.selection__trip_expense__expense_type__maintenance
+msgid "Vehicle Maintenance"
+msgstr "صيانة المركبة"
+
+#. module: freight_management_system
+#: model_terms:ir.ui.view,arch_db:freight_management_system.report_waybill_template
+msgid "WAYBILL"
+msgstr "بوليصة الشحن"
+
+#. module: freight_management_system
+#: model:ir.actions.report,name:freight_management_system.action_report_waybill
+msgid "Waybill"
+msgstr "بوليصة الشحن"
+
+#. module: freight_management_system
+#: model:mail.template,subject:freight_management_system.email_template_freight_waybill
+msgid "Waybill - {{ object.name }}"
+msgstr "بوليصة الشحن - {{ object.name }}"
+
+#. module: freight_management_system
+#. odoo-python
+#: code:addons/freight_management_system/wizard/send_mail_wizard.py:0
+msgid "Waybill sent by email to %s"
+msgstr "تم إرسال بوليصة الشحن بالبريد الإلكتروني إلى %s"
+
+#. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_driver_advance__website_message_ids
+#: model:ir.model.fields,field_description:freight_management_system.field_freight_trip__website_message_ids
+#: model:ir.model.fields,field_description:freight_management_system.field_trip_expense__website_message_ids
+msgid "Website Messages"
+msgstr "رسائل الموقع"
+
+#. module: freight_management_system
+#: model:ir.model.fields,help:freight_management_system.field_driver_advance__website_message_ids
+#: model:ir.model.fields,help:freight_management_system.field_freight_trip__website_message_ids
+#: model:ir.model.fields,help:freight_management_system.field_trip_expense__website_message_ids
+msgid "Website communication history"
+msgstr "سجل التواصل على الموقع"
+
+#. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_freight_trip__weight_kg
+msgid "Weight (KG)"
+msgstr "الوزن (كجم)"
+
+#. module: freight_management_system
+#. odoo-python
+#: code:addons/freight_management_system/models/freight_trip.py:0
+msgid "You can only create invoice after marking the trip as Delivered!"
+msgstr "لا يمكن إنشاء فاتورة إلا بعد وضع علامة على الرحلة على أنها تم التسليم!"
+
+#. module: freight_management_system
+#: model_terms:ir.ui.view,arch_db:freight_management_system.report_waybill_template
+msgid "______________________"
+msgstr "______________________"
+
+#. module: freight_management_system
+#. odoo-python
+#: code:addons/freight_management_system/models/freight_trip.py:0
+msgid "freight_trip_id"
+msgstr "معرف_رحلة_الشحن"
+
+#. module: freight_management_system
+#: model_terms:ir.ui.view,arch_db:freight_management_system.report_waybill_template
+msgid "📋 Route Info"
+msgstr "📋 معلومات الطريق"
+
+#. module: freight_management_system
+#: model_terms:ir.ui.view,arch_db:freight_management_system.report_waybill_template
+msgid "📦 Shipment Info"
+msgstr "📦 معلومات الشحنة"
+
+#. module: freight_management_system
+#: model_terms:ir.ui.view,arch_db:freight_management_system.view_freight_trip_send_mail_form
+msgid "📧 Send Email"
+msgstr "📧 إرسال بريد إلكتروني"
+
+#. module: freight_management_system
+#: model_terms:ir.ui.view,arch_db:freight_management_system.view_freight_trip_form
+msgid "📧 Send to Customer"
+msgstr "📧 إرسال إلى العميل"
+
+#. module: freight_management_system
+#: model_terms:ir.ui.view,arch_db:freight_management_system.view_freight_trip_form
+msgid "📱 Send to Driver"
+msgstr "📱 إرسال إلى السائق"
+
+#. module: freight_management_system
+#: model_terms:ir.ui.view,arch_db:freight_management_system.view_freight_trip_form
+msgid "🖨 Print Waybill"
+msgstr "🖨 طباعة بوليصة الشحن"
+
+#. module: freight_management_system
+#: model_terms:ir.ui.view,arch_db:freight_management_system.report_waybill_template
+msgid "🚚 Carrier Info"
+msgstr "🚚 بيانات الناقل"

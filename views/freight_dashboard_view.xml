@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Client Action (OWL Component) -->
+    <record id="action_freight_dashboard" model="ir.actions.client">
+        <field name="name">Freight Dashboard</field>
+        <field name="tag">freight_management_system.freight_dashboard</field>
+    </record>
+
+    <!-- Menu Item under Freight System root -->
+    <menuitem
+        id="menu_freight_dashboard"
+        name="Freight Dashboard"
+        parent="menu_freight_root"
+        action="action_freight_dashboard"
+        sequence="1"/>
+
+</odoo>
