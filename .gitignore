@@ -1,0 +1,25 @@
+cat <<EOF > .gitignore
+# Python cache files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Odoo log files and database specific files
+*.log
+*.database
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDEs and editors
+.vscode/
+.idea/
+*.swp
+*.swo
+EOF
