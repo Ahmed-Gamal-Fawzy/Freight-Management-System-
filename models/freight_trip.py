@@ -198,7 +198,16 @@ class FreightTrip(models.Model):
 
     # ── Actions ──────────────────────────────────────────────────
     def action_in_transit(self):
-        self.write({'state': 'in_transit'})
+        for rec in self:
+            self.write({'state': 'in_transit'})
+            transit_template = self.env.ref('freight_management_system.email_template_trip_in_transit', raise_if_not_found=False)
+            if transit_template and rec.partner_id.email:
+                transit_template.send_mail(rec.id, force_send=True)
+
+            rec._send_whatsapp_automatic('freight_management_system.wa_template_customer_transit', partner_id=rec.partner_id)
+            rec._send_whatsapp_automatic('freight_management_system.wa_template_driver_transit', employee_id=rec.driver_id)
+
+            
 
     def action_delivered(self):
         self.write({'state': 'delivered'})
@@ -226,6 +235,13 @@ class FreightTrip(models.Model):
                 )
         self.write({'state': 'confirmed'})
 
+        confirm_template = self.env.ref('freight_management_system.email_template_trip_confirmed', raise_if_not_found=False)
+        if confirm_template and rec.partner_id.email:
+            confirm_template.send_mail(rec.id, force_send=True)
+            
+        rec._send_whatsapp_automatic('freight_management_system.wa_template_customer_confirmed', partner_id=rec.partner_id)
+
+        rec._send_whatsapp_automatic('freight_management_system.wa_template_driver_confirmed', employee_id=rec.driver_id)
 
     @api.onchange('supervisor_signature')
     def _onchange_supervisor_signature(self):
@@ -326,39 +342,58 @@ class FreightTrip(models.Model):
         }
 
     # ── Reports & WhatsApp ────────────────────────────────────────
+
+    def _send_whatsapp_automatic(self, template_xml_id, partner_id=False, employee_id=False):
+        """ Send whatsapp message to customer or driver """
+        self.ensure_one()
+        template = self.env.ref(template_xml_id, raise_if_not_found=False)
+        if not template:
+            return
+
+        # determine the target (customer or driver) and phone number
+        target_res_model = 'res.partner'
+        target_res_id = False
+        
+        if partner_id:
+            target_res_id = partner_id.id
+        elif employee_id:
+            target_res_model = 'hr.employee'
+            target_res_id = employee_id.id
+
+        if target_res_id:
+            try:
+                composer = self.env['whatsapp.composer'].with_context({
+                    'active_model': self._name,
+                    'active_id': self.id,
+                    'default_res_model': self._name,
+                    'default_res_id': self.id,
+                    'default_template_id': template.id,
+                }).create({})
+                # action_send_whatsapp
+                composer.action_send_whatsapp()
+            except Exception:
+                pass
+
+    
     def action_print_waybill(self):
         return self.env.ref('freight_management_system.action_report_waybill').report_action(self)
 
     def action_send_whatsapp_driver(self):
+        self.ensure_one()
         if not self.driver_id:
             raise UserError(_("Please assign a driver first!"))
-        if not self.driver_id.mobile_phone:
-            raise UserError(_("Driver has no phone number!"))
-
-        report_xml_id = 'freight_management_system.action_report_waybill'
-        pdf_content, _mime = self.env['ir.actions.report']._render_qweb_pdf(report_xml_id, self.ids)
-
-        attachment = self.env['ir.attachment'].create({
-            'name': f'Waybill-{self.name}.pdf',
-            'type': 'binary',
-            'datas': base64.b64encode(pdf_content).decode('utf-8'),
-            'res_model': self._name,
-            'res_id': self.id,
-            'mimetype': 'application/pdf',
-        })
-
-        template = self.env.ref('whatsapp.template_trip_waybill_template', raise_if_not_found=False)
-
+            
+        template = self.env.ref('freight_management_system.wa_template_waybill_share', raise_if_not_found=False)
+        
         return {
             'type': 'ir.actions.act_window',
             'res_model': 'whatsapp.composer',
             'view_mode': 'form',
             'target': 'new',
             'context': {
-                'default_res_model': 'freight.trip',
+                'default_res_model': self._name,
                 'default_res_id': self.id,
                 'default_template_id': template.id if template else False,
-                'default_attachment_id': attachment.id,
             }
         }
 

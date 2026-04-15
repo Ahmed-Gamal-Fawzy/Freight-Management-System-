@@ -1,20 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
-<!-- Email Template -->
-    <record id="email_template_freight_waybill" model="mail.template">
-        <field name="name">Freight Trip - Waybill to Customer</field>
-        <field name="model_id" ref="model_freight_trip"/>
-        <field name="subject">Waybill - {{ object.name }}</field>
-        <field name="email_from">{{ (object.company_id.email or '') }}</field>
-        <field name="email_to">{{ (object.partner_id.email or '') }}</field>
-        <field name="body_html" type="html">
-            <div style="margin: 0px; padding: 0px;">
-                <p>Dear <t t-out="object.partner_id.name"/>,</p>
-                <p>Please find attached the waybill for trip <strong><t t-out="object.name"/></strong>.</p>
-                <p>Route: <t t-out="object.starting_point_id.name"/> → <t t-out="object.destination_id.name"/></p>
-                <p>Best regards,<br/><t t-out="object.company_id.name"/></p>
-            </div>
-        </field>
-        <field name="report_template_ids" eval="[(4, ref('freight_management_system.action_report_waybill'))]"/>
-        <field name="auto_delete" eval="True"/>
-    </record>
+    <data noupdate="1">
+
+        <record id="email_template_freight_waybill" model="mail.template">
+            <field name="name">Freight Trip - Waybill to Customer</field>
+            <field name="model_id" ref="freight_management_system.model_freight_trip"/>
+            <field name="subject">Waybill - {{ object.name }}</field>
+            <field name="email_from">{{ (object.company_id.email or '') }}</field>
+            <field name="email_to">{{ (object.partner_id.email or '') }}</field>
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px;">
+                    <p>Dear <t t-out="object.partner_id.name"/>,</p>
+                    <p>Please find attached the waybill for trip <strong><t t-out="object.name"/></strong>.</p>
+                    <p>Route: <t t-out="object.starting_point_id.name"/> → <t t-out="object.destination_id.name"/></p>
+                    <p>Best regards,<br/><t t-out="object.company_id.name"/></p>
+                </div>
+            </field>
+            <field name="report_template_ids" eval="[(4, ref('freight_management_system.action_report_waybill'))]"/>
+            <field name="auto_delete" eval="True"/>
+        </record>
+
+        <record id="email_template_trip_confirmed" model="mail.template">
+            <field name="name">Freight Trip: Confirmed (Auto)</field>
+            <field name="model_id" ref="freight_management_system.model_freight_trip"/>
+            <field name="subject">تم تأكيد رحلتكم: {{ object.name }}</field>
+            <field name="email_from">{{ (object.company_id.email or '') }}</field>
+            <field name="email_to">{{ (object.partner_id.email or '') }}</field>
+            <field name="body_html" type="html">
+                <div style="direction: rtl; font-family: sans-serif; text-align: right;">
+                    <p>عزيزي العميل <t t-out="object.partner_id.name"/>،</p>
+                    <p>نود إبلاغكم بأنه تم <strong>تأكيد</strong> الرحلة رقم <t t-out="object.name"/> وهي الآن قيد التجهيز.</p>
+                    <p>المسار: <t t-out="object.starting_point_id.name"/> إلى <t t-out="object.destination_id.name"/></p>
+                    <p>شكراً لثقتكم بنا.</p>
+                </div>
+            </field>
+        </record>
+
+        <record id="email_template_trip_in_transit" model="mail.template">
+            <field name="name">Freight Trip: In Transit (Auto)</field>
+            <field name="model_id" ref="model_freight_trip"/>
+            <field name="subject">رحلتكم الآن في الطريق: {{ object.name }}</field>
+            <field name="email_from">{{ (object.company_id.email or '') }}</field>
+            <field name="email_to">{{ (object.partner_id.email or '') }}</field>
+            <field name="body_html" type="html">
+                <div style="direction: rtl; font-family: sans-serif; text-align: right;">
+                    <p>عزيزي العميل <t t-out="object.partner_id.name"/>،</p>
+                    <p>الرحلة رقم <strong><t t-out="object.name"/></strong> تحركت الآن وهي في طريقها إليكم.</p>
+                    <p><strong>بيانات الناقل:</strong></p>
+                    <ul>
+                        <li>السائق: <t t-out="object.driver_id.name"/></li>
+                        <li>الجوال: <t t-out="object.driver_phone"/></li>
+                        <li>الشاحنة: <t t-out="object.vehicle_id.name"/> (<t t-out="object.license_plate"/>)</li>
+                    </ul>
+                </div>
+            </field>
+        </record>
+
+    </data>
 </odoo>

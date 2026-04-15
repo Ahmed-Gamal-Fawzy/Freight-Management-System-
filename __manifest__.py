@@ -8,7 +8,7 @@
     "author": "Ahmed Gamal",
     "maintainer": "",
     "website": "https://www.yourcompany.com",
-    "depends": ["base", "fleet", "mail", "hr", "whatsapp", "accountant", "account", "web","sale"],
+    "depends": ["base", "fleet", "mail", "hr", "whatsapp", "accountant", "account", "web","sale","sale_management"],
     "data": [
         "data/ir_sequence_data.xml",
         "data/mail_template_data.xml",

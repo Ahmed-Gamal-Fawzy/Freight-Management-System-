@@ -1,7 +1,7 @@
     # -*- coding: utf-8 -*-
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError
-
+import base64
 class FreightTripSendMail(models.TransientModel):
     _name = 'freight.trip.send.mail'
     _description = 'Send Waybill by Email'
@@ -61,7 +61,7 @@ class FreightTripSendMail(models.TransientModel):
             'model':           'freight.trip',
         })
 
-        mail.send(force_send=True)
+        mail.send()
 
         # ── Log chatter ──
         self.trip_id.message_post(
