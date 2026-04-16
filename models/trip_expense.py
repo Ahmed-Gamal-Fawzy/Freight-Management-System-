@@ -183,9 +183,19 @@ class TripExpense(models.Model):
         self.write({'state': 'draft'})
 
     def unlink(self):
+        advances = self.mapped('advance_id')
+        
         for rec in self:
             if rec.move_id:
                 if rec.move_id.state == 'posted':
                     rec.move_id.button_draft()
                 rec.move_id.unlink()
-        return super().unlink()
+    
+        res = super(TripExpense, self).unlink()
+        for advance in advances:
+            advance._compute_expense_totals()
+            
+            if not advance.expense_ids and advance.state == 'in_settlement':
+                advance.write({'state': 'draft'})
+                
+        return res

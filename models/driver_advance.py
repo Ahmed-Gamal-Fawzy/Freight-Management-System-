@@ -237,7 +237,12 @@ class DriverAdvance(models.Model):
                 ],
             })
             move.action_post()
-            self.write({'state': 'paid'})
+            
+            new_amount = self.amount + amount_to_pay
+            self.write({
+                'amount': new_amount,
+                'state': 'paid'
+            })
 
             return {
                 'type': 'ir.actions.act_window',
@@ -247,5 +252,3 @@ class DriverAdvance(models.Model):
                 'view_mode': 'form',
                 'target': 'current',
             }
-
-        raise UserError(_("No action available for current state!"))
