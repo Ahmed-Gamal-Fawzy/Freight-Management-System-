@@ -31,9 +31,16 @@
 .o_freight_header_inner {
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
     gap: 20px;
     max-width: 1400px;
     margin: 0 auto;
+}
+.o_freight_header_left {
+    display: flex;
+    align-items: center;
+    gap: 20px;
 }
 .o_freight_header_icon {
     background: rgba(255,255,255,0.12);
@@ -52,6 +59,63 @@
     margin: 4px 0 0;
     font-size: 0.95rem;
     opacity: 0.75;
+}
+
+/* ── Year Filter Styles ────────────────────────────────────── */
+.o_freight_year_filter {
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(8px);
+    padding: 8px 18px;
+    border-radius: 40px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.2s ease;
+}
+
+.o_freight_year_filter:hover {
+    background: rgba(255, 255, 255, 0.18);
+}
+
+.o_year_filter_label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.85);
+    letter-spacing: 0.3px;
+}
+
+.o_year_filter_label i {
+    font-size: 0.9rem;
+}
+
+.o_year_select {
+    background: rgba(255, 255, 255, 0.95);
+    border: none;
+    padding: 6px 28px 6px 12px;
+    border-radius: 24px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #1a2340;
+    cursor: pointer;
+    outline: none;
+    transition: all 0.2s ease;
+    font-family: inherit;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%231a2340' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+}
+
+.o_year_select:hover {
+    background-color: #ffffff;
+    transform: scale(1.02);
+}
+
+.o_year_select:focus {
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.4);
 }
 
 /* ── Sections ────────────────────────────────────────────── */
@@ -124,7 +188,6 @@
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    opacity: 0.65;
     margin-top: 4px;
 }
 .o_kpi_arrow {
@@ -136,26 +199,32 @@
 .o_kpi_total     { border-left-color: #2c3e6b; }
 .o_kpi_total .o_kpi_icon  { background: #e8ecf5; color: #2c3e6b; }
 .o_kpi_total .o_kpi_value { color: #2c3e6b; }
+.o_kpi_total .o_kpi_label     { color: #2c3e6b; }
 
 .o_kpi_draft     { border-left-color: #95a5a6; }
 .o_kpi_draft .o_kpi_icon  { background: #f2f3f4; color: #7f8c8d; }
 .o_kpi_draft .o_kpi_value { color: #7f8c8d; }
+.o_kpi_draft .o_kpi_label     { color: #7f8c8d; }
 
 .o_kpi_confirmed { border-left-color: #3498db; }
 .o_kpi_confirmed .o_kpi_icon  { background: #eaf4fb; color: #2980b9; }
 .o_kpi_confirmed .o_kpi_value { color: #2980b9; }
+.o_kpi_confirmed .o_kpi_label     { color: #2980b9; }
 
 .o_kpi_transit   { border-left-color: #f39c12; }
 .o_kpi_transit .o_kpi_icon  { background: #fef9ec; color: #d68910; }
 .o_kpi_transit .o_kpi_value { color: #d68910; }
+.o_kpi_transit .o_kpi_label     { color: #d68910; }
 
 .o_kpi_delivered { border-left-color: #27ae60; }
 .o_kpi_delivered .o_kpi_icon  { background: #eafaf1; color: #1e8449; }
 .o_kpi_delivered .o_kpi_value { color: #1e8449; }
+.o_kpi_delivered .o_kpi_label     { color: #1e8449; }
 
 .o_kpi_invoiced  { border-left-color: #8e44ad; }
 .o_kpi_invoiced .o_kpi_icon  { background: #f5eef8; color: #7d3c98; }
 .o_kpi_invoiced .o_kpi_value { color: #7d3c98; }
+.o_kpi_invoiced .o_kpi_label     { color: #7d3c98; }
 
 /* ── Progress Bar ────────────────────────────────────────── */
 .o_freight_progress_wrap {
@@ -206,4 +275,43 @@
     width: 11px;
     height: 11px;
     border-radius: 3px;
+}
+
+/* ── Responsive Design ───────────────────────────────────── */
+@media (max-width: 768px) {
+    .o_freight_header_inner {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .o_freight_header_left {
+        justify-content: center;
+    }
+    
+    .o_freight_year_filter {
+        justify-content: center;
+        width: fit-content;
+        margin: 0 auto;
+    }
+    
+    .o_freight_kpi_row {
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        gap: 12px;
+    }
+    
+    .o_freight_kpi_card {
+        padding: 14px 12px;
+    }
+    
+    .o_kpi_value {
+        font-size: 1.5rem;
+    }
+    
+    .o_freight_section {
+        padding: 0 16px;
+    }
+    
+    .o_freight_header {
+        padding: 24px 20px;
+    }
 }

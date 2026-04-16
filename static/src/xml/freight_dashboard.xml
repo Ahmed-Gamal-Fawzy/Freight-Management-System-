@@ -15,15 +15,34 @@
             <!-- ── Dashboard Content ───────────────────────── -->
             <t t-else="">
 
-                <!-- Header -->
+                <!-- Header with Year Filter -->
                 <div class="o_freight_header">
                     <div class="o_freight_header_inner">
-                        <span class="o_freight_header_icon">
-                            <i class="fa fa-truck"/>
-                        </span>
-                        <div>
-                            <h1>Freight Management</h1>
-                            <p>Performance &amp; Profitability Dashboard</p>
+                        <div class="o_freight_header_left">
+                            <span class="o_freight_header_icon">
+                                <i class="fa fa-truck"/>
+                            </span>
+                            <div>
+                                <h1>Freight Management</h1>
+                                <p>Performance &amp; Profitability Dashboard</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Year Filter -->
+                        <div class="o_freight_year_filter">
+                            <label for="yearSelect" class="o_year_filter_label">
+                                <i class="fa fa-calendar"/>
+                                Year:
+                            </label>
+                            <select id="yearSelect" class="o_year_select" 
+                                    t-att-value="state.selectedYear"
+                                    t-on-change="onChangeYear">
+                                <t t-foreach="state.availableYears" t-as="year" t-key="year">
+                                    <option t-att-value="year">
+                                        <t t-esc="year"/>
+                                    </option>
+                                </t>
+                            </select>
                         </div>
                     </div>
                 </div>
@@ -31,7 +50,6 @@
                 <!-- ── Section: Trip Overview ───────────────── -->
                 <div class="o_freight_section">
                     <h2 class="o_freight_section_title">
-                        <i class="fa fa-road me-2"/>
                         Trip Overview
                     </h2>
 
