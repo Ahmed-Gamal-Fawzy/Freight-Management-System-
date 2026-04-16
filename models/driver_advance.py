@@ -174,7 +174,7 @@ class DriverAdvance(models.Model):
             partner_id = driver.work_contact_id.id
 
         # ──────────────────────────────────────────────────────────
-        # CASE 1: Draft → صرف السلفة الأصلية للسائق
+        # CASE 1: Draft 
         # ──────────────────────────────────────────────────────────
         if self.state == 'draft':
             move = self.env['account.move'].create({
@@ -210,7 +210,7 @@ class DriverAdvance(models.Model):
             }
 
         # ──────────────────────────────────────────────────────────
-        # CASE 2: In Settlement + Company owes Driver → ادفع الفرق
+        # CASE 2: In Settlement + Company owes Driver
         # ──────────────────────────────────────────────────────────
         if self.state == 'in_settlement' and self.difference_type == 'in_favor_driver':
             amount_to_pay = self.expense_difference
