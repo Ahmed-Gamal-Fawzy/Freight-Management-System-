@@ -32,6 +32,11 @@
             <form string="Driver Advance">
 
                 <header>
+                    <button name="action_disburse_advance"
+                            string="Disburse Advance"
+                            type="object"
+                            class="oe_highlight"
+                            invisible="state != 'draft' and not (state == 'in_settlement' and difference_type == 'in_favor_driver')"/>
                     <button name="action_reject"
                             string="Reject"
                             type="object"
@@ -88,6 +93,7 @@
                         <group string="Financial Info">
                             <field name="amount"
                                    readonly="state != 'draft'"/>
+                            <field name="payment_account_id" readonly="state != 'draft'"/>
                             <field name="currency_id"
                                    options="{'no_create': True}"
                                    readonly="state != 'draft'"/>

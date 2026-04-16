@@ -86,16 +86,16 @@ class TripExpense(models.Model):
     account_id = fields.Many2one(
         'account.account',
         string='Account',
-        tracking=True,
-        readonly=True,
-        default=lambda self: self._default_account_id()
+        tracking=True
     )
 
-    @api.model
-    def _default_account_id(self):
-        ICP = self.env['ir.config_parameter'].sudo()
-        account_id = int(ICP.get_param('freight_management_system.driver_advance_account_id', 0))
-        return account_id or False
+    move_id = fields.Many2one(
+        'account.move',
+        string='Journal Entry',
+        readonly=True,
+        copy=False,
+        ondelete='set null'
+    )
 
     # ── ORM ──────────────────────────────────────────────────────
     @api.model_create_multi
@@ -118,58 +118,57 @@ class TripExpense(models.Model):
     def action_confirm(self):
         for rec in self:
             if not rec.invoice_image:
-                raise UserError(_(
-                    "Please attach an invoice or receipt before confirming!"
-                ))
-            if not rec.account_id:
-                raise UserError(_(
-                    "Please select an account before confirming!"
-                ))
-
+                raise UserError(_("Please attach an invoice or receipt before confirming!"))
 
             ICP = self.env['ir.config_parameter'].sudo()
-            advance_account_id = int(ICP.get_param(
-                'freight_management_system.driver_advance_account_id', 0
-            ))
-            journal_id = int(ICP.get_param(
-                'freight_management_system.driver_advance_journal_id', 0
-            ))
+            advance_account_id = int(ICP.get_param('freight_management_system.driver_advance_account_id', 0))
+            journal_id = int(ICP.get_param('freight_management_system.driver_advance_journal_id', 0))
 
             if not advance_account_id or not journal_id:
-                raise UserError(_(
-                    "Please configure Driver Advance Account and Journal in Settings!"
-                ))
+                raise UserError(_("Please configure Driver Advance Account and Journal in Settings!"))
 
             advance_account = self.env['account.account'].browse(advance_account_id)
             journal = self.env['account.journal'].browse(journal_id)
 
+            # Use proper Expense Account (from field) for Debit
+            expense_account = rec.account_id
+            if not expense_account:
+                raise UserError(_("Please select an Expense Account!"))
 
             move = self.env['account.move'].create({
-            'journal_id': journal.id,
-            'date': rec.date,
-            'ref': f"{rec.advance_id.name} - {rec.name}",
-            'line_ids': [
-                    # Debit 
+                'journal_id': journal.id,
+                'date': rec.date,
+                'ref': f"{rec.advance_id.name} - {rec.name}",
+                'line_ids': [
+                    # Debit: Actual Expense Account (Road Fees, Fuel, etc.)
                     (0, 0, {
-                        'account_id': rec.account_id.id,
+                        'account_id': expense_account.id,
                         'name': rec.notes or rec.expense_type,
                         'debit': rec.amount,
                         'credit': 0.0,
+                        'partner_id': getattr(rec.driver_id, 'address_home_id', rec.driver_id.user_id.partner_id).id if (hasattr(rec.driver_id, 'address_home_id') and rec.driver_id.address_home_id) or rec.driver_id.user_id.partner_id else False,
                     }),
-                # Credit → Driver Advance Account
+                    # Credit: Driver Advance Account (Asset reduction)
                     (0, 0, {
                         'account_id': advance_account.id,
                         'name': rec.notes or rec.expense_type,
                         'debit': 0.0,
                         'credit': rec.amount,
+                        'partner_id': getattr(rec.driver_id, 'address_home_id', rec.driver_id.user_id.partner_id).id if (hasattr(rec.driver_id, 'address_home_id') and rec.driver_id.address_home_id) or rec.driver_id.user_id.partner_id else False,
                     }),
                 ],
             })
-            move.action_post() 
 
+            move.action_post()
+
+            rec.move_id = move
             rec.confirmed_by = self.env.user
             rec.write({'state': 'confirmed'})
             rec.advance_id._compute_expense_totals()
+
+            advance = rec.advance_id
+            if advance.state == 'draft':
+                advance.write({'state': 'in_settlement'})
 
     def action_cancel(self):
         for rec in self:
@@ -182,3 +181,11 @@ class TripExpense(models.Model):
 
     def action_draft(self):
         self.write({'state': 'draft'})
+
+    def unlink(self):
+        for rec in self:
+            if rec.move_id:
+                if rec.move_id.state == 'posted':
+                    rec.move_id.button_draft()
+                rec.move_id.unlink()
+        return super().unlink()

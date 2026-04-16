@@ -18,8 +18,8 @@ class FreightTrip(models.Model):
     )
 
     # ── Route Info ───────────────────────────────────────────────
-    starting_point_id = fields.Many2one('res.country', string='Starting Point')
-    destination_id    = fields.Many2one('res.country', string='Destination')
+    starting_point_id = fields.Many2one('res.country.state', string='Starting Point', ondelete='set null', domain="[('country_id', 'in', [192])]")
+    destination_id    = fields.Many2one('res.country.state', string='Destination', ondelete='set null', domain="[('country_id', 'in', [192])]")
     distance_km       = fields.Float(string='Distance (KM)')
 
     # ── Carrier Info ─────────────────────────────────────────────
@@ -198,11 +198,14 @@ class FreightTrip(models.Model):
 
     # ── Actions ──────────────────────────────────────────────────
     def action_in_transit(self):
+        transit_template = self.env.ref('freight_management_system.email_template_trip_in_transit', raise_if_not_found=False)
         for rec in self:
-            self.write({'state': 'in_transit'})
-            transit_template = self.env.ref('freight_management_system.email_template_trip_in_transit', raise_if_not_found=False)
-            if transit_template and rec.partner_id.email:
-                transit_template.send_mail(rec.id, force_send=True)
+            rec.write({'state': 'in_transit'})
+            if transit_template:
+                if rec.partner_id.email:
+                    transit_template.send_mail(rec.id, force_send=True)
+                if rec.driver_id.work_email:
+                    transit_template.send_mail(rec.id, email_values={'email_to': rec.driver_id.work_email}, force_send=True)
 
             rec._send_whatsapp_automatic('freight_management_system.wa_template_customer_transit', partner_id=rec.partner_id)
             rec._send_whatsapp_automatic('freight_management_system.wa_template_driver_transit', employee_id=rec.driver_id)
@@ -236,12 +239,15 @@ class FreightTrip(models.Model):
         self.write({'state': 'confirmed'})
 
         confirm_template = self.env.ref('freight_management_system.email_template_trip_confirmed', raise_if_not_found=False)
-        if confirm_template and rec.partner_id.email:
-            confirm_template.send_mail(rec.id, force_send=True)
+        for rec in self:
+            if confirm_template:
+                if rec.partner_id.email:
+                    confirm_template.send_mail(rec.id, force_send=True)
+                if rec.driver_id.work_email:
+                    confirm_template.send_mail(rec.id, email_values={'email_to': rec.driver_id.work_email}, force_send=True)
             
-        rec._send_whatsapp_automatic('freight_management_system.wa_template_customer_confirmed', partner_id=rec.partner_id)
-
-        rec._send_whatsapp_automatic('freight_management_system.wa_template_driver_confirmed', employee_id=rec.driver_id)
+            rec._send_whatsapp_automatic('freight_management_system.wa_template_customer_confirmed', partner_id=rec.partner_id)
+            rec._send_whatsapp_automatic('freight_management_system.wa_template_driver_confirmed', employee_id=rec.driver_id)
 
     @api.onchange('supervisor_signature')
     def _onchange_supervisor_signature(self):
