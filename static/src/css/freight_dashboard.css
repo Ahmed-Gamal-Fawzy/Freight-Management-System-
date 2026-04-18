@@ -1,16 +1,16 @@
 /* ============================================================
-   Freight Management Dashboard  –  Step 1: Trip Counts
+   Freight Management Dashboard – Full Style with Profitability
    ============================================================ */
 
-/* ── Root container ──────────────────────────────────────── */
 .o_freight_dashboard {
     min-height: 100vh;
     background: #f0f2f5;
     font-family: 'Segoe UI', system-ui, sans-serif;
     padding: 0 0 48px;
+    overflow-y: auto !important;
+    height: 100%;
 }
 
-/* ── Loading state ───────────────────────────────────────── */
 .o_freight_loading {
     display: flex;
     flex-direction: column;
@@ -21,13 +21,13 @@
     gap: 16px;
 }
 
-/* ── Header ──────────────────────────────────────────────── */
 .o_freight_header {
     background: linear-gradient(135deg, #1a2340 0%, #2c3e6b 60%, #1e4d8c 100%);
     padding: 32px 40px;
     color: #fff;
     box-shadow: 0 4px 20px rgba(0,0,0,0.18);
 }
+
 .o_freight_header_inner {
     display: flex;
     align-items: center;
@@ -37,11 +37,13 @@
     max-width: 1400px;
     margin: 0 auto;
 }
+
 .o_freight_header_left {
     display: flex;
     align-items: center;
     gap: 20px;
 }
+
 .o_freight_header_icon {
     background: rgba(255,255,255,0.12);
     border-radius: 16px;
@@ -49,21 +51,22 @@
     font-size: 2rem;
     line-height: 1;
 }
+
 .o_freight_header h1 {
     margin: 0;
     font-size: 1.9rem;
     font-weight: 700;
     letter-spacing: -0.5px;
 }
+
 .o_freight_header p {
     margin: 4px 0 0;
     font-size: 0.95rem;
     opacity: 0.75;
 }
 
-/* ── Year Filter Styles ────────────────────────────────────── */
 .o_freight_year_filter {
-    background: rgba(255, 255, 255, 0.12);
+    background: rgba(255,255,255,0.12);
     backdrop-filter: blur(8px);
     padding: 8px 18px;
     border-radius: 40px;
@@ -74,7 +77,7 @@
 }
 
 .o_freight_year_filter:hover {
-    background: rgba(255, 255, 255, 0.18);
+    background: rgba(255,255,255,0.18);
 }
 
 .o_year_filter_label {
@@ -83,16 +86,14 @@
     gap: 8px;
     font-size: 0.85rem;
     font-weight: 500;
-    color: rgba(255, 255, 255, 0.85);
+    color: rgba(255,255,255,0.85);
     letter-spacing: 0.3px;
 }
 
-.o_year_filter_label i {
-    font-size: 0.9rem;
-}
+.o_year_filter_label i { font-size: 0.9rem; }
 
 .o_year_select {
-    background: rgba(255, 255, 255, 0.95);
+    background: rgba(255,255,255,0.95);
     border: none;
     padding: 6px 28px 6px 12px;
     border-radius: 24px;
@@ -109,21 +110,15 @@
     background-position: right 10px center;
 }
 
-.o_year_select:hover {
-    background-color: #ffffff;
-    transform: scale(1.02);
-}
+.o_year_select:hover { background-color: #ffffff; transform: scale(1.02); }
+.o_year_select:focus { box-shadow: 0 0 0 2px rgba(255,255,255,0.4); }
 
-.o_year_select:focus {
-    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.4);
-}
-
-/* ── Sections ────────────────────────────────────────────── */
 .o_freight_section {
     max-width: 1400px;
     margin: 32px auto 0;
     padding: 0 24px;
 }
+
 .o_freight_section_title {
     font-size: 1.1rem;
     font-weight: 700;
@@ -131,11 +126,13 @@
     margin: 0 0 20px;
     display: flex;
     align-items: center;
+    gap: 8px;
     text-transform: uppercase;
     letter-spacing: 0.6px;
 }
 
-/* ── KPI Cards ───────────────────────────────────────────── */
+.o_freight_section_title i { font-size: 1.2rem; }
+
 .o_freight_kpi_row {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -157,6 +154,7 @@
     position: relative;
     overflow: hidden;
 }
+
 .o_freight_kpi_card:hover {
     transform: translateY(-3px);
     box-shadow: 0 8px 24px rgba(0,0,0,0.12);
@@ -172,67 +170,49 @@
     justify-content: center;
     background: rgba(0,0,0,0.05);
 }
-.o_kpi_body {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-}
-.o_kpi_value {
-    font-size: 2rem;
-    font-weight: 800;
-    line-height: 1;
-    letter-spacing: -1px;
-}
-.o_kpi_label {
-    font-size: 0.78rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-top: 4px;
-}
-.o_kpi_arrow {
-    opacity: 0.25;
-    font-size: 0.85rem;
-}
 
-/* ── Card Color Themes ───────────────────────────────────── */
+.o_kpi_body { display: flex; flex-direction: column; flex: 1; }
+.o_kpi_value { font-size: 2rem; font-weight: 800; line-height: 1; letter-spacing: -1px; }
+.o_kpi_label { font-size: 0.78rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px; }
+.o_kpi_arrow { opacity: 0.25; font-size: 0.85rem; }
+
 .o_kpi_total     { border-left-color: #2c3e6b; }
 .o_kpi_total .o_kpi_icon  { background: #e8ecf5; color: #2c3e6b; }
 .o_kpi_total .o_kpi_value { color: #2c3e6b; }
-.o_kpi_total .o_kpi_label     { color: #2c3e6b; }
+.o_kpi_total .o_kpi_label { color: #2c3e6b; }
 
 .o_kpi_draft     { border-left-color: #95a5a6; }
 .o_kpi_draft .o_kpi_icon  { background: #f2f3f4; color: #7f8c8d; }
 .o_kpi_draft .o_kpi_value { color: #7f8c8d; }
-.o_kpi_draft .o_kpi_label     { color: #7f8c8d; }
+.o_kpi_draft .o_kpi_label { color: #7f8c8d; }
 
 .o_kpi_confirmed { border-left-color: #3498db; }
 .o_kpi_confirmed .o_kpi_icon  { background: #eaf4fb; color: #2980b9; }
 .o_kpi_confirmed .o_kpi_value { color: #2980b9; }
-.o_kpi_confirmed .o_kpi_label     { color: #2980b9; }
+.o_kpi_confirmed .o_kpi_label { color: #2980b9; }
 
 .o_kpi_transit   { border-left-color: #f39c12; }
 .o_kpi_transit .o_kpi_icon  { background: #fef9ec; color: #d68910; }
 .o_kpi_transit .o_kpi_value { color: #d68910; }
-.o_kpi_transit .o_kpi_label     { color: #d68910; }
+.o_kpi_transit .o_kpi_label { color: #d68910; }
 
 .o_kpi_delivered { border-left-color: #27ae60; }
 .o_kpi_delivered .o_kpi_icon  { background: #eafaf1; color: #1e8449; }
 .o_kpi_delivered .o_kpi_value { color: #1e8449; }
-.o_kpi_delivered .o_kpi_label     { color: #1e8449; }
+.o_kpi_delivered .o_kpi_label { color: #1e8449; }
 
 .o_kpi_invoiced  { border-left-color: #8e44ad; }
 .o_kpi_invoiced .o_kpi_icon  { background: #f5eef8; color: #7d3c98; }
 .o_kpi_invoiced .o_kpi_value { color: #7d3c98; }
-.o_kpi_invoiced .o_kpi_label     { color: #7d3c98; }
+.o_kpi_invoiced .o_kpi_label { color: #7d3c98; }
 
-/* ── Progress Bar ────────────────────────────────────────── */
 .o_freight_progress_wrap {
     background: #fff;
     border-radius: 14px;
     padding: 20px 24px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.06);
 }
+
 .o_freight_progress_bar {
     height: 14px;
     border-radius: 8px;
@@ -240,26 +220,21 @@
     display: flex;
     background: #ecf0f1;
 }
-.o_prog_seg {
-    height: 100%;
-    transition: width 0.6s ease;
-    min-width: 0;
-}
 
-/* Segment colors match card themes */
+.o_prog_seg { height: 100%; transition: width 0.6s ease; min-width: 0; }
 .o_seg_draft     { background: #95a5a6; }
 .o_seg_confirmed { background: #3498db; }
 .o_seg_transit   { background: #f39c12; }
 .o_seg_delivered { background: #27ae60; }
 .o_seg_invoiced  { background: #8e44ad; }
 
-/* ── Legend ──────────────────────────────────────────────── */
 .o_freight_legend {
     display: flex;
     flex-wrap: wrap;
     gap: 16px;
     margin-top: 14px;
 }
+
 .o_legend_item {
     display: flex;
     align-items: center;
@@ -270,48 +245,267 @@
     text-transform: uppercase;
     letter-spacing: 0.4px;
 }
-.o_legend_dot {
-    display: inline-block;
-    width: 11px;
-    height: 11px;
-    border-radius: 3px;
+
+.o_legend_dot { display: inline-block; width: 11px; height: 11px; border-radius: 3px; }
+
+.o_freight_profit_kpi_row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
 }
 
-/* ── Responsive Design ───────────────────────────────────── */
+.o_freight_profit_card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 20px 24px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.o_freight_profit_card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+}
+
+.o_profit_icon {
+    width: 55px; height: 55px;
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.8rem;
+}
+
+.o_profit_revenue .o_profit_icon  { background: #e8f5e9; color: #2e7d32; }
+.o_profit_expenses .o_profit_icon { background: #ffebee; color: #c62828; }
+.o_profit_profit .o_profit_icon   { background: #e3f2fd; color: #1565c0; }
+.o_profit_margin .o_profit_icon   { background: #f3e5f5; color: #6a1b9a; }
+
+.o_profit_body { flex: 1; }
+.o_profit_value { font-size: 1.8rem; font-weight: 800; line-height: 1; }
+.o_profit_label {
+    font-size: 0.75rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.5px;
+    color: #666; margin-top: 6px; display: block;
+}
+
+.o_freight_stats_row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.o_stat_card {
+    background: #fff; border-radius: 12px;
+    padding: 18px; text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.o_stat_value { font-size: 1.6rem; font-weight: 800; display: block; }
+.o_stat_label {
+    font-size: 0.7rem; font-weight: 600;
+    text-transform: uppercase; color: #888;
+    letter-spacing: 0.5px; margin-top: 6px; display: block;
+}
+
+.o_freight_chart_card {
+    background: #fff; border-radius: 14px;
+    padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.o_chart_bars { display: flex; flex-direction: column; gap: 18px; }
+
+.o_chart_bar_item { display: flex; align-items: center; gap: 15px; flex-wrap: wrap; }
+.o_chart_label { width: 100px; font-weight: 600; font-size: 0.85rem; color: #444; }
+
+.o_chart_bar_wrapper {
+    flex: 1; min-width: 150px;
+    position: relative; height: 32px;
+    background: #ecf0f1; border-radius: 6px; overflow: hidden;
+}
+
+.o_chart_bar_bg { position: absolute; width: 100%; height: 100%; background: #ecf0f1; }
+.o_chart_bar_fill { position: absolute; height: 100%; transition: width 0.5s ease; border-radius: 6px; }
+.o_chart_bar_fill.positive { background: linear-gradient(90deg, #27ae60, #2ecc71); }
+.o_chart_bar_fill.negative { background: linear-gradient(90deg, #c0392b, #e74c3c); }
+.o_chart_value { width: 110px; font-size: 0.85rem; font-weight: 600; text-align: right; }
+
+.o_freight_table_card { background: #fff; border-radius: 14px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+.o_table_wrapper { overflow-x: auto; }
+
+.o_freight_table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+.o_freight_table thead tr { background: #f8f9fc; border-bottom: 2px solid #e9ecef; }
+.o_freight_table th {
+    padding: 14px 16px; text-align: left;
+    font-weight: 700; color: #2c3e6b;
+    font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px;
+}
+.o_freight_table td { padding: 12px 16px; border-bottom: 1px solid #edf2f7; }
+.o_freight_table tbody tr:hover { background: #f8fafc; }
+
+.o_trip_name { font-weight: 600; color: #2c3e6b; cursor: pointer; }
+.o_trip_name:hover { text-decoration: underline; }
+
+.o_status_badge { display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 0.7rem; font-weight: 600; }
+.o_status_draft      { background: #ecf0f1; color: #7f8c8d; }
+.o_status_confirmed  { background: #e3f2fd; color: #1565c0; }
+.o_status_in_transit { background: #fff3e0; color: #e65100; }
+.o_status_delivered  { background: #e8f5e9; color: #2e7d32; }
+.o_status_invoiced   { background: #f3e5f5; color: #6a1b9a; }
+
+.o_empty_state { text-align: center; padding: 48px !important; color: #95a5a6; }
+.o_empty_state i { font-size: 3rem; margin-bottom: 12px; display: block; }
+
+.o_table_footer {
+    padding: 14px 20px; background: #f8f9fc;
+    border-top: 1px solid #e9ecef;
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 0.8rem; color: #666;
+}
+
+.o_view_all_btn {
+    background: none; border: none;
+    color: #2c3e6b; font-weight: 600;
+    cursor: pointer; transition: color 0.2s;
+}
+.o_view_all_btn:hover { color: #1e4d8c; }
+
+.text-success { color: #27ae60 !important; }
+.text-danger  { color: #e74c3c !important; }
+.text-info    { color: #2980b9 !important; }
+.mr-2 { margin-right: 8px; }
+
+/* ── Trip Filter ─────────────────────────────────────────────── */
+.o_freight_trip_filter {
+    background: #fff;
+    border-radius: 14px;
+    padding: 20px 24px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.o_trip_filter_label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #2c3e6b;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    white-space: nowrap;
+}
+
+.o_trip_select {
+    flex: 1;
+    min-width: 220px;
+    padding: 8px 14px;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: #2c3e6b;
+    background: #f8f9fc;
+    cursor: pointer;
+    outline: none;
+    transition: border-color 0.2s ease;
+    font-family: inherit;
+}
+
+.o_trip_select:focus { border-color: #2c3e6b; background: #fff; }
+
+.o_trip_clear_btn {
+    padding: 8px 18px;
+    background: #e8ecf5;
+    color: #2c3e6b;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+    font-family: inherit;
+}
+
+.o_trip_clear_btn:hover { background: #d0d8ee; }
+
+/* ── Single Trip Detail Card ─────────────────────────────────── */
+.o_trip_detail_card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 24px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    border-top: 4px solid #2c3e6b;
+}
+
+.o_trip_detail_header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.o_trip_detail_title { font-size: 1.1rem; font-weight: 700; color: #2c3e6b; }
+.o_trip_detail_meta  { font-size: 0.82rem; color: #888; margin-top: 4px; }
+
+.o_trip_detail_kpis {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 14px;
+    margin-bottom: 20px;
+}
+
+.o_trip_detail_kpi { background: #f8f9fc; border-radius: 10px; padding: 14px 16px; text-align: center; }
+.o_trip_detail_kpi_value { font-size: 1.5rem; font-weight: 800; display: block; line-height: 1; }
+.o_trip_detail_kpi_label {
+    font-size: 0.7rem; font-weight: 600;
+    text-transform: uppercase; color: #888;
+    letter-spacing: 0.4px; margin-top: 6px; display: block;
+}
+
+.o_trip_detail_breakdown { border-top: 1px solid #edf2f7; padding-top: 16px; }
+
+.o_trip_breakdown_row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px dashed #edf2f7;
+    font-size: 0.85rem;
+}
+
+.o_trip_breakdown_row:last-child {
+    border-bottom: none;
+    font-weight: 700;
+    font-size: 0.9rem;
+    padding-top: 12px;
+}
+
+.o_trip_breakdown_label { color: #555; }
+
+.o_trip_profit_bar { height: 8px; border-radius: 4px; background: #ecf0f1; margin-top: 16px; overflow: hidden; }
+.o_trip_profit_bar_fill { height: 100%; border-radius: 4px; transition: width 0.6s ease; }
+
+/* ── Responsive ──────────────────────────────────────────────── */
 @media (max-width: 768px) {
-    .o_freight_header_inner {
-        flex-direction: column;
-        align-items: stretch;
-    }
-    
-    .o_freight_header_left {
-        justify-content: center;
-    }
-    
-    .o_freight_year_filter {
-        justify-content: center;
-        width: fit-content;
-        margin: 0 auto;
-    }
-    
-    .o_freight_kpi_row {
-        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-        gap: 12px;
-    }
-    
-    .o_freight_kpi_card {
-        padding: 14px 12px;
-    }
-    
-    .o_kpi_value {
-        font-size: 1.5rem;
-    }
-    
-    .o_freight_section {
-        padding: 0 16px;
-    }
-    
-    .o_freight_header {
-        padding: 24px 20px;
-    }
+    .o_freight_header_inner { flex-direction: column; align-items: stretch; }
+    .o_freight_header_left  { justify-content: center; }
+    .o_freight_year_filter  { justify-content: center; width: fit-content; margin: 0 auto; }
+    .o_freight_kpi_row      { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
+    .o_freight_kpi_card     { padding: 14px 12px; }
+    .o_kpi_value            { font-size: 1.5rem; }
+    .o_freight_section      { padding: 0 16px; }
+    .o_freight_header       { padding: 24px 20px; }
+    .o_chart_bar_item       { flex-direction: column; align-items: flex-start; }
+    .o_chart_label          { width: auto; }
+    .o_chart_value          { width: auto; text-align: left; }
+    .o_freight_profit_kpi_row { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+    .o_profit_value         { font-size: 1.3rem; }
+    .o_freight_trip_filter  { flex-direction: column; align-items: stretch; }
+    .o_trip_select          { min-width: unset; width: 100%; }
 }

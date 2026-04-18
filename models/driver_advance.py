@@ -200,6 +200,8 @@ class DriverAdvance(models.Model):
             })
             move.action_post()
 
+            move.write({'freight_trip_id': self.trip_id.id})
+
             return {
                 'type': 'ir.actions.act_window',
                 'name': _('Advance Journal Entry'),
@@ -237,7 +239,9 @@ class DriverAdvance(models.Model):
                 ],
             })
             move.action_post()
-            
+
+            move.write({'freight_trip_id': self.trip_id.id})
+
             new_amount = self.amount + amount_to_pay
             self.write({
                 'amount': new_amount,
@@ -252,3 +256,57 @@ class DriverAdvance(models.Model):
                 'view_mode': 'form',
                 'target': 'current',
             }
+
+        # ──────────────────────────────────────────────────────────
+        # CASE 3: In Settlement + Driver owes Company (Driver refund)
+        # ──────────────────────────────────────────────────────────
+        if self.state == 'in_settlement' and self.difference_type == 'in_favor_company':
+            amount_to_refund = self.expense_difference
+
+            if amount_to_refund <= 0:
+                raise UserError(_("No amount to refund from driver!"))
+            
+            move = self.env['account.move'].create({
+                'journal_id': self.journal_id.id,
+                'date': fields.Date.today(),
+                'ref': f"Driver Refund - {self.name}",
+                'line_ids': [
+                    (0, 0, {
+                        'account_id': self.payment_account_id.id,
+                        'name': f"Cash received from driver - {self.name}",
+                        'debit': amount_to_refund,
+                        'credit': 0.0,
+                        'partner_id': partner_id,
+                    }),
+
+                    (0, 0, {
+                        'account_id': advance_account.id,
+                        'name': f"Driver refund - {self.name}",
+                        'debit': 0.0,
+                        'credit': amount_to_refund,
+                        'partner_id': partner_id,
+                    }),
+                ],
+            })
+            move.action_post()
+            
+            move.write({'freight_trip_id': self.trip_id.id})
+            
+            new_amount = self.amount - amount_to_refund
+            self.write({
+                'amount': new_amount,
+                'state': 'paid'
+            })
+
+            return {
+                'type': 'ir.actions.act_window',
+                'name': _('Driver Refund Journal Entry'),
+                'res_model': 'account.move',
+                'res_id': move.id,
+                'view_mode': 'form',
+                'target': 'current',
+            }
+
+        raise UserError(_(
+            "Cannot process this advance. Current state: %s, Difference: %s"
+        ) % (self.state, self.difference_type))

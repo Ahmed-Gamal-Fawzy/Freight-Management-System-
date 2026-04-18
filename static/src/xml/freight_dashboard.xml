@@ -4,7 +4,7 @@
     <t t-name="freight_management_system.FreightDashboard">
         <div class="o_freight_dashboard">
 
-            <!-- ── Loading Spinner ──────────────────────────── -->
+            <!-- Loading Spinner -->
             <t t-if="state.loading">
                 <div class="o_freight_loading">
                     <i class="fa fa-spinner fa-spin fa-3x"/>
@@ -12,7 +12,7 @@
                 </div>
             </t>
 
-            <!-- ── Dashboard Content ───────────────────────── -->
+            <!-- Dashboard Content -->
             <t t-else="">
 
                 <!-- Header with Year Filter -->
@@ -27,18 +27,16 @@
                                 <p>Performance &amp; Profitability Dashboard</p>
                             </div>
                         </div>
-                        
-                        <!-- Year Filter -->
                         <div class="o_freight_year_filter">
                             <label for="yearSelect" class="o_year_filter_label">
                                 <i class="fa fa-calendar"/>
                                 Year:
                             </label>
-                            <select id="yearSelect" class="o_year_select" 
-                                    t-att-value="state.selectedYear"
+                            <select id="yearSelect" class="o_year_select"
                                     t-on-change="onChangeYear">
                                 <t t-foreach="state.availableYears" t-as="year" t-key="year">
-                                    <option t-att-value="year">
+                                    <option t-att-value="year"
+                                            t-att-selected="year === state.selectedYear ? 'selected' : false">
                                         <t t-esc="year"/>
                                     </option>
                                 </t>
@@ -47,171 +45,385 @@
                     </div>
                 </div>
 
-                <!-- ── Section: Trip Overview ───────────────── -->
+                <!-- Section: Trip Overview -->
                 <div class="o_freight_section">
-                    <h2 class="o_freight_section_title">
-                        Trip Overview
-                    </h2>
-
-                    <!-- KPI Cards Row -->
+                    <h2 class="o_freight_section_title">Trip Overview</h2>
                     <div class="o_freight_kpi_row">
-
-                        <!-- Total -->
                         <div class="o_freight_kpi_card o_kpi_total"
-                             t-on-click="_openTrips.bind(this, null)">
-                            <div class="o_kpi_icon">
-                                <i class="fa fa-th-large"/>
-                            </div>
+                             t-on-click="() => this._openTrips(null)">
+                            <div class="o_kpi_icon"><i class="fa fa-th-large"/></div>
                             <div class="o_kpi_body">
-                                <span class="o_kpi_value">
-                                    <t t-esc="state.tripCounts.total"/>
-                                </span>
+                                <span class="o_kpi_value"><t t-esc="state.tripCounts.total"/></span>
                                 <span class="o_kpi_label">Total Trips</span>
                             </div>
-                            <div class="o_kpi_arrow">
-                                <i class="fa fa-chevron-right"/>
-                            </div>
+                            <div class="o_kpi_arrow"><i class="fa fa-chevron-right"/></div>
                         </div>
-
-                        <!-- Draft -->
                         <div class="o_freight_kpi_card o_kpi_draft"
-                             t-on-click="_openTrips.bind(this, 'draft')">
-                            <div class="o_kpi_icon">
-                                <i class="fa fa-pencil"/>
-                            </div>
+                             t-on-click="() => this._openTrips('draft')">
+                            <div class="o_kpi_icon"><i class="fa fa-pencil"/></div>
                             <div class="o_kpi_body">
-                                <span class="o_kpi_value">
-                                    <t t-esc="state.tripCounts.draft"/>
-                                </span>
+                                <span class="o_kpi_value"><t t-esc="state.tripCounts.draft"/></span>
                                 <span class="o_kpi_label">Draft</span>
                             </div>
-                            <div class="o_kpi_arrow">
-                                <i class="fa fa-chevron-right"/>
-                            </div>
+                            <div class="o_kpi_arrow"><i class="fa fa-chevron-right"/></div>
                         </div>
-
-                        <!-- Confirmed -->
                         <div class="o_freight_kpi_card o_kpi_confirmed"
-                             t-on-click="_openTrips.bind(this, 'confirmed')">
-                            <div class="o_kpi_icon">
-                                <i class="fa fa-check-circle"/>
-                            </div>
+                             t-on-click="() => this._openTrips('confirmed')">
+                            <div class="o_kpi_icon"><i class="fa fa-check-circle"/></div>
                             <div class="o_kpi_body">
-                                <span class="o_kpi_value">
-                                    <t t-esc="state.tripCounts.confirmed"/>
-                                </span>
+                                <span class="o_kpi_value"><t t-esc="state.tripCounts.confirmed"/></span>
                                 <span class="o_kpi_label">Confirmed</span>
                             </div>
-                            <div class="o_kpi_arrow">
-                                <i class="fa fa-chevron-right"/>
-                            </div>
+                            <div class="o_kpi_arrow"><i class="fa fa-chevron-right"/></div>
                         </div>
-
-                        <!-- In Transit -->
                         <div class="o_freight_kpi_card o_kpi_transit"
-                             t-on-click="_openTrips.bind(this, 'in_transit')">
-                            <div class="o_kpi_icon">
-                                <i class="fa fa-truck"/>
-                            </div>
+                             t-on-click="() => this._openTrips('in_transit')">
+                            <div class="o_kpi_icon"><i class="fa fa-truck"/></div>
                             <div class="o_kpi_body">
-                                <span class="o_kpi_value">
-                                    <t t-esc="state.tripCounts.in_transit"/>
-                                </span>
+                                <span class="o_kpi_value"><t t-esc="state.tripCounts.in_transit"/></span>
                                 <span class="o_kpi_label">In Transit</span>
                             </div>
-                            <div class="o_kpi_arrow">
-                                <i class="fa fa-chevron-right"/>
-                            </div>
+                            <div class="o_kpi_arrow"><i class="fa fa-chevron-right"/></div>
                         </div>
-
-                        <!-- Delivered -->
                         <div class="o_freight_kpi_card o_kpi_delivered"
-                             t-on-click="_openTrips.bind(this, 'delivered')">
-                            <div class="o_kpi_icon">
-                                <i class="fa fa-flag-checkered"/>
-                            </div>
+                             t-on-click="() => this._openTrips('delivered')">
+                            <div class="o_kpi_icon"><i class="fa fa-flag-checkered"/></div>
                             <div class="o_kpi_body">
-                                <span class="o_kpi_value">
-                                    <t t-esc="state.tripCounts.delivered"/>
-                                </span>
+                                <span class="o_kpi_value"><t t-esc="state.tripCounts.delivered"/></span>
                                 <span class="o_kpi_label">Delivered</span>
                             </div>
-                            <div class="o_kpi_arrow">
-                                <i class="fa fa-chevron-right"/>
-                            </div>
+                            <div class="o_kpi_arrow"><i class="fa fa-chevron-right"/></div>
                         </div>
-
-                        <!-- Invoiced -->
                         <div class="o_freight_kpi_card o_kpi_invoiced"
-                             t-on-click="_openTrips.bind(this, 'invoiced')">
-                            <div class="o_kpi_icon">
-                                <i class="fa fa-file-text"/>
-                            </div>
+                             t-on-click="() => this._openTrips('invoiced')">
+                            <div class="o_kpi_icon"><i class="fa fa-file-text"/></div>
                             <div class="o_kpi_body">
-                                <span class="o_kpi_value">
-                                    <t t-esc="state.tripCounts.invoiced"/>
-                                </span>
+                                <span class="o_kpi_value"><t t-esc="state.tripCounts.invoiced"/></span>
                                 <span class="o_kpi_label">Invoiced</span>
                             </div>
-                            <div class="o_kpi_arrow">
-                                <i class="fa fa-chevron-right"/>
-                            </div>
+                            <div class="o_kpi_arrow"><i class="fa fa-chevron-right"/></div>
                         </div>
+                    </div>
 
-                    </div><!-- /o_freight_kpi_row -->
-
-                    <!-- Progress Bar: visual state distribution -->
+                    <!-- Progress Bar -->
                     <t t-if="state.tripCounts.total > 0">
                         <div class="o_freight_progress_wrap">
                             <div class="o_freight_progress_bar">
                                 <t t-set="total" t-value="state.tripCounts.total"/>
-
                                 <div class="o_prog_seg o_seg_draft"
                                      t-attf-style="width:#{(state.tripCounts.draft/total)*100}%"
                                      t-att-title="'Draft: ' + state.tripCounts.draft"/>
-
                                 <div class="o_prog_seg o_seg_confirmed"
                                      t-attf-style="width:#{(state.tripCounts.confirmed/total)*100}%"
                                      t-att-title="'Confirmed: ' + state.tripCounts.confirmed"/>
-
                                 <div class="o_prog_seg o_seg_transit"
                                      t-attf-style="width:#{(state.tripCounts.in_transit/total)*100}%"
                                      t-att-title="'In Transit: ' + state.tripCounts.in_transit"/>
-
                                 <div class="o_prog_seg o_seg_delivered"
                                      t-attf-style="width:#{(state.tripCounts.delivered/total)*100}%"
                                      t-att-title="'Delivered: ' + state.tripCounts.delivered"/>
-
                                 <div class="o_prog_seg o_seg_invoiced"
                                      t-attf-style="width:#{(state.tripCounts.invoiced/total)*100}%"
                                      t-att-title="'Invoiced: ' + state.tripCounts.invoiced"/>
                             </div>
-
-                            <!-- Legend -->
                             <div class="o_freight_legend">
-                                <span class="o_legend_item">
-                                    <span class="o_legend_dot o_seg_draft"/>Draft
-                                </span>
-                                <span class="o_legend_item">
-                                    <span class="o_legend_dot o_seg_confirmed"/>Confirmed
-                                </span>
-                                <span class="o_legend_item">
-                                    <span class="o_legend_dot o_seg_transit"/>In Transit
-                                </span>
-                                <span class="o_legend_item">
-                                    <span class="o_legend_dot o_seg_delivered"/>Delivered
-                                </span>
-                                <span class="o_legend_item">
-                                    <span class="o_legend_dot o_seg_invoiced"/>Invoiced
-                                </span>
+                                <span class="o_legend_item"><span class="o_legend_dot o_seg_draft"/>Draft</span>
+                                <span class="o_legend_item"><span class="o_legend_dot o_seg_confirmed"/>Confirmed</span>
+                                <span class="o_legend_item"><span class="o_legend_dot o_seg_transit"/>In Transit</span>
+                                <span class="o_legend_item"><span class="o_legend_dot o_seg_delivered"/>Delivered</span>
+                                <span class="o_legend_item"><span class="o_legend_dot o_seg_invoiced"/>Invoiced</span>
                             </div>
                         </div>
                     </t>
+                </div>
 
-                </div><!-- /o_freight_section -->
+                <!-- Section: Trip Filter -->
+                <div class="o_freight_section">
+                    <div class="o_freight_trip_filter">
+                        <span class="o_trip_filter_label">
+                            <i class="fa fa-search mr-2"/> Filter by Trip:
+                        </span>
+                        <select class="o_trip_select" t-on-change="onSelectTrip">
+                            <option value="">— All Trips —</option>
+                            <t t-foreach="state.tripProfitability" t-as="trip" t-key="trip.id">
+                                <option t-att-value="trip.id"
+                                        t-att-selected="trip.id === state.selectedTripId ? 'selected' : false">
+                                    <t t-esc="trip.name"/> — <t t-esc="trip.customer"/>
+                                </option>
+                            </t>
+                        </select>
+                        <button t-if="state.selectedTripId"
+                                class="o_trip_clear_btn"
+                                t-on-click="onClearTrip">
+                            <i class="fa fa-times"/> Clear
+                        </button>
+                    </div>
+                </div>
 
-            </t><!-- /t-else loading -->
-        </div><!-- /o_freight_dashboard -->
+                <!-- Single Trip Detail Card -->
+                <t t-if="state.selectedTrip">
+                    <div class="o_freight_section">
+                        <div class="o_trip_detail_card">
+                            <div class="o_trip_detail_header">
+                                <div>
+                                    <div class="o_trip_detail_title">
+                                        <i class="fa fa-truck mr-2"/>
+                                        <t t-esc="state.selectedTrip.name"/>
+                                    </div>
+                                    <div class="o_trip_detail_meta">
+                                        Customer: <t t-esc="state.selectedTrip.customer"/>
+                                        &#160;|&#160;
+                                        Driver: <t t-esc="state.selectedTrip.driver || 'N/A'"/>
+                                        &#160;|&#160;
+                                        Status:
+                                        <span class="o_status_badge"
+                                              t-attf-class="o_status_{{ state.selectedTrip.state }}">
+                                            <t t-esc="getStateDisplayName(state.selectedTrip.state)"/>
+                                        </span>
+                                    </div>
+                                </div>
+                                <button class="o_trip_clear_btn"
+                                        t-on-click="() => this._openTrip(state.selectedTrip.id)">
+                                    <i class="fa fa-external-link"/> Open Trip
+                                </button>
+                            </div>
+
+                            <!-- KPIs -->
+                            <div class="o_trip_detail_kpis">
+                                <div class="o_trip_detail_kpi">
+                                    <span class="o_trip_detail_kpi_value text-success">
+                                        <t t-esc="formatCurrency(state.selectedTrip.revenue)"/>
+                                    </span>
+                                    <span class="o_trip_detail_kpi_label">Revenue</span>
+                                </div>
+                                <div class="o_trip_detail_kpi">
+                                    <span class="o_trip_detail_kpi_value text-danger">
+                                        <t t-esc="formatCurrency(state.selectedTrip.expenses)"/>
+                                    </span>
+                                    <span class="o_trip_detail_kpi_label">Expenses</span>
+                                </div>
+                                <div class="o_trip_detail_kpi">
+                                    <span class="o_trip_detail_kpi_value"
+                                          t-attf-class="{{ state.selectedTrip.profit >= 0 ? 'text-success' : 'text-danger' }}">
+                                        <t t-esc="formatCurrency(state.selectedTrip.profit)"/>
+                                    </span>
+                                    <span class="o_trip_detail_kpi_label">Net Profit</span>
+                                </div>
+                                <div class="o_trip_detail_kpi">
+                                    <span class="o_trip_detail_kpi_value text-info">
+                                        <t t-esc="state.selectedTrip.profit_margin"/>%
+                                    </span>
+                                    <span class="o_trip_detail_kpi_label">Profit Margin</span>
+                                </div>
+                            </div>
+
+                            <!-- Breakdown -->
+                            <div class="o_trip_detail_breakdown">
+                                <div class="o_trip_breakdown_row">
+                                    <span class="o_trip_breakdown_label">Freight Revenue</span>
+                                    <span class="text-success">
+                                        <t t-esc="formatCurrency(state.selectedTrip.revenue)"/>
+                                    </span>
+                                </div>
+                                <div class="o_trip_breakdown_row">
+                                    <span class="o_trip_breakdown_label">Total Expenses</span>
+                                    <span class="text-danger">
+                                        (<t t-esc="formatCurrency(state.selectedTrip.expenses)"/>)
+                                    </span>
+                                </div>
+                                <div class="o_trip_breakdown_row">
+                                    <span class="o_trip_breakdown_label">Net Profit</span>
+                                    <span t-attf-class="{{ state.selectedTrip.profit >= 0 ? 'text-success' : 'text-danger' }}">
+                                        <t t-esc="formatCurrency(state.selectedTrip.profit)"/>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <!-- Visual profit bar -->
+                            <div class="o_trip_profit_bar">
+                                <div class="o_trip_profit_bar_fill"
+                                     t-attf-style="width: {{ getTripProfitPct(state.selectedTrip) }}%; background: {{ state.selectedTrip.profit >= 0 ? '#27ae60' : '#e74c3c' }};">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+
+                <!-- Section: Profitability KPIs -->
+                <div class="o_freight_section">
+                    <h2 class="o_freight_section_title">
+                        <i class="fa fa-line-chart mr-2"/> Profitability Analysis
+                    </h2>
+                    <div class="o_freight_profit_kpi_row">
+                        <div class="o_freight_profit_card o_profit_revenue">
+                            <div class="o_profit_icon"><i class="fa fa-money"/></div>
+                            <div class="o_profit_body">
+                                <span class="o_profit_value text-success">
+                                    <t t-esc="formatCurrency(state.totalRevenue)"/>
+                                </span>
+                                <span class="o_profit_label">Total Revenue</span>
+                            </div>
+                        </div>
+                        <div class="o_freight_profit_card o_profit_expenses">
+                            <div class="o_profit_icon"><i class="fa fa-credit-card"/></div>
+                            <div class="o_profit_body">
+                                <span class="o_profit_value text-danger">
+                                    <t t-esc="formatCurrency(state.totalExpenses)"/>
+                                </span>
+                                <span class="o_profit_label">Total Expenses</span>
+                            </div>
+                        </div>
+                        <div class="o_freight_profit_card o_profit_profit">
+                            <div class="o_profit_icon"><i class="fa fa-trophy"/></div>
+                            <div class="o_profit_body">
+                                <span class="o_profit_value"
+                                      t-attf-class="{{ state.totalProfit >= 0 ? 'text-success' : 'text-danger' }}">
+                                    <t t-esc="formatCurrency(state.totalProfit)"/>
+                                </span>
+                                <span class="o_profit_label">Total Profit</span>
+                            </div>
+                        </div>
+                        <div class="o_freight_profit_card o_profit_margin">
+                            <div class="o_profit_icon"><i class="fa fa-percent"/></div>
+                            <div class="o_profit_body">
+                                <span class="o_profit_value text-info">
+                                    <t t-esc="state.profitMargin"/>%
+                                </span>
+                                <span class="o_profit_label">Profit Margin</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="o_freight_stats_row">
+                        <div class="o_stat_card">
+                            <span class="o_stat_value">
+                                <t t-esc="formatCurrency(state.averageProfitPerTrip)"/>
+                            </span>
+                            <span class="o_stat_label">Average Profit Per Trip</span>
+                        </div>
+                        <div class="o_stat_card">
+                            <span class="o_stat_value text-success">
+                                <t t-esc="state.profitableTripsCount"/>
+                            </span>
+                            <span class="o_stat_label">Profitable Trips</span>
+                        </div>
+                        <div class="o_stat_card">
+                            <span class="o_stat_value text-danger">
+                                <t t-esc="state.lossTripsCount"/>
+                            </span>
+                            <span class="o_stat_label">Loss Trips</span>
+                        </div>
+                        <div class="o_stat_card">
+                            <span class="o_stat_value">
+                                <t t-esc="state.tripCounts.total"/>
+                            </span>
+                            <span class="o_stat_label">Total Processed</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section: Profit by State -->
+                <div class="o_freight_section">
+                    <h2 class="o_freight_section_title">
+                        <i class="fa fa-bar-chart mr-2"/> Profit by Trip State
+                    </h2>
+                    <div class="o_freight_chart_card">
+                        <t t-set="maxProfit" t-value="getMaxProfit()"/>
+                        <div class="o_chart_bars">
+                            <div t-foreach="['draft', 'confirmed', 'in_transit', 'delivered', 'invoiced']"
+                                 t-as="stateKey" t-key="stateKey" class="o_chart_bar_item">
+                                <div class="o_chart_label">
+                                    <span><t t-esc="getStateDisplayName(stateKey)"/></span>
+                                </div>
+                                <div class="o_chart_bar_wrapper">
+                                    <div class="o_chart_bar_bg"></div>
+                                    <div t-if="(state.profitByState[stateKey] || 0) >= 0"
+                                         class="o_chart_bar_fill positive"
+                                         t-attf-style="width: {{ getBarWidth(state.profitByState[stateKey] || 0, maxProfit) }}%">
+                                    </div>
+                                    <div t-else=""
+                                         class="o_chart_bar_fill negative"
+                                         t-attf-style="width: {{ getBarWidth(state.profitByState[stateKey] || 0, maxProfit) }}%">
+                                    </div>
+                                </div>
+                                <div class="o_chart_value"
+                                     t-attf-class="{{ (state.profitByState[stateKey] || 0) >= 0 ? 'text-success' : 'text-danger' }}">
+                                    <t t-esc="formatCurrency(state.profitByState[stateKey] || 0)"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section: Trip Profitability Table -->
+                <div class="o_freight_section">
+                    <h2 class="o_freight_section_title">
+                        <i class="fa fa-table mr-2"/> Trip Profitability Details
+                    </h2>
+                    <div class="o_freight_table_card">
+                        <div class="o_table_wrapper">
+                            <table class="o_freight_table">
+                                <thead>
+                                    <tr>
+                                        <th>Trip Name</th>
+                                        <th>Customer</th>
+                                        <th>Driver</th>
+                                        <th>Status</th>
+                                        <th>Revenue</th>
+                                        <th>Expenses</th>
+                                        <th>Profit</th>
+                                        <th>Margin</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr t-foreach="state.tripProfitability.slice(0, 10)"
+                                        t-as="trip" t-key="trip.id">
+                                        <td class="o_trip_name"
+                                            t-on-click="() => this._openTrip(trip.id)">
+                                            <t t-esc="trip.name"/>
+                                        </td>
+                                        <td><t t-esc="trip.customer"/></td>
+                                        <td><t t-esc="trip.driver"/></td>
+                                        <td>
+                                            <span class="o_status_badge"
+                                                  t-attf-class="o_status_{{ trip.state.replace('-', '_') }}">
+                                                <t t-esc="getStateDisplayName(trip.state)"/>
+                                            </span>
+                                        </td>
+                                        <td class="text-success">
+                                            <t t-esc="formatCurrency(trip.revenue)"/>
+                                        </td>
+                                        <td class="text-danger">
+                                            <t t-esc="formatCurrency(trip.expenses)"/>
+                                        </td>
+                                        <td t-attf-class="{{ trip.profit >= 0 ? 'text-success' : 'text-danger' }}">
+                                            <t t-esc="formatCurrency(trip.profit)"/>
+                                        </td>
+                                        <td t-attf-class="{{ trip.profit_margin >= 0 ? 'text-success' : 'text-danger' }}">
+                                            <t t-esc="trip.profit_margin"/>%
+                                        </td>
+                                    </tr>
+                                    <tr t-if="state.tripProfitability.length === 0">
+                                        <td colspan="8" class="o_empty_state">
+                                            <i class="fa fa-inbox"/>
+                                            <p>No trips found for the selected year</p>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="o_table_footer"
+                             t-if="state.tripProfitability.length > 10">
+                            <span>Showing 10 of <t t-esc="state.tripProfitability.length"/> trips</span>
+                            <button class="o_view_all_btn" t-on-click="_openProfitabilityDetails">
+                                View All Trips <i class="fa fa-arrow-right"/>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </t>
+        </div>
     </t>
 
 </templates>
