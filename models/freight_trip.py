@@ -461,7 +461,10 @@ class FreightTrip(models.Model):
         invoice.write({'freight_trip_id': self.id})
         
         # update the sale_order_id in the trip to be the last one
-        self.sale_order_id = new_sale_order.id
+        self.write({
+            'sale_order_id': new_sale_order.id,
+            'state': 'invoiced'
+        })
 
         return {
             'type': 'ir.actions.act_window',
