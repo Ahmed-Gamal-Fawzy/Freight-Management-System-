@@ -30,6 +30,9 @@ class EagleIoTGPSController(http.Controller):
         """
         try:
             payload = request.get_json_data()
+            # Odoo JSON-RPC wraps data in 'params'
+            if 'params' in payload:
+                payload = payload['params']
             _logger.info("Eagle-IoT GPS received: %s", payload)
 
             # ── 1. get data ─────────────────────────────
