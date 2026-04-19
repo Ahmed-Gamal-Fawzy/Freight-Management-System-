@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import json
 import logging
 from odoo import http, fields
 from odoo.http import request
@@ -21,11 +20,10 @@ class EagleIoTGPSController(http.Controller):
     def eagle_iot_gps_update(self, **kwargs):
         """
         Eagle-IoT sends POST GPS data.
-        
+
         Expected payload:
         {
-            "api_key":    "your-secret-key",
-            "vehicle_id": "ABC-123",        
+            "vehicle_id": "ABC-123",
             "latitude":   24.231,
             "longitude":  44.123
         }
@@ -34,16 +32,7 @@ class EagleIoTGPSController(http.Controller):
             payload = request.get_json_data()
             _logger.info("Eagle-IoT GPS received: %s", payload)
 
-            # ── 1. API Key ────────────────────────
-            api_key      = payload.get('api_key', '')
-            expected_key = request.env['ir.config_parameter'].sudo().get_param(
-                'freight_management_system.eagle_iot_api_key', ''
-            )
-            if expected_key and api_key != expected_key:
-                _logger.warning("Eagle-IoT: Invalid API key.")
-                return {'status': 'error', 'message': 'Invalid API key'}
-
-            # ── 2. get data ─────────────────────────────
+            # ── 1. get data ─────────────────────────────
             vehicle_id = payload.get('vehicle_id') or payload.get('license_plate')
             latitude   = payload.get('latitude')
             longitude  = payload.get('longitude')
@@ -54,24 +43,23 @@ class EagleIoTGPSController(http.Controller):
                     'message': 'Missing fields: vehicle_id, latitude, longitude'
                 }
 
-            # ── 3. search active trip ──────────────────────
+            # ── 2. search trip ──────────────────────
             trip = request.env['freight.trip'].sudo().search([
                 ('vehicle_id.license_plate', '=', vehicle_id),
-                ('state', 'in', ['confirmed', 'in_transit']),
             ], limit=1, order='id desc')
 
             if not trip:
-                _logger.info("Eagle-IoT: No active trip for vehicle '%s'", vehicle_id)
-                return {'status': 'ok', 'message': 'No active trip found'}
+                _logger.info("Eagle-IoT: No trip found for vehicle '%s'", vehicle_id)
+                return {'status': 'ok', 'message': 'No trip found'}
 
-            # ── 4. update trip gps ────────────────────────
+            # ── 3. update trip gps ────────────────────────
             trip.write({
-                'gps_latitude':   float(latitude),
-                'gps_longitude':  float(longitude),
+                'gps_latitude':    float(latitude),
+                'gps_longitude':   float(longitude),
                 'gps_last_update': fields.Datetime.now(),
             })
 
-            # ── 5. save gps log ──────────────────────
+            # ── 4. save gps log ──────────────────────
             request.env['freight.trip.gps.log'].sudo().create({
                 'trip_id':   trip.id,
                 'latitude':  float(latitude),
@@ -93,7 +81,7 @@ class EagleIoTGPSController(http.Controller):
             _logger.exception("Eagle-IoT GPS webhook error: %s", e)
             return {'status': 'error', 'message': str(e)}
 
-    # ── Health Check: Eagle-IoT endpoint ──────
+    # ── Health Check ──────
     @http.route(
         '/api/eagle-iot/gps/ping',
         type='json',
