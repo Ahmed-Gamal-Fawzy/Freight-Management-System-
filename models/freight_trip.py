@@ -2,6 +2,8 @@
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError
 import base64
+import requests
+import urllib.parse
 
 class FreightTrip(models.Model):
     _name = 'freight.trip'
@@ -117,6 +119,9 @@ class FreightTrip(models.Model):
         compute='_compute_gps_map',
         sanitize=False
     )
+
+    gps_last_speed  = fields.Float(string='Last Speed (km/h)', default=0.0)
+    gps_last_update = fields.Datetime(string='GPS Last Updated', readonly=True)
 
     # ── Smart Buttons ────────────────────────────────────────────
     advance_count = fields.Integer(
@@ -256,6 +261,38 @@ class FreightTrip(models.Model):
         else:
             self.supervisor_signature_date = False
 
+    @api.onchange('starting_point_id')
+    def _onchange_starting_point_id_gps(self):
+        """ Update initial GPS coordinates based on the starting point.
+            It will only update if no live data has been sent yet.
+        """
+        if self.starting_point_id and not self.gps_last_update:
+            # Check if the state model already has latitude/longitude fields
+            if 'latitude' in self.starting_point_id._fields and 'longitude' in self.starting_point_id._fields:
+                if self.starting_point_id.latitude and self.starting_point_id.longitude:
+                    self.gps_latitude = self.starting_point_id.latitude
+                    self.gps_longitude = self.starting_point_id.longitude
+                    return
+
+            # If no coordinates on the state, fetch them dynamically using OpenStreetMap API
+            state_name = self.starting_point_id.name
+            country_name = self.starting_point_id.country_id.name or ""
+            query = f"{state_name}, {country_name}"
+            try:
+                url = "https://nominatim.openstreetmap.org/search?q=" + urllib.parse.quote(query) + "&format=json&limit=1"
+                response = requests.get(url, headers={'User-Agent': 'Odoo/FreightSystem'}, timeout=5)
+                if response.status_code == 200:
+                    data = response.json()
+                    if data:
+                        self.gps_latitude = float(data[0]['lat'])
+                        self.gps_longitude = float(data[0]['lon'])
+                    else:
+                        self.gps_latitude = 24.7136  # Riyadh Default
+                        self.gps_longitude = 46.6753
+            except Exception:
+                self.gps_latitude = 24.7136
+                self.gps_longitude = 46.6753
+
     # ── Computes ─────────────────────────────────────────────────
     def _compute_advance_count(self):
         for rec in self:
@@ -269,21 +306,6 @@ class FreightTrip(models.Model):
                 [('trip_id', '=', rec.id)]
             )
 
-    @api.depends('gps_latitude', 'gps_longitude')
-    def _compute_gps_map(self):
-        for rec in self:
-            if rec.gps_latitude and rec.gps_longitude:
-                rec.gps_map_html = f"""
-                    <iframe
-                        src="https://maps.google.com/maps?q={rec.gps_latitude},{rec.gps_longitude}&z=15&output=embed"
-                        width="100%"
-                        height="400"
-                        style="border:0; border-radius:8px;"
-                        allowfullscreen>
-                    </iframe>
-                """
-            else:
-                rec.gps_map_html = "<p style='color:gray;'>Enter Latitude and Longitude to show map.</p>"
 
     @api.depends('freight_charge', 'additional_services_amount')
     def _compute_total_invoice(self):
@@ -303,6 +325,26 @@ class FreightTrip(models.Model):
             else:
                 last = rec.invoice_ids.sorted('id', reverse=True)[0]
                 rec.invoice_state = last.state if last.state in ['draft', 'posted', 'cancel'] else 'not_created'
+
+    @api.depends('gps_latitude', 'gps_longitude', 'gps_last_update', 'destination_id')
+    def _compute_gps_map(self):
+        for rec in self:
+            if not rec.gps_latitude or not rec.gps_longitude:
+                rec.gps_map_html = "<div class='freight-gps-no-signal'>No GPS Signal Yet</div>"
+            else:
+                dest_name = f"{rec.destination_id.name}, {rec.destination_id.country_id.name or ''}" if rec.destination_id else ""
+                
+                rec.gps_map_html = f"""
+                    <div class="freight-live-map"
+                        data-trip-id="{rec.id}"
+                        data-lat="{rec.gps_latitude}"
+                        data-lng="{rec.gps_longitude}"
+                        data-dest-name="{dest_name}"
+                        data-speed="{rec.gps_last_speed or 0}"
+                        data-name="{rec.name}">
+                    </div>
+                """
+
 
     # ── Smart Button Actions ──────────────────────────────────────
     def action_view_advances(self):
@@ -491,4 +533,64 @@ class FreightTrip(models.Model):
             'context': {
                 'default_trip_id': self.id,
             }
+        }
+
+    # ── GPS Live Data & Route ──────────────────────────────────────
+    def get_trip_route_info(self):
+        self.ensure_one()
+        
+        # Helper to get coords
+        def get_coords(state):
+            if not state:
+                return None
+            if 'latitude' in state._fields and 'longitude' in state._fields:
+                if state.latitude and state.longitude:
+                    return {'lat': state.latitude, 'lng': state.longitude}
+            
+            # Geocode via OSM
+            query = f"{state.name}, {state.country_id.name or ''}"
+            try:
+                url = "https://nominatim.openstreetmap.org/search?q=" + urllib.parse.quote(query) + "&format=json&limit=1"
+                resp = requests.get(url, headers={'User-Agent': 'Odoo'}, timeout=5)
+                if resp.status_code == 200 and resp.json():
+                    return {'lat': float(resp.json()[0]['lat']), 'lng': float(resp.json()[0]['lon'])}
+            except Exception:
+                pass
+            return None
+
+        start_pt = get_coords(self.starting_point_id)
+        if not start_pt:
+            start_pt = {'lat': self.gps_latitude or 24.7136, 'lng': self.gps_longitude or 46.6753}
+            
+        dest_pt = get_coords(self.destination_id)
+        
+        return {
+            'start': start_pt,
+            'dest': dest_pt
+        }
+
+    def get_live_gps_data(self):
+        self.ensure_one()
+
+        # last 100 points in the trip path
+        gps_logs = self.env['freight.trip.gps.log'].search([
+            ('trip_id', '=', self.id),
+        ], order='id asc', limit=100)
+
+        path_points = [
+            {'lat': log.latitude, 'lng': log.longitude}
+            for log in gps_logs
+        ]
+
+        return {
+            'trip_id':    self.id,
+            'trip_name':  self.name,
+            'trip_state': self.state,
+            'current': {
+                'latitude':    self.gps_latitude,
+                'longitude':   self.gps_longitude,
+                'speed':       self.gps_last_speed,
+                'last_update': str(self.gps_last_update) if self.gps_last_update else None,
+            },
+            'path': path_points,
         }
