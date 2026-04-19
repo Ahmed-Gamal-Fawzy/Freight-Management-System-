@@ -27,20 +27,45 @@
                                 <p>Performance &amp; Profitability Dashboard</p>
                             </div>
                         </div>
-                        <div class="o_freight_year_filter">
-                            <label for="yearSelect" class="o_year_filter_label">
-                                <i class="fa fa-calendar"/>
-                                Year:
-                            </label>
-                            <select id="yearSelect" class="o_year_select"
-                                    t-on-change="onChangeYear">
-                                <t t-foreach="state.availableYears" t-as="year" t-key="year">
-                                    <option t-att-value="year"
-                                            t-att-selected="year === state.selectedYear ? 'selected' : false">
-                                        <t t-esc="year"/>
-                                    </option>
-                                </t>
-                            </select>
+                        <div class="o_freight_year_filter" style="gap: 16px;">
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <label for="monthSelect" class="o_year_filter_label">
+                                    <i class="fa fa-calendar-o"/>
+                                    Month:
+                                </label>
+                                <select id="monthSelect" class="o_year_select"
+                                        t-on-change="onChangeMonth">
+                                    <option value="">All</option>
+                                    <option value="1" t-att-selected="state.selectedMonth == 1 ? 'selected' : false">Jan</option>
+                                    <option value="2" t-att-selected="state.selectedMonth == 2 ? 'selected' : false">Feb</option>
+                                    <option value="3" t-att-selected="state.selectedMonth == 3 ? 'selected' : false">Mar</option>
+                                    <option value="4" t-att-selected="state.selectedMonth == 4 ? 'selected' : false">Apr</option>
+                                    <option value="5" t-att-selected="state.selectedMonth == 5 ? 'selected' : false">May</option>
+                                    <option value="6" t-att-selected="state.selectedMonth == 6 ? 'selected' : false">Jun</option>
+                                    <option value="7" t-att-selected="state.selectedMonth == 7 ? 'selected' : false">Jul</option>
+                                    <option value="8" t-att-selected="state.selectedMonth == 8 ? 'selected' : false">Aug</option>
+                                    <option value="9" t-att-selected="state.selectedMonth == 9 ? 'selected' : false">Sep</option>
+                                    <option value="10" t-att-selected="state.selectedMonth == 10 ? 'selected' : false">Oct</option>
+                                    <option value="11" t-att-selected="state.selectedMonth == 11 ? 'selected' : false">Nov</option>
+                                    <option value="12" t-att-selected="state.selectedMonth == 12 ? 'selected' : false">Dec</option>
+                                </select>
+                            </div>
+
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <label for="yearSelect" class="o_year_filter_label">
+                                    <i class="fa fa-calendar"/>
+                                    Year:
+                                </label>
+                                <select id="yearSelect" class="o_year_select"
+                                        t-on-change="onChangeYear">
+                                    <t t-foreach="state.availableYears" t-as="year" t-key="year">
+                                        <option t-att-value="year"
+                                                t-att-selected="year === state.selectedYear ? 'selected' : false">
+                                            <t t-esc="year"/>
+                                        </option>
+                                    </t>
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -376,7 +401,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr t-foreach="state.tripProfitability.slice(0, 10)"
+                                    <tr t-foreach="paginatedTrips"
                                         t-as="trip" t-key="trip.id">
                                         <td class="o_trip_name"
                                             t-on-click="() => this._openTrip(trip.id)">
@@ -412,11 +437,62 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div class="o_table_footer"
-                             t-if="state.tripProfitability.length > 10">
-                            <span>Showing 10 of <t t-esc="state.tripProfitability.length"/> trips</span>
+
+                        <!-- Pagination Footer -->
+                        <div class="o_pagination_footer" t-if="state.tripProfitability.length > 0">
+                            <!-- Info -->
+                            <span class="o_pagination_info">
+                                <t t-set="_start" t-value="(state.currentPage - 1) * state.pageSize + 1"/>
+                                <t t-set="_end"   t-value="Math.min(state.currentPage * state.pageSize, state.tripProfitability.length)"/>
+                                Showing <strong><t t-esc="_start"/>–<t t-esc="_end"/></strong>
+                                of <strong><t t-esc="state.tripProfitability.length"/></strong> trips
+                            </span>
+
+                            <!-- Controls -->
+                            <div class="o_pagination_controls">
+                                <!-- First -->
+                                <button class="o_page_btn"
+                                        t-att-disabled="state.currentPage === 1 ? 'disabled' : false"
+                                        t-on-click="() => this.changePage(1)"
+                                        title="First page">
+                                    <i class="fa fa-angle-double-left"/>
+                                </button>
+                                <!-- Prev -->
+                                <button class="o_page_btn"
+                                        t-att-disabled="state.currentPage === 1 ? 'disabled' : false"
+                                        t-on-click="() => this.changePage(state.currentPage - 1)"
+                                        title="Previous page">
+                                    <i class="fa fa-angle-left"/>
+                                </button>
+
+                                <!-- Page numbers -->
+                                <t t-foreach="Array.from({length: totalPages}, (_, i) => i + 1)"
+                                   t-as="pg" t-key="pg">
+                                    <button t-attf-class="o_page_btn {{ pg === state.currentPage ? 'o_page_active' : '' }}"
+                                            t-on-click="() => this.changePage(pg)">
+                                        <t t-esc="pg"/>
+                                    </button>
+                                </t>
+
+                                <!-- Next -->
+                                <button class="o_page_btn"
+                                        t-att-disabled="state.currentPage === totalPages ? 'disabled' : false"
+                                        t-on-click="() => this.changePage(state.currentPage + 1)"
+                                        title="Next page">
+                                    <i class="fa fa-angle-right"/>
+                                </button>
+                                <!-- Last -->
+                                <button class="o_page_btn"
+                                        t-att-disabled="state.currentPage === totalPages ? 'disabled' : false"
+                                        t-on-click="() => this.changePage(totalPages)"
+                                        title="Last page">
+                                    <i class="fa fa-angle-double-right"/>
+                                </button>
+                            </div>
+
+                            <!-- View All shortcut -->
                             <button class="o_view_all_btn" t-on-click="_openProfitabilityDetails">
-                                View All Trips <i class="fa fa-arrow-right"/>
+                                View All <i class="fa fa-arrow-right"/>
                             </button>
                         </div>
                     </div>

@@ -36,11 +36,27 @@
                             string="Disburse Advance"
                             type="object"
                             class="oe_highlight"
-                            invisible="state != 'draft' and not (state == 'in_settlement' and (difference_type == 'in_favor_driver' or difference_type == 'in_favor_company'))"/>
+                            invisible="state != 'draft'"/>
+                    <!-- CASE 2: In Settlement + Company owes Driver -->
+                    <button name="action_pay_driver_balance"
+                            string="Pay Driver Balance"
+                            type="object"
+                            class="oe_highlight"
+                            invisible="not (state == 'in_settlement' and difference_type == 'in_favor_driver')"/>
+
+                    <!-- CASE 3: In Settlement + Driver owes Company -->
+                    <button name="action_collect_driver_refund"
+                            string="Collect Driver Refund"
+                            type="object"
+                            class="oe_highlight"
+                            invisible="not (state == 'in_settlement' and difference_type == 'in_favor_company')"/>
+
+
                     <button name="action_reject"
                             string="Reject"
                             type="object"
                             invisible="state in ('paid','rejected','draft')"/>
+
                     <button name="action_draft"
                             string="Reset to Draft"
                             type="object"

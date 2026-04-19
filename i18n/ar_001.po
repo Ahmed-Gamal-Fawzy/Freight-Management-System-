@@ -638,31 +638,31 @@ msgstr "السائق"
 #: model:ir.ui.menu,name:freight_management_system.menu_driver_advance
 #: model_terms:ir.ui.view,arch_db:freight_management_system.view_driver_advance_form
 msgid "Driver Advance"
-msgstr "سلفة السائق"
+msgstr "ترب الرحلة"
 
 #. module: freight_management_system
 #: model:ir.model.fields,field_description:freight_management_system.field_res_config_settings__driver_advance_account_id
 #: model_terms:ir.ui.view,arch_db:freight_management_system.res_config_settings_view_freight
 msgid "Driver Advance Account"
-msgstr "حساب سلفة السائق"
+msgstr "حساب ترب الرحلة"
 
 #. module: freight_management_system
 #. odoo-python
 #: code:addons/freight_management_system/models/driver_advance.py:0
 msgid "Driver Advance Account not configured in Settings!"
-msgstr "حساب سلفة السائق غير مُعد في الإعدادات!"
+msgstr "حساب ترب الرحلة غير مُعد في الإعدادات!"
 
 #. module: freight_management_system
 #: model:ir.model.fields,field_description:freight_management_system.field_res_config_settings__driver_advance_journal_id
 #: model_terms:ir.ui.view,arch_db:freight_management_system.res_config_settings_view_freight
 msgid "Driver Advance Journal"
-msgstr "دفتر يومية سلفة السائق"
+msgstr "دفتر يومية ترب الرحلة"
 
 #. module: freight_management_system
 #: model:ir.actions.act_window,name:freight_management_system.action_driver_advance
 #: model_terms:ir.ui.view,arch_db:freight_management_system.view_driver_advance_tree
 msgid "Driver Advances"
-msgstr "سلف السائقين"
+msgstr "ترب الرحلات"
 
 #. module: freight_management_system
 #. odoo-python

@@ -18,12 +18,28 @@ class FreightDashboardController(http.Controller):
         if year:
             try:
                 year_int = int(year)
+                start_date = f'{year_int}-01-01 00:00:00'
+                end_date = f'{year_int}-12-31 23:59:59'
+
+                if kwargs.get('month'):
+                    try:
+                        month_int = int(kwargs.get('month'))
+                        if 1 <= month_int <= 12:
+                            import calendar
+                            _, last_day = calendar.monthrange(year_int, month_int)
+                            month_str = str(month_int).zfill(2)
+                            start_date = f'{year_int}-{month_str}-01 00:00:00'
+                            end_date = f'{year_int}-{month_str}-{last_day} 23:59:59'
+                    except (ValueError, TypeError):
+                        pass
+
                 domain += [
-                    ('create_date', '>=', f'{year_int}-01-01 00:00:00'),
-                    ('create_date', '<=', f'{year_int}-12-31 23:59:59')
+                    ('create_date', '>=', start_date),
+                    ('create_date', '<=', end_date)
                 ]
             except (ValueError, TypeError):
                 pass
+
 
         # ── Trip Counts ──────────────────────────────────────────
         states = ['draft', 'confirmed', 'in_transit', 'delivered', 'invoiced']

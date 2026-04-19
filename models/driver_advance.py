@@ -142,16 +142,11 @@ class DriverAdvance(models.Model):
     def action_draft(self):
         self.write({'state': 'draft'})
 
-    # ── Disburse Advance ─────────────────────────────────────────
-    def action_disburse_advance(self):
-        self.ensure_one()
-
-        if self.state == 'rejected':
-            raise UserError(_("Cannot disburse a rejected advance!"))
-
+    # ── Helper: shared setup ──────────────────────────────────────────────────────
+    def _get_advance_account_and_partner(self):
+        """Returns (advance_account, partner_id) or raises UserError."""
         if not self.payment_account_id:
             raise UserError(_("Please select Company Payment Account!"))
-
         if not self.journal_id:
             raise UserError(_("Please select Payment Journal!"))
 
@@ -159,11 +154,9 @@ class DriverAdvance(models.Model):
         advance_account_id = int(ICP.get_param(
             'freight_management_system.driver_advance_account_id', 0))
         advance_account = self.env['account.account'].browse(advance_account_id)
-
-        if not advance_account:
+        if not advance_account.exists():
             raise UserError(_("Driver Advance Account not configured in Settings!"))
 
-        # Safe way to get partner
         partner_id = False
         driver = self.driver_id
         if hasattr(driver, 'address_home_id') and driver.address_home_id:
@@ -173,140 +166,149 @@ class DriverAdvance(models.Model):
         elif driver.work_contact_id:
             partner_id = driver.work_contact_id.id
 
-        # ──────────────────────────────────────────────────────────
-        # CASE 1: Draft 
-        # ──────────────────────────────────────────────────────────
-        if self.state == 'draft':
-            move = self.env['account.move'].create({
-                'journal_id': self.journal_id.id,
-                'date': self.date,
-                'ref': f"{self.name} - {self.trip_id.name or 'Trip'}",
-                'line_ids': [
-                    (0, 0, {
-                        'account_id': advance_account.id,
-                        'name': f"Advance to {self.driver_id.name}",
-                        'debit': self.amount,
-                        'credit': 0.0,
-                        'partner_id': partner_id,
-                    }),
-                    (0, 0, {
-                        'account_id': self.payment_account_id.id,
-                        'name': f"Advance Payment - {self.name}",
-                        'debit': 0.0,
-                        'credit': self.amount,
-                        'partner_id': partner_id,
-                    }),
-                ],
-            })
-            move.action_post()
+        return advance_account, partner_id
 
-            move.write({'freight_trip_id': self.trip_id.id})
+    # ── CASE 1: Draft → Disburse Advance ─────────────────────────────────────────
+    def action_disburse_advance(self):
+        """Called from Draft state: creates the initial advance journal entry."""
+        self.ensure_one()
+        if self.state != 'draft':
+            raise UserError(_("This action is only allowed in Draft state!"))
 
-            return {
-                'type': 'ir.actions.act_window',
-                'name': _('Advance Journal Entry'),
-                'res_model': 'account.move',
-                'res_id': move.id,
-                'view_mode': 'form',
-                'target': 'current',
-            }
+        advance_account, partner_id = self._get_advance_account_and_partner()
 
-        # ──────────────────────────────────────────────────────────
-        # CASE 2: In Settlement + Company owes Driver
-        # ──────────────────────────────────────────────────────────
-        if self.state == 'in_settlement' and self.difference_type == 'in_favor_driver':
-            amount_to_pay = self.expense_difference
+        move = self.env['account.move'].create({
+            'journal_id': self.journal_id.id,
+            'date': self.date,
+            'ref': f"{self.name} - {self.trip_id.name or 'Trip'}",
+            'line_ids': [
+                (0, 0, {
+                    'account_id': advance_account.id,
+                    'name': f"Advance to {self.driver_id.name}",
+                    'debit': self.amount,
+                    'credit': 0.0,
+                    'partner_id': partner_id,
+                }),
+                (0, 0, {
+                    'account_id': self.payment_account_id.id,
+                    'name': f"Advance Payment - {self.name}",
+                    'debit': 0.0,
+                    'credit': self.amount,
+                    'partner_id': partner_id,
+                }),
+            ],
+        })
+        move.action_post()
+        move.write({'freight_trip_id': self.trip_id.id})
 
-            move = self.env['account.move'].create({
-                'journal_id': self.journal_id.id,
-                'date': fields.Date.today(),
-                'ref': f"Driver Balance Payment - {self.name}",
-                'line_ids': [
-                    (0, 0, {
-                        'account_id': advance_account.id,
-                        'name': f"Pay driver balance - {self.name}",
-                        'debit': amount_to_pay,
-                        'credit': 0.0,
-                        'partner_id': partner_id,
-                    }),
-                    (0, 0, {
-                        'account_id': self.payment_account_id.id,
-                        'name': f"Driver balance payment - {self.name}",
-                        'debit': 0.0,
-                        'credit': amount_to_pay,
-                        'partner_id': partner_id,
-                    }),
-                ],
-            })
-            move.action_post()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Advance Journal Entry'),
+            'res_model': 'account.move',
+            'res_id': move.id,
+            'view_mode': 'form',
+            'target': 'current',
+        }
 
-            move.write({'freight_trip_id': self.trip_id.id})
+    # ── CASE 2: In Settlement + Company owes Driver ───────────────────────────────
+    def action_pay_driver_balance(self):
+        """Called when in_settlement and company owes driver: pays remaining balance."""
+        self.ensure_one()
+        if self.state != 'in_settlement':
+            raise UserError(_("This action is only allowed in In Settlement state!"))
+        if self.difference_type != 'in_favor_driver':
+            raise UserError(_("The balance must be in the driver's favor to use this action!"))
 
-            new_amount = self.amount + amount_to_pay
-            self.write({
-                'amount': new_amount,
-                'state': 'paid'
-            })
+        advance_account, partner_id = self._get_advance_account_and_partner()
+        amount_to_pay = self.expense_difference
 
-            return {
-                'type': 'ir.actions.act_window',
-                'name': _('Driver Balance Payment'),
-                'res_model': 'account.move',
-                'res_id': move.id,
-                'view_mode': 'form',
-                'target': 'current',
-            }
+        move = self.env['account.move'].create({
+            'journal_id': self.journal_id.id,
+            'date': fields.Date.today(),
+            'ref': f"Driver Balance Payment - {self.name}",
+            'line_ids': [
+                (0, 0, {
+                    'account_id': advance_account.id,
+                    'name': f"Pay driver balance - {self.name}",
+                    'debit': amount_to_pay,
+                    'credit': 0.0,
+                    'partner_id': partner_id,
+                }),
+                (0, 0, {
+                    'account_id': self.payment_account_id.id,
+                    'name': f"Driver balance payment - {self.name}",
+                    'debit': 0.0,
+                    'credit': amount_to_pay,
+                    'partner_id': partner_id,
+                }),
+            ],
+        })
+        move.action_post()
+        move.write({'freight_trip_id': self.trip_id.id})
 
-        # ──────────────────────────────────────────────────────────
-        # CASE 3: In Settlement + Driver owes Company (Driver refund)
-        # ──────────────────────────────────────────────────────────
-        if self.state == 'in_settlement' and self.difference_type == 'in_favor_company':
-            amount_to_refund = self.expense_difference
+        self.write({
+            'amount': self.amount + amount_to_pay,
+            'state': 'paid',
+        })
 
-            if amount_to_refund <= 0:
-                raise UserError(_("No amount to refund from driver!"))
-            
-            move = self.env['account.move'].create({
-                'journal_id': self.journal_id.id,
-                'date': fields.Date.today(),
-                'ref': f"Driver Refund - {self.name}",
-                'line_ids': [
-                    (0, 0, {
-                        'account_id': self.payment_account_id.id,
-                        'name': f"Cash received from driver - {self.name}",
-                        'debit': amount_to_refund,
-                        'credit': 0.0,
-                        'partner_id': partner_id,
-                    }),
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Driver Balance Payment'),
+            'res_model': 'account.move',
+            'res_id': move.id,
+            'view_mode': 'form',
+            'target': 'current',
+        }
 
-                    (0, 0, {
-                        'account_id': advance_account.id,
-                        'name': f"Driver refund - {self.name}",
-                        'debit': 0.0,
-                        'credit': amount_to_refund,
-                        'partner_id': partner_id,
-                    }),
-                ],
-            })
-            move.action_post()
-            
-            move.write({'freight_trip_id': self.trip_id.id})
-            
-            new_amount = self.amount - amount_to_refund
-            self.write({
-                'amount': new_amount,
-                'state': 'paid'
-            })
+    # ── CASE 3: In Settlement + Driver owes Company ───────────────────────────────
+    def action_collect_driver_refund(self):
+        """Called when in_settlement and driver owes company: records cash refund."""
+        self.ensure_one()
+        if self.state != 'in_settlement':
+            raise UserError(_("This action is only allowed in In Settlement state!"))
+        if self.difference_type != 'in_favor_company':
+            raise UserError(_("The balance must be in the company's favor to use this action!"))
 
-            return {
-                'type': 'ir.actions.act_window',
-                'name': _('Driver Refund Journal Entry'),
-                'res_model': 'account.move',
-                'res_id': move.id,
-                'view_mode': 'form',
-                'target': 'current',
-            }
+        advance_account, partner_id = self._get_advance_account_and_partner()
+        amount_to_refund = self.expense_difference
 
-        raise UserError(_(
-            "Cannot process this advance. Current state: %s, Difference: %s"
-        ) % (self.state, self.difference_type))
+        if amount_to_refund <= 0:
+            raise UserError(_("No amount to refund from driver!"))
+
+        move = self.env['account.move'].create({
+            'journal_id': self.journal_id.id,
+            'date': fields.Date.today(),
+            'ref': f"Driver Refund - {self.name}",
+            'line_ids': [
+                (0, 0, {
+                    'account_id': self.payment_account_id.id,
+                    'name': f"Cash received from driver - {self.name}",
+                    'debit': amount_to_refund,
+                    'credit': 0.0,
+                    'partner_id': partner_id,
+                }),
+                (0, 0, {
+                    'account_id': advance_account.id,
+                    'name': f"Driver refund - {self.name}",
+                    'debit': 0.0,
+                    'credit': amount_to_refund,
+                    'partner_id': partner_id,
+                }),
+            ],
+        })
+        move.action_post()
+        move.write({'freight_trip_id': self.trip_id.id})
+
+        self.write({
+            'amount': self.amount - amount_to_refund,
+            'state': 'paid',
+        })
+
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Driver Refund Journal Entry'),
+            'res_model': 'account.move',
+            'res_id': move.id,
+            'view_mode': 'form',
+            'target': 'current',
+        }
