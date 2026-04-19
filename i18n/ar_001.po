@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 19.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-18 11:08+0000\n"
-"PO-Revision-Date: 2026-04-18 11:08+0000\n"
+"POT-Creation-Date: 2026-04-19 09:43+0000\n"
+"PO-Revision-Date: 2026-04-19 09:43+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -30,6 +30,17 @@ msgid ""
 "                </div>\n"
 "            "
 msgstr ""
+"<div style=\"direction: rtl; font-family: sans-serif; text-align: right;\">\n"
+"                    <p>عزيزي العميل <t t-out=\"object.partner_id.name\"/>،</p>\n"
+"                    <p>الرحلة رقم <strong><t t-out=\"object.name\"/></strong> تحركت الآن وهي في طريقها إليكم.</p>\n"
+"                    <p><strong>بيانات الناقل:</strong></p>\n"
+"                    <ul>\n"
+"                        <li>السائق: <t t-out=\"object.driver_id.name\"/></li>\n"
+"                        <li>الجوال: <t t-out=\"object.driver_phone\"/></li>\n"
+"                        <li>الشاحنة: <t t-out=\"object.vehicle_id.name\"/> (<t t-out=\"object.license_plate\"/>)</li>\n"
+"                    </ul>\n"
+"                </div>\n"
+"            "
 
 #. module: freight_management_system
 #: model:mail.template,body_html:freight_management_system.email_template_trip_confirmed
@@ -42,6 +53,13 @@ msgid ""
 "                </div>\n"
 "            "
 msgstr ""
+"<div style=\"direction: rtl; font-family: sans-serif; text-align: right;\">\n"
+"                    <p>عزيزي العميل <t t-out=\"object.partner_id.name\"/>،</p>\n"
+"                    <p>نود إبلاغكم بأنه تم <strong>تأكيد</strong> الرحلة رقم <t t-out=\"object.name\"/> وهي الآن قيد التجهيز.</p>\n"
+"                    <p>المسار: <t t-out=\"object.starting_point_id.name\"/> إلى <t t-out=\"object.destination_id.name\"/></p>\n"
+"                    <p>شكراً لثقتكم بنا.</p>\n"
+"                </div>\n"
+"            "
 
 #. module: freight_management_system
 #: model:mail.template,body_html:freight_management_system.email_template_freight_waybill
@@ -264,6 +282,12 @@ msgid "Advances Count"
 msgstr "عدد السلف"
 
 #. module: freight_management_system
+#. odoo-javascript
+#: code:addons/freight_management_system/static/src/xml/freight_dashboard.xml:0
+msgid "All"
+msgstr "الكل"
+
+#. module: freight_management_system
 #: model:res.groups,name:freight_management_system.group_trip_expenses_display
 msgid "Allowed Show Trip expenses "
 msgstr "مسموح بعرض مصروفات الرحلة"
@@ -284,6 +308,12 @@ msgid "Amount Disbursed"
 msgstr "المبلغ المصروف"
 
 #. module: freight_management_system
+#. odoo-javascript
+#: code:addons/freight_management_system/static/src/xml/freight_dashboard.xml:0
+msgid "Apr"
+msgstr "أبريل"
+
+#. module: freight_management_system
 #: model_terms:ir.ui.view,arch_db:freight_management_system.view_freight_trip_form
 msgid "Are you sure you want to create a customer invoice for this trip?"
 msgstr "هل أنت متأكد من رغبتك في إنشاء فاتورة عميل لهذه الرحلة؟"
@@ -294,6 +324,12 @@ msgstr "هل أنت متأكد من رغبتك في إنشاء فاتورة عم
 #: model:ir.model.fields,field_description:freight_management_system.field_trip_expense__message_attachment_count
 msgid "Attachment Count"
 msgstr "عدد المرفقات"
+
+#. module: freight_management_system
+#. odoo-javascript
+#: code:addons/freight_management_system/static/src/xml/freight_dashboard.xml:0
+msgid "Aug"
+msgstr "أغسطس"
 
 #. module: freight_management_system
 #. odoo-javascript
@@ -366,18 +402,6 @@ msgstr ""
 #. module: freight_management_system
 #. odoo-python
 #: code:addons/freight_management_system/models/driver_advance.py:0
-msgid "Cannot disburse a rejected advance!"
-msgstr "لا يمكن صرف سلفة مرفوضة!"
-
-#. module: freight_management_system
-#. odoo-python
-#: code:addons/freight_management_system/models/driver_advance.py:0
-msgid "Cannot process this advance. Current state: %s, Difference: %s"
-msgstr "لا يمكن معالجة هذه السلفة. الحالة الحالية: %s، الفرق: %s"
-
-#. module: freight_management_system
-#. odoo-python
-#: code:addons/freight_management_system/models/driver_advance.py:0
 msgid "Cannot reject a fully paid advance!"
 msgstr "لا يمكن رفض سلفة مدفوعة بالكامل!"
 
@@ -402,6 +426,11 @@ msgstr "بيانات الناقل"
 #: code:addons/freight_management_system/static/src/xml/freight_dashboard.xml:0
 msgid "Clear"
 msgstr "مسح"
+
+#. module: freight_management_system
+#: model_terms:ir.ui.view,arch_db:freight_management_system.view_driver_advance_form
+msgid "Collect Driver Refund"
+msgstr "تحصيل استرداد من السائق"
 
 #. module: freight_management_system
 #: model:ir.model.fields,field_description:freight_management_system.field_freight_trip__company_id
@@ -557,6 +586,12 @@ msgid "Dates"
 msgstr "التواريخ"
 
 #. module: freight_management_system
+#. odoo-javascript
+#: code:addons/freight_management_system/static/src/xml/freight_dashboard.xml:0
+msgid "Dec"
+msgstr "ديسمبر"
+
+#. module: freight_management_system
 #: model:ir.model.fields,field_description:freight_management_system.field_freight_trip__declaration_no
 msgid "Declaration No"
 msgstr "رقم البيان"
@@ -662,7 +697,7 @@ msgstr "دفتر يومية ترب الرحلة"
 #: model:ir.actions.act_window,name:freight_management_system.action_driver_advance
 #: model_terms:ir.ui.view,arch_db:freight_management_system.view_driver_advance_tree
 msgid "Driver Advances"
-msgstr "ترب الرحلات"
+msgstr "أتربة الرحلات"
 
 #. module: freight_management_system
 #. odoo-python
@@ -728,6 +763,12 @@ msgstr "عدد المصروفات"
 #. module: freight_management_system
 #. odoo-javascript
 #: code:addons/freight_management_system/static/src/xml/freight_dashboard.xml:0
+msgid "Feb"
+msgstr "فبراير"
+
+#. module: freight_management_system
+#. odoo-javascript
+#: code:addons/freight_management_system/static/src/xml/freight_dashboard.xml:0
 msgid "Filter by Trip:"
 msgstr "تصفية حسب الرحلة:"
 
@@ -751,6 +792,12 @@ msgstr "طفاية حريق"
 #: model:ir.model.fields,field_description:freight_management_system.field_freight_trip__first_aid_kit_doc
 msgid "First Aid Kit"
 msgstr "حقيبة إسعافات أولية"
+
+#. module: freight_management_system
+#. odoo-javascript
+#: code:addons/freight_management_system/static/src/xml/freight_dashboard.xml:0
+msgid "First page"
+msgstr "الصفحة الأولى"
 
 #. module: freight_management_system
 #: model:ir.model.fields,field_description:freight_management_system.field_driver_advance__message_follower_ids
@@ -981,6 +1028,12 @@ msgid "Issue Date"
 msgstr "تاريخ الصرف"
 
 #. module: freight_management_system
+#. odoo-javascript
+#: code:addons/freight_management_system/static/src/xml/freight_dashboard.xml:0
+msgid "Jan"
+msgstr "يناير"
+
+#. module: freight_management_system
 #: model:ir.model,name:freight_management_system.model_account_move
 #: model:ir.model.fields,field_description:freight_management_system.field_trip_expense__move_id
 msgid "Journal Entry"
@@ -989,7 +1042,19 @@ msgstr "قيد اليومية"
 #. module: freight_management_system
 #: model_terms:ir.ui.view,arch_db:freight_management_system.res_config_settings_view_freight
 msgid "Journal used for driver advance entries"
-msgstr "دفتر اليومية المستخدم لسجلات قيود سلفة السائق"
+msgstr "دفتر اليومية المستخدم لسجلات قيود ترب الرحلة"
+
+#. module: freight_management_system
+#. odoo-javascript
+#: code:addons/freight_management_system/static/src/xml/freight_dashboard.xml:0
+msgid "Jul"
+msgstr "يوليو"
+
+#. module: freight_management_system
+#. odoo-javascript
+#: code:addons/freight_management_system/static/src/xml/freight_dashboard.xml:0
+msgid "Jun"
+msgstr "يونيو"
 
 #. module: freight_management_system
 #: model_terms:ir.ui.view,arch_db:freight_management_system.report_waybill_template
@@ -1017,6 +1082,12 @@ msgstr "آخر تحديث بواسطة"
 #: model:ir.model.fields,field_description:freight_management_system.field_trip_expense__write_date
 msgid "Last Updated on"
 msgstr "آخر تحديث في"
+
+#. module: freight_management_system
+#. odoo-javascript
+#: code:addons/freight_management_system/static/src/xml/freight_dashboard.xml:0
+msgid "Last page"
+msgstr "الصفحة الأخيرة"
 
 #. module: freight_management_system
 #: model:ir.model.fields,field_description:freight_management_system.field_freight_trip__gps_latitude
@@ -1063,8 +1134,20 @@ msgstr "الخريطة"
 #. module: freight_management_system
 #. odoo-javascript
 #: code:addons/freight_management_system/static/src/xml/freight_dashboard.xml:0
+msgid "Mar"
+msgstr "مارس"
+
+#. module: freight_management_system
+#. odoo-javascript
+#: code:addons/freight_management_system/static/src/xml/freight_dashboard.xml:0
 msgid "Margin"
 msgstr "الهامش"
+
+#. module: freight_management_system
+#. odoo-javascript
+#: code:addons/freight_management_system/static/src/xml/freight_dashboard.xml:0
+msgid "May"
+msgstr "مايو"
 
 #. module: freight_management_system
 #: model:ir.model.fields,field_description:freight_management_system.field_driver_advance__message_has_error
@@ -1085,6 +1168,12 @@ msgstr "الرسائل"
 #: model_terms:ir.ui.view,arch_db:freight_management_system.view_trip_expense_search
 msgid "Month"
 msgstr "الشهر"
+
+#. module: freight_management_system
+#. odoo-javascript
+#: code:addons/freight_management_system/static/src/xml/freight_dashboard.xml:0
+msgid "Month:"
+msgstr "الشهر:"
 
 #. module: freight_management_system
 #: model:ir.model.fields,field_description:freight_management_system.field_driver_advance__my_activity_date_deadline
@@ -1121,6 +1210,12 @@ msgid "Next Activity Type"
 msgstr "نوع النشاط التالي"
 
 #. module: freight_management_system
+#. odoo-javascript
+#: code:addons/freight_management_system/static/src/xml/freight_dashboard.xml:0
+msgid "Next page"
+msgstr "الصفحة التالية"
+
+#. module: freight_management_system
 #. odoo-python
 #: code:addons/freight_management_system/models/driver_advance.py:0
 msgid "No amount to refund from driver!"
@@ -1129,7 +1224,7 @@ msgstr "لا يوجد مبلغ لاسترداده من السائق!"
 #. module: freight_management_system
 #: model_terms:ir.actions.act_window,help:freight_management_system.action_driver_advance
 msgid "No driver advances yet. Create one!"
-msgstr "لا توجد سلف سائقين بعد. أنشئ واحدة!"
+msgstr "لا توجد أتربة رحلات بعد. أنشئ واحدة!"
 
 #. module: freight_management_system
 #: model_terms:ir.actions.act_window,help:freight_management_system.action_trip_expense
@@ -1162,6 +1257,12 @@ msgstr "ملاحظات / وصف"
 #: model_terms:ir.ui.view,arch_db:freight_management_system.view_driver_advance_form
 msgid "Notes..."
 msgstr "ملاحظات..."
+
+#. module: freight_management_system
+#. odoo-javascript
+#: code:addons/freight_management_system/static/src/xml/freight_dashboard.xml:0
+msgid "Nov"
+msgstr "نوفمبر"
 
 #. module: freight_management_system
 #: model:ir.model.fields,field_description:freight_management_system.field_driver_advance__message_needaction_counter
@@ -1197,6 +1298,12 @@ msgid "Number of messages with delivery error"
 msgstr "عدد الرسائل التي بها خطأ في التوصيل"
 
 #. module: freight_management_system
+#. odoo-javascript
+#: code:addons/freight_management_system/static/src/xml/freight_dashboard.xml:0
+msgid "Oct"
+msgstr "أكتوبر"
+
+#. module: freight_management_system
 #: model:ir.model.fields,field_description:freight_management_system.field_freight_trip__oil_level_doc
 msgid "Oil Level"
 msgstr "مستوى الزيت"
@@ -1211,6 +1318,11 @@ msgstr "فتح الرحلة"
 #: model:ir.model.fields.selection,name:freight_management_system.selection__trip_expense__expense_type__other
 msgid "Other"
 msgstr "أخرى"
+
+#. module: freight_management_system
+#: model_terms:ir.ui.view,arch_db:freight_management_system.view_driver_advance_form
+msgid "Pay Driver Balance"
+msgstr "دفع رصيد السائق"
 
 #. module: freight_management_system
 #: model:ir.model.fields,field_description:freight_management_system.field_driver_advance__journal_id
@@ -1239,7 +1351,7 @@ msgstr "يرجى إرفاق فاتورة أو إيصال قبل التأكيد!"
 #. odoo-python
 #: code:addons/freight_management_system/models/trip_expense.py:0
 msgid "Please configure Driver Advance Account and Journal in Settings!"
-msgstr "يرجى إعداد حساب سلفة السائق والسجل في الإعدادات!"
+msgstr "يرجى إعداد حساب ترب الرحلة والسجل في الإعدادات!"
 
 #. module: freight_management_system
 #. odoo-python
@@ -1274,6 +1386,12 @@ msgstr "موجب = السائق مدين للشركة | سالب = الشركة 
 #: model:ir.model.fields.selection,name:freight_management_system.selection__freight_trip__invoice_state__posted
 msgid "Posted"
 msgstr "تم النشر"
+
+#. module: freight_management_system
+#. odoo-javascript
+#: code:addons/freight_management_system/static/src/xml/freight_dashboard.xml:0
+msgid "Previous page"
+msgstr "الصفحة السابقة"
 
 #. module: freight_management_system
 #. odoo-javascript
@@ -1400,6 +1518,12 @@ msgid "Send Waybill by Email"
 msgstr "إرسال بوليصة الشحن بالبريد الإلكتروني"
 
 #. module: freight_management_system
+#. odoo-javascript
+#: code:addons/freight_management_system/static/src/xml/freight_dashboard.xml:0
+msgid "Sep"
+msgstr "سبتمبر"
+
+#. module: freight_management_system
 #: model_terms:ir.ui.view,arch_db:freight_management_system.view_driver_advance_form
 msgid "Settlement Summary"
 msgstr "ملخص التسوية"
@@ -1417,8 +1541,8 @@ msgstr "الشحنات"
 #. module: freight_management_system
 #. odoo-javascript
 #: code:addons/freight_management_system/static/src/xml/freight_dashboard.xml:0
-msgid "Showing 10 of"
-msgstr "عرض 10 من"
+msgid "Showing"
+msgstr "عرض"
 
 #. module: freight_management_system
 #: model_terms:ir.ui.view,arch_db:freight_management_system.view_freight_trip_form
@@ -1475,6 +1599,30 @@ msgstr "تاريخ توقيع المشرف"
 #: model:ir.model.fields,help:freight_management_system.field_driver_advance__payment_account_id
 msgid "The Cash/Bank account from which the advance was disbursed"
 msgstr "حساب النقد/البنك الذي تم صرف السلفة منه"
+
+#. module: freight_management_system
+#. odoo-python
+#: code:addons/freight_management_system/models/driver_advance.py:0
+msgid "The balance must be in the company's favor to use this action!"
+msgstr "يجب أن يكون الرصيد لصالح الشركة لاستخدام هذا الإجراء!"
+
+#. module: freight_management_system
+#. odoo-python
+#: code:addons/freight_management_system/models/driver_advance.py:0
+msgid "The balance must be in the driver's favor to use this action!"
+msgstr "يجب أن يكون الرصيد لصالح السائق لاستخدام هذا الإجراء!"
+
+#. module: freight_management_system
+#. odoo-python
+#: code:addons/freight_management_system/models/driver_advance.py:0
+msgid "This action is only allowed in Draft state!"
+msgstr "هذا الإجراء مسموح به فقط في حالة المسودة!"
+
+#. module: freight_management_system
+#. odoo-python
+#: code:addons/freight_management_system/models/driver_advance.py:0
+msgid "This action is only allowed in In Settlement state!"
+msgstr "هذا الإجراء مسموح به فقط في حالة قيد التسوية!"
 
 #. module: freight_management_system
 #: model_terms:ir.ui.view,arch_db:freight_management_system.report_waybill_template
@@ -1610,8 +1758,8 @@ msgstr "صيانة المركبة"
 #. module: freight_management_system
 #. odoo-javascript
 #: code:addons/freight_management_system/static/src/xml/freight_dashboard.xml:0
-msgid "View All Trips"
-msgstr "عرض كل الرحلات"
+msgid "View All"
+msgstr "عرض الكل"
 
 #. module: freight_management_system
 #: model_terms:ir.ui.view,arch_db:freight_management_system.report_waybill_template
@@ -1675,6 +1823,12 @@ msgstr "______________________"
 #: code:addons/freight_management_system/models/freight_trip.py:0
 msgid "freight_trip_id"
 msgstr "معرف_رحلة_الشحن"
+
+#. module: freight_management_system
+#. odoo-javascript
+#: code:addons/freight_management_system/static/src/xml/freight_dashboard.xml:0
+msgid "of"
+msgstr "من"
 
 #. module: freight_management_system
 #. odoo-javascript

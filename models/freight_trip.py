@@ -246,8 +246,8 @@ class FreightTrip(models.Model):
                 if rec.driver_id.work_email:
                     confirm_template.send_mail(rec.id, email_values={'email_to': rec.driver_id.work_email}, force_send=True)
             
-            rec._send_whatsapp_automatic('freight_management_system.wa_template_customer_confirmed', partner_id=rec.partner_id)
-            rec._send_whatsapp_automatic('freight_management_system.wa_template_driver_confirmed', employee_id=rec.driver_id)
+            rec._send_whatsapp_automatic('freight_management_system.trip_customer', partner_id=rec.partner_id)
+            rec._send_whatsapp_automatic('freight_management_system.template_driver_confirmed', employee_id=rec.driver_id)
 
     @api.onchange('supervisor_signature')
     def _onchange_supervisor_signature(self):
