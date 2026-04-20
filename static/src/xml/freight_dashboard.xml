@@ -162,26 +162,52 @@
                     </t>
                 </div>
 
-                <!-- Section: Trip Filter -->
+                <!-- Section: Trip &amp; Driver Filters -->
                 <div class="o_freight_section">
-                    <div class="o_freight_trip_filter">
-                        <span class="o_trip_filter_label">
-                            <i class="fa fa-search mr-2"/> Filter by Trip:
-                        </span>
-                        <select class="o_trip_select" t-on-change="onSelectTrip">
-                            <option value="">— All Trips —</option>
-                            <t t-foreach="state.tripProfitability" t-as="trip" t-key="trip.id">
-                                <option t-att-value="trip.id"
-                                        t-att-selected="trip.id === state.selectedTripId ? 'selected' : false">
-                                    <t t-esc="trip.name"/> — <t t-esc="trip.customer"/>
-                                </option>
-                            </t>
-                        </select>
-                        <button t-if="state.selectedTripId"
-                                class="o_trip_clear_btn"
-                                t-on-click="onClearTrip">
-                            <i class="fa fa-times"/> Clear
-                        </button>
+                    <div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
+
+                        <!-- Filter by Trip -->
+                        <div class="o_freight_trip_filter" style="flex: 1; min-width: 260px;">
+                            <span class="o_trip_filter_label">
+                                <i class="fa fa-search mr-2"/> Filter by Trip:
+                            </span>
+                            <select class="o_trip_select" t-on-change="onSelectTrip">
+                                <option value="">— All Trips —</option>
+                                <t t-foreach="state.tripProfitability" t-as="trip" t-key="trip.id">
+                                    <option t-att-value="trip.id"
+                                            t-att-selected="trip.id === state.selectedTripId ? 'selected' : false">
+                                        <t t-esc="trip.name"/> — <t t-esc="trip.customer"/>
+                                    </option>
+                                </t>
+                            </select>
+                            <button t-if="state.selectedTripId"
+                                    class="o_trip_clear_btn"
+                                    t-on-click="onClearTrip">
+                                <i class="fa fa-times"/> Clear
+                            </button>
+                        </div>
+
+                        <!-- Filter by Driver -->
+                        <div class="o_freight_trip_filter" style="flex: 1; min-width: 240px;">
+                            <span class="o_trip_filter_label">
+                                <i class="fa fa-user mr-2"/> Filter by Driver:
+                            </span>
+                            <select class="o_trip_select" t-on-change="onChangeDriver">
+                                <option value="">— All Drivers —</option>
+                                <t t-foreach="state.availableDrivers" t-as="drv" t-key="drv.id">
+                                    <option t-att-value="drv.id"
+                                            t-att-selected="drv.id === state.selectedDriverId ? 'selected' : false">
+                                        <t t-esc="drv.name"/>
+                                    </option>
+                                </t>
+                            </select>
+                            <button t-if="state.selectedDriverId"
+                                    class="o_trip_clear_btn"
+                                    t-on-click="() => { this.state.selectedDriverId = null; this.state.currentPage = 1; }">
+                                <i class="fa fa-times"/> Clear
+                            </button>
+                        </div>
+
                     </div>
                 </div>
 
@@ -269,6 +295,49 @@
                                 <div class="o_trip_profit_bar_fill"
                                      t-attf-style="width: {{ getTripProfitPct(state.selectedTrip) }}%; background: {{ state.selectedTrip.profit >= 0 ? '#27ae60' : '#e74c3c' }};">
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+
+                <!-- Driver Performance Detail Card -->
+                <t t-if="state.selectedDriverId">
+                    <div class="o_freight_section">
+                        <h2 class="o_freight_section_title">
+                            <i class="fa fa-user mr-2"/> Performance Details: <t t-esc="selectedDriverName"/>
+                        </h2>
+                        <div class="o_freight_table_card">
+                            <div class="o_table_wrapper">
+                                <table class="o_freight_table">
+                                    <thead>
+                                        <tr>
+                                            <th>Trip Name</th>
+                                            <th>Customer</th>
+                                            <th>Status</th>
+                                            <th>Revenue</th>
+                                            <th>Expenses</th>
+                                            <th>Profit</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr t-foreach="driverFilteredTrips" t-as="trip" t-key="trip.id">
+                                            <td class="o_trip_name" t-on-click="() => this._openTrip(trip.id)">
+                                                <t t-esc="trip.name"/>
+                                            </td>
+                                            <td><t t-esc="trip.customer"/></td>
+                                            <td>
+                                                <span class="o_status_badge" t-attf-class="o_status_{{ trip.state.replace('-', '_') }}">
+                                                    <t t-esc="getStateDisplayName(trip.state)"/>
+                                                </span>
+                                            </td>
+                                            <td class="text-success"><t t-esc="formatCurrency(trip.revenue)"/></td>
+                                            <td class="text-danger"><t t-esc="formatCurrency(trip.expenses)"/></td>
+                                            <td t-attf-class="{{ trip.profit >= 0 ? 'text-success' : 'text-danger' }}">
+                                                <t t-esc="formatCurrency(trip.profit)"/>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
@@ -439,13 +508,13 @@
                         </div>
 
                         <!-- Pagination Footer -->
-                        <div class="o_pagination_footer" t-if="state.tripProfitability.length > 0">
+                        <div class="o_pagination_footer" t-if="filteredTrips.length > 0">
                             <!-- Info -->
                             <span class="o_pagination_info">
                                 <t t-set="_start" t-value="(state.currentPage - 1) * state.pageSize + 1"/>
-                                <t t-set="_end"   t-value="Math.min(state.currentPage * state.pageSize, state.tripProfitability.length)"/>
+                                <t t-set="_end"   t-value="Math.min(state.currentPage * state.pageSize, filteredTrips.length)"/>
                                 Showing <strong><t t-esc="_start"/>–<t t-esc="_end"/></strong>
-                                of <strong><t t-esc="state.tripProfitability.length"/></strong> trips
+                                of <strong><t t-esc="filteredTrips.length"/></strong> trips
                             </span>
 
                             <!-- Controls -->

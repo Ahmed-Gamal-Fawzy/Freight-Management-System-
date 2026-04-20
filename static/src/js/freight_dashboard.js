@@ -18,6 +18,8 @@ class FreightDashboard extends Component {
             availableYears: [],
             selectedTripId: null,
             selectedTrip: null,
+            selectedDriverId: null,
+            availableDrivers: [],
             tripCounts: {
                 total: 0, draft: 0, confirmed: 0,
                 in_transit: 0, delivered: 0, invoiced: 0,
@@ -41,6 +43,7 @@ class FreightDashboard extends Component {
         this._openTrip = this._openTrip.bind(this);
         this.onChangeYear = this.onChangeYear.bind(this);
         this.onChangeMonth = this.onChangeMonth.bind(this);
+        this.onChangeDriver = this.onChangeDriver.bind(this);
         this._openProfitabilityDetails = this._openProfitabilityDetails.bind(this);
         this.onSelectTrip = this.onSelectTrip.bind(this);
         this.onClearTrip = this.onClearTrip.bind(this);
@@ -50,14 +53,30 @@ class FreightDashboard extends Component {
     }
 
 
+    get filteredTrips() {
+        return this.state.tripProfitability;
+    }
+
+    get driverFilteredTrips() {
+        if (!this.state.selectedDriverId) return [];
+        return this.state.tripProfitability.filter(
+            t => t.driver_id === this.state.selectedDriverId
+        );
+    }
+
+    get selectedDriverName() {
+        const drv = this.state.availableDrivers.find(d => d.id === this.state.selectedDriverId);
+        return drv ? drv.name : "";
+    }
+
     get totalPages() {
-        return Math.ceil(this.state.tripProfitability.length / this.state.pageSize) || 1;
+        return Math.ceil(this.filteredTrips.length / this.state.pageSize) || 1;
     }
 
     get paginatedTrips() {
         const start = (this.state.currentPage - 1) * this.state.pageSize;
         const end = start + this.state.pageSize;
-        return this.state.tripProfitability.slice(start, end);
+        return this.filteredTrips.slice(start, end);
     }
 
     changePage(newPage) {
@@ -91,6 +110,26 @@ class FreightDashboard extends Component {
             this.state.expensesByState      = data.expenses_by_state     || {};
             this.state.tripProfitability    = data.trip_profitability    || [];
             this.state.availableYears       = data.years                 || [this.state.selectedYear];
+
+            // Build available drivers list from returned trips
+            const driversMap = {};
+            for (const t of this.state.tripProfitability) {
+                if (t.driver_id && !driversMap[t.driver_id]) {
+                    driversMap[t.driver_id] = t.driver;
+                }
+            }
+            this.state.availableDrivers = Object.entries(driversMap)
+                .map(([id, name]) => ({ id: parseInt(id), name }))
+                .sort((a, b) => a.name.localeCompare(b.name));
+
+            // Reset driver filter if selected driver no longer exists
+            if (this.state.selectedDriverId) {
+                const stillExists = this.state.availableDrivers.some(
+                    d => d.id === this.state.selectedDriverId
+                );
+                if (!stillExists) this.state.selectedDriverId = null;
+            }
+
             this.state.currentPage = 1;
 
             if (this.state.selectedTripId) {
@@ -114,6 +153,12 @@ class FreightDashboard extends Component {
         this.state.selectedTrip = null;
         this.state.currentPage = 1;
         await this._loadData();
+    }
+
+    async onChangeDriver(ev) {
+        const val = ev.target.value;
+        this.state.selectedDriverId = val ? parseInt(val) : null;
+        this.state.currentPage = 1;
     }
 
     async onChangeMonth(ev) {
@@ -152,7 +197,7 @@ class FreightDashboard extends Component {
         if (this.state.selectedYear) {
             let start = `${this.state.selectedYear}-01-01 00:00:00`;
             let end = `${this.state.selectedYear}-12-31 23:59:59`;
-            
+
             if (this.state.selectedMonth) {
                 let m = parseInt(this.state.selectedMonth);
                 let lastDay = new Date(this.state.selectedYear, m, 0).getDate();
@@ -162,6 +207,9 @@ class FreightDashboard extends Component {
             }
             domain.push(["create_date", ">=", start]);
             domain.push(["create_date", "<=", end]);
+        }
+        if (this.state.selectedDriverId) {
+            domain.push(["driver_id", "=", this.state.selectedDriverId]);
         }
         return domain;
     }

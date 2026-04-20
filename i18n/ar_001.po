@@ -616,7 +616,7 @@ msgstr "الوجهة"
 #. module: freight_management_system
 #: model_terms:ir.ui.view,arch_db:freight_management_system.view_driver_advance_form
 msgid "Disburse Advance"
-msgstr "صرف السلفة"
+msgstr "صرف الترب"
 
 #. module: freight_management_system
 #: model:ir.model.fields,field_description:freight_management_system.field_driver_advance__disbursed_by

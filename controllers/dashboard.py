@@ -100,6 +100,7 @@ class FreightDashboardController(http.Controller):
                 'state':         trip.state,
                 'customer':      trip.partner_id.name if trip.partner_id else '',
                 'driver':        trip.driver_id.name  if trip.driver_id  else '',
+                'driver_id':     trip.driver_id.id    if trip.driver_id  else False,
                 'revenue':       revenue,
                 'expenses':      confirmed_expenses,
                 'profit':        profit,
