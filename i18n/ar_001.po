@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 19.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-19 09:43+0000\n"
-"PO-Revision-Date: 2026-04-19 09:43+0000\n"
+"POT-Creation-Date: 2026-04-20 08:16+0000\n"
+"PO-Revision-Date: 2026-04-20 08:16+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -30,17 +30,6 @@ msgid ""
 "                </div>\n"
 "            "
 msgstr ""
-"<div style=\"direction: rtl; font-family: sans-serif; text-align: right;\">\n"
-"                    <p>عزيزي العميل <t t-out=\"object.partner_id.name\"/>،</p>\n"
-"                    <p>الرحلة رقم <strong><t t-out=\"object.name\"/></strong> تحركت الآن وهي في طريقها إليكم.</p>\n"
-"                    <p><strong>بيانات الناقل:</strong></p>\n"
-"                    <ul>\n"
-"                        <li>السائق: <t t-out=\"object.driver_id.name\"/></li>\n"
-"                        <li>الجوال: <t t-out=\"object.driver_phone\"/></li>\n"
-"                        <li>الشاحنة: <t t-out=\"object.vehicle_id.name\"/> (<t t-out=\"object.license_plate\"/>)</li>\n"
-"                    </ul>\n"
-"                </div>\n"
-"            "
 
 #. module: freight_management_system
 #: model:mail.template,body_html:freight_management_system.email_template_trip_confirmed
@@ -53,13 +42,6 @@ msgid ""
 "                </div>\n"
 "            "
 msgstr ""
-"<div style=\"direction: rtl; font-family: sans-serif; text-align: right;\">\n"
-"                    <p>عزيزي العميل <t t-out=\"object.partner_id.name\"/>،</p>\n"
-"                    <p>نود إبلاغكم بأنه تم <strong>تأكيد</strong> الرحلة رقم <t t-out=\"object.name\"/> وهي الآن قيد التجهيز.</p>\n"
-"                    <p>المسار: <t t-out=\"object.starting_point_id.name\"/> إلى <t t-out=\"object.destination_id.name\"/></p>\n"
-"                    <p>شكراً لثقتكم بنا.</p>\n"
-"                </div>\n"
-"            "
 
 #. module: freight_management_system
 #: model:mail.template,body_html:freight_management_system.email_template_freight_waybill
@@ -496,6 +478,7 @@ msgstr "أنشئ أول رحلة شحن لك!"
 #. module: freight_management_system
 #: model:ir.model.fields,field_description:freight_management_system.field_driver_advance__create_uid
 #: model:ir.model.fields,field_description:freight_management_system.field_freight_trip__create_uid
+#: model:ir.model.fields,field_description:freight_management_system.field_freight_trip_gps_log__create_uid
 #: model:ir.model.fields,field_description:freight_management_system.field_freight_trip_send_mail__create_uid
 #: model:ir.model.fields,field_description:freight_management_system.field_trip_expense__create_uid
 msgid "Created by"
@@ -504,6 +487,7 @@ msgstr "أنشأ بواسطة"
 #. module: freight_management_system
 #: model:ir.model.fields,field_description:freight_management_system.field_driver_advance__create_date
 #: model:ir.model.fields,field_description:freight_management_system.field_freight_trip__create_date
+#: model:ir.model.fields,field_description:freight_management_system.field_freight_trip_gps_log__create_date
 #: model:ir.model.fields,field_description:freight_management_system.field_freight_trip_send_mail__create_date
 #: model:ir.model.fields,field_description:freight_management_system.field_trip_expense__create_date
 msgid "Created on"
@@ -627,6 +611,7 @@ msgstr "صرف بواسطة"
 #: model:ir.model.fields,field_description:freight_management_system.field_account_move__display_name
 #: model:ir.model.fields,field_description:freight_management_system.field_driver_advance__display_name
 #: model:ir.model.fields,field_description:freight_management_system.field_freight_trip__display_name
+#: model:ir.model.fields,field_description:freight_management_system.field_freight_trip_gps_log__display_name
 #: model:ir.model.fields,field_description:freight_management_system.field_freight_trip_send_mail__display_name
 #: model:ir.model.fields,field_description:freight_management_system.field_res_config_settings__display_name
 #: model:ir.model.fields,field_description:freight_management_system.field_sale_order__display_name
@@ -769,6 +754,12 @@ msgstr "فبراير"
 #. module: freight_management_system
 #. odoo-javascript
 #: code:addons/freight_management_system/static/src/xml/freight_dashboard.xml:0
+msgid "Filter by Driver:"
+msgstr "تصفيه حسب السائق"
+
+#. module: freight_management_system
+#. odoo-javascript
+#: code:addons/freight_management_system/static/src/xml/freight_dashboard.xml:0
 msgid "Filter by Trip:"
 msgstr "تصفية حسب الرحلة:"
 
@@ -864,6 +855,11 @@ msgid "Freight Trip - Waybill to Customer"
 msgstr "رحلة الشحن - بوليصة الشحن للعميل"
 
 #. module: freight_management_system
+#: model:ir.model,name:freight_management_system.model_freight_trip_gps_log
+msgid "Freight Trip GPS Log"
+msgstr ""
+
+#. module: freight_management_system
 #: model:ir.model,name:freight_management_system.model_freight_trip
 msgid "Freight Trip Management"
 msgstr "إدارة رحلات الشحن"
@@ -906,6 +902,11 @@ msgid "Fully Settled"
 msgstr "تمت التسوية بالكامل"
 
 #. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_freight_trip__gps_last_update
+msgid "GPS Last Updated"
+msgstr ""
+
+#. module: freight_management_system
 #: model_terms:ir.ui.view,arch_db:freight_management_system.view_freight_trip_form
 msgid "GPS Location"
 msgstr "موقع GPS"
@@ -921,6 +922,7 @@ msgstr "يحتوي على رسالة"
 #: model:ir.model.fields,field_description:freight_management_system.field_account_move__id
 #: model:ir.model.fields,field_description:freight_management_system.field_driver_advance__id
 #: model:ir.model.fields,field_description:freight_management_system.field_freight_trip__id
+#: model:ir.model.fields,field_description:freight_management_system.field_freight_trip_gps_log__id
 #: model:ir.model.fields,field_description:freight_management_system.field_freight_trip_send_mail__id
 #: model:ir.model.fields,field_description:freight_management_system.field_res_config_settings__id
 #: model:ir.model.fields,field_description:freight_management_system.field_sale_order__id
@@ -1068,8 +1070,14 @@ msgid "KM"
 msgstr "كم"
 
 #. module: freight_management_system
+#: model:ir.model.fields,field_description:freight_management_system.field_freight_trip__gps_last_speed
+msgid "Last Speed (km/h)"
+msgstr ""
+
+#. module: freight_management_system
 #: model:ir.model.fields,field_description:freight_management_system.field_driver_advance__write_uid
 #: model:ir.model.fields,field_description:freight_management_system.field_freight_trip__write_uid
+#: model:ir.model.fields,field_description:freight_management_system.field_freight_trip_gps_log__write_uid
 #: model:ir.model.fields,field_description:freight_management_system.field_freight_trip_send_mail__write_uid
 #: model:ir.model.fields,field_description:freight_management_system.field_trip_expense__write_uid
 msgid "Last Updated by"
@@ -1078,6 +1086,7 @@ msgstr "آخر تحديث بواسطة"
 #. module: freight_management_system
 #: model:ir.model.fields,field_description:freight_management_system.field_driver_advance__write_date
 #: model:ir.model.fields,field_description:freight_management_system.field_freight_trip__write_date
+#: model:ir.model.fields,field_description:freight_management_system.field_freight_trip_gps_log__write_date
 #: model:ir.model.fields,field_description:freight_management_system.field_freight_trip_send_mail__write_date
 #: model:ir.model.fields,field_description:freight_management_system.field_trip_expense__write_date
 msgid "Last Updated on"
@@ -1091,6 +1100,7 @@ msgstr "الصفحة الأخيرة"
 
 #. module: freight_management_system
 #: model:ir.model.fields,field_description:freight_management_system.field_freight_trip__gps_latitude
+#: model:ir.model.fields,field_description:freight_management_system.field_freight_trip_gps_log__latitude
 msgid "Latitude"
 msgstr "خط العرض"
 
@@ -1117,6 +1127,7 @@ msgstr "جاري تحميل لوحة التحكم..."
 
 #. module: freight_management_system
 #: model:ir.model.fields,field_description:freight_management_system.field_freight_trip__gps_longitude
+#: model:ir.model.fields,field_description:freight_management_system.field_freight_trip_gps_log__longitude
 msgid "Longitude"
 msgstr "خط الطول"
 
@@ -1334,6 +1345,12 @@ msgstr "طريقة الدفع (دفتر اليومية)"
 #: code:addons/freight_management_system/static/src/xml/freight_dashboard.xml:0
 msgid "Performance & Profitability Dashboard"
 msgstr "لوحة تحكم الأداء والربحية"
+
+#. module: freight_management_system
+#. odoo-javascript
+#: code:addons/freight_management_system/static/src/xml/freight_dashboard.xml:0
+msgid "Performance Details:"
+msgstr "تفاصيل الاداء"
 
 #. module: freight_management_system
 #. odoo-python
@@ -1677,6 +1694,7 @@ msgstr "إجمالي الرحلات"
 
 #. module: freight_management_system
 #: model:ir.model.fields,field_description:freight_management_system.field_driver_advance__trip_id
+#: model:ir.model.fields,field_description:freight_management_system.field_freight_trip_gps_log__trip_id
 #: model:ir.model.fields,field_description:freight_management_system.field_freight_trip_send_mail__trip_id
 #: model:ir.model.fields,field_description:freight_management_system.field_trip_expense__trip_id
 #: model_terms:ir.ui.view,arch_db:freight_management_system.view_driver_advance_search
@@ -1811,12 +1829,13 @@ msgstr "السنة:"
 #. odoo-python
 #: code:addons/freight_management_system/models/freight_trip.py:0
 msgid "You can only create invoice after marking the trip as Delivered!"
-msgstr "لا يمكن إنشاء فاتورة إلا بعد وضع علامة على الرحلة على أنها تم التسليم!"
+msgstr ""
+"لا يمكن إنشاء فاتورة إلا بعد وضع علامة على الرحلة على أنها تم التسليم!"
 
 #. module: freight_management_system
 #: model_terms:ir.ui.view,arch_db:freight_management_system.report_waybill_template
 msgid "______________________"
-msgstr "______________________"
+msgstr ""
 
 #. module: freight_management_system
 #. odoo-python
@@ -1855,12 +1874,18 @@ msgstr "| الحالة:"
 #. module: freight_management_system
 #: model:mail.template,subject:freight_management_system.email_template_trip_confirmed
 msgid "تم تأكيد رحلتكم: {{ object.name }}"
-msgstr "تم تأكيد رحلتكم: {{ object.name }}"
+msgstr ""
 
 #. module: freight_management_system
 #: model:mail.template,subject:freight_management_system.email_template_trip_in_transit
 msgid "رحلتكم الآن في الطريق: {{ object.name }}"
-msgstr "رحلتكم الآن في الطريق: {{ object.name }}"
+msgstr ""
+
+#. module: freight_management_system
+#. odoo-javascript
+#: code:addons/freight_management_system/static/src/xml/freight_dashboard.xml:0
+msgid "— All Drivers —"
+msgstr "كل السائقين"
 
 #. module: freight_management_system
 #. odoo-javascript

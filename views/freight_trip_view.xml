@@ -55,7 +55,7 @@
                             invisible="state == 'draft'"/>
 
                     <button name="action_send_whatsapp_driver"
-                            string="📱 Send to Driver"
+                            string="📱 Send to whatsapp"
                             type="object"
                             class="btn-success"
                             invisible="state == 'draft'"/>

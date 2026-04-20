@@ -4,6 +4,9 @@ from odoo.exceptions import UserError
 import base64
 import requests
 import urllib.parse
+import logging
+_logger = logging.getLogger(__name__)
+
 
 class FreightTrip(models.Model):
     _name = 'freight.trip'
@@ -203,19 +206,48 @@ class FreightTrip(models.Model):
 
     # ── Actions ──────────────────────────────────────────────────
     def action_in_transit(self):
-        transit_template = self.env.ref('freight_management_system.email_template_trip_in_transit', raise_if_not_found=False)
+        # ── send email to customer and driver ──────────────────────
+        transit_template = self.env.ref(
+            'freight_management_system.email_template_trip_in_transit',
+            raise_if_not_found=False
+        )
         for rec in self:
-            rec.write({'state': 'in_transit'})
             if transit_template:
                 if rec.partner_id.email:
                     transit_template.send_mail(rec.id, force_send=True)
-                if rec.driver_id.work_email:
-                    transit_template.send_mail(rec.id, email_values={'email_to': rec.driver_id.work_email}, force_send=True)
+                if rec.driver_id and rec.driver_id.work_email:
+                    transit_template.send_mail(
+                        rec.id,
+                        email_values={'email_to': rec.driver_id.work_email},
+                        force_send=True
+                    )
 
-            rec._send_whatsapp_automatic('freight_management_system.wa_template_customer_transit', partner_id=rec.partner_id)
-            rec._send_whatsapp_automatic('freight_management_system.wa_template_driver_transit', employee_id=rec.driver_id)
+        # ── change state ───────────────────────────────────────────
+        self.write({'state': 'in_transit'})
 
-            
+        # ── open whatsapp wizard locked on customer transit template ─
+        self.ensure_one()
+        template = self.env['whatsapp.template'].search([
+            ('name', 'ilike', 'wa_template_customer_transit'),
+            ('status', '=', 'approved'),
+            ('model', '=', 'freight.trip'),
+        ], limit=1)
+
+        if not template:
+            return
+
+        return {
+            'type': 'ir.actions.act_window',
+            'res_model': 'whatsapp.composer',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {
+                'default_res_model': self._name,
+                'default_res_id': self.id,
+                'default_template_id': template.id,
+                'lock_template': True,
+            }
+        }
 
     def action_delivered(self):
         self.write({'state': 'delivered'})
@@ -238,21 +270,52 @@ class FreightTrip(models.Model):
             if missing:
                 raise UserError(
                     _("Cannot confirm trip!\n"
-                      "Please upload documents for:\n") +
+                    "Please upload documents for:\n") +
                     "\n".join(missing)
                 )
-        self.write({'state': 'confirmed'})
 
-        confirm_template = self.env.ref('freight_management_system.email_template_trip_confirmed', raise_if_not_found=False)
+        # ── send email to customer and driver ──────────────────────
+        confirm_template = self.env.ref(
+            'freight_management_system.email_template_trip_confirmed',
+            raise_if_not_found=False
+        )
         for rec in self:
             if confirm_template:
                 if rec.partner_id.email:
                     confirm_template.send_mail(rec.id, force_send=True)
-                if rec.driver_id.work_email:
-                    confirm_template.send_mail(rec.id, email_values={'email_to': rec.driver_id.work_email}, force_send=True)
-            
-            rec._send_whatsapp_automatic('freight_management_system.trip_customer', partner_id=rec.partner_id)
-            rec._send_whatsapp_automatic('freight_management_system.template_driver_confirmed', employee_id=rec.driver_id)
+                if rec.driver_id and rec.driver_id.work_email:
+                    confirm_template.send_mail(
+                        rec.id,
+                        email_values={'email_to': rec.driver_id.work_email},
+                        force_send=True
+                    )
+
+        # ── change state ───────────────────────────────────────────
+        self.write({'state': 'confirmed'})
+
+        # ── open whatsapp wizard locked on trip_confirm_v1 ─────────
+        self.ensure_one()
+        template = self.env['whatsapp.template'].search([
+            ('name', 'ilike', 'Trip Confirm V1'),
+            ('status', '=', 'approved'),
+            ('model', '=', 'freight.trip'),
+        ], limit=1)
+
+        if not template:
+            return
+
+        return {
+            'type': 'ir.actions.act_window',
+            'res_model': 'whatsapp.composer',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {
+                'default_res_model': self._name,
+                'default_res_id': self.id,
+                'default_template_id': template.id,
+                'lock_template': True,
+            }
+        }
 
     @api.onchange('supervisor_signature')
     def _onchange_supervisor_signature(self):
@@ -388,40 +451,6 @@ class FreightTrip(models.Model):
             'view_mode': 'form',
             'target': 'current',
         }
-
-    # ── Reports & WhatsApp ────────────────────────────────────────
-
-    def _send_whatsapp_automatic(self, template_xml_id, partner_id=False, employee_id=False):
-        """ Send whatsapp message to customer or driver """
-        self.ensure_one()
-        template = self.env.ref(template_xml_id, raise_if_not_found=False)
-        if not template:
-            return
-
-        # determine the target (customer or driver) and phone number
-        target_res_model = 'res.partner'
-        target_res_id = False
-        
-        if partner_id:
-            target_res_id = partner_id.id
-        elif employee_id:
-            target_res_model = 'hr.employee'
-            target_res_id = employee_id.id
-
-        if target_res_id:
-            try:
-                composer = self.env['whatsapp.composer'].with_context({
-                    'active_model': self._name,
-                    'active_id': self.id,
-                    'default_res_model': self._name,
-                    'default_res_id': self.id,
-                    'default_template_id': template.id,
-                }).create({})
-                # action_send_whatsapp
-                composer.action_send_whatsapp()
-            except Exception:
-                pass
-
     
     def action_print_waybill(self):
         return self.env.ref('freight_management_system.action_report_waybill').report_action(self)
