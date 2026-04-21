@@ -389,19 +389,21 @@ class FreightTrip(models.Model):
                 last = rec.invoice_ids.sorted('id', reverse=True)[0]
                 rec.invoice_state = last.state if last.state in ['draft', 'posted', 'cancel'] else 'not_created'
 
-    @api.depends('gps_latitude', 'gps_longitude', 'gps_last_update', 'destination_id')
+    @api.depends('gps_latitude', 'gps_longitude', 'gps_last_update', 'starting_point_id', 'destination_id')
     def _compute_gps_map(self):
         for rec in self:
             if not rec.gps_latitude or not rec.gps_longitude:
                 rec.gps_map_html = "<div class='freight-gps-no-signal'>No GPS Signal Yet</div>"
             else:
-                dest_name = f"{rec.destination_id.name}, {rec.destination_id.country_id.name or ''}" if rec.destination_id else ""
-                
+                start_name = f"{rec.starting_point_id.name}, {rec.starting_point_id.country_id.name or ''}" if rec.starting_point_id else ""
+                dest_name  = f"{rec.destination_id.name}, {rec.destination_id.country_id.name or ''}"        if rec.destination_id  else ""
+
                 rec.gps_map_html = f"""
                     <div class="freight-live-map"
                         data-trip-id="{rec.id}"
                         data-lat="{rec.gps_latitude}"
                         data-lng="{rec.gps_longitude}"
+                        data-start-name="{start_name}"
                         data-dest-name="{dest_name}"
                         data-speed="{rec.gps_last_speed or 0}"
                         data-name="{rec.name}">
