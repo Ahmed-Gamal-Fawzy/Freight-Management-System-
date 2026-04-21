@@ -37,15 +37,6 @@ class DriverAdvance(models.Model):
         default=lambda self: self.env.company.currency_id
     )
 
-    journal_id = fields.Many2one(
-        'account.journal',
-        string='Payment Method (Journal)',
-        domain="[('type', 'in', ('bank', 'cash'))]",
-        required=True,
-        tracking=True
-    )
-    
-
     # ── Dates ────────────────────────────────────────────────────
     date = fields.Date(
         string='Issue Date',
@@ -99,6 +90,8 @@ class DriverAdvance(models.Model):
     payment_account_id = fields.Many2one(
         'account.account',
         string='Company Payment Account',
+        domain="[('account_type', '=', 'asset_cash')]",
+        required=True,
         help="The Cash/Bank account from which the advance was disbursed",
         tracking=True
     )
@@ -142,13 +135,35 @@ class DriverAdvance(models.Model):
     def action_draft(self):
         self.write({'state': 'draft'})
 
-    # ── Helper: shared setup ──────────────────────────────────────────────────────
+    # ── Helper: get journal from account ─────────────────────────
+    def _get_journal_from_account(self):
+        """Returns the bank/cash journal linked to payment_account_id."""
+        journal = self.env['account.journal'].search([
+            ('type', 'in', ('bank', 'cash')),
+            ('default_account_id', '=', self.payment_account_id.id),
+        ], limit=1)
+
+        if not journal:
+            journal = self.env['account.journal'].search([
+                ('type', 'in', ('bank', 'cash')),
+                '|',
+                ('payment_debit_account_id', '=', self.payment_account_id.id),
+                ('payment_credit_account_id', '=', self.payment_account_id.id),
+            ], limit=1)
+
+        if not journal:
+            raise UserError(_(
+                "No bank/cash journal found linked to account '%s'.\n"
+                "Please configure the journal for this account."
+            ) % self.payment_account_id.display_name)
+
+        return journal
+
+    # ── Helper: shared setup ──────────────────────────────────────
     def _get_advance_account_and_partner(self):
         """Returns (advance_account, partner_id) or raises UserError."""
         if not self.payment_account_id:
             raise UserError(_("Please select Company Payment Account!"))
-        if not self.journal_id:
-            raise UserError(_("Please select Payment Journal!"))
 
         ICP = self.env['ir.config_parameter'].sudo()
         advance_account_id = int(ICP.get_param(
@@ -168,17 +183,17 @@ class DriverAdvance(models.Model):
 
         return advance_account, partner_id
 
-    # ── CASE 1: Draft → Disburse Advance ─────────────────────────────────────────
+    # ── CASE 1: Draft → Disburse Advance ─────────────────────────
     def action_disburse_advance(self):
-        """Called from Draft state: creates the initial advance journal entry."""
         self.ensure_one()
         if self.state != 'draft':
             raise UserError(_("This action is only allowed in Draft state!"))
 
         advance_account, partner_id = self._get_advance_account_and_partner()
+        journal = self._get_journal_from_account()
 
         move = self.env['account.move'].create({
-            'journal_id': self.journal_id.id,
+            'journal_id': journal.id,
             'date': self.date,
             'ref': f"{self.name} - {self.trip_id.name or 'Trip'}",
             'line_ids': [
@@ -210,9 +225,8 @@ class DriverAdvance(models.Model):
             'target': 'current',
         }
 
-    # ── CASE 2: In Settlement + Company owes Driver ───────────────────────────────
+    # ── CASE 2: In Settlement + Company owes Driver ───────────────
     def action_pay_driver_balance(self):
-        """Called when in_settlement and company owes driver: pays remaining balance."""
         self.ensure_one()
         if self.state != 'in_settlement':
             raise UserError(_("This action is only allowed in In Settlement state!"))
@@ -220,10 +234,11 @@ class DriverAdvance(models.Model):
             raise UserError(_("The balance must be in the driver's favor to use this action!"))
 
         advance_account, partner_id = self._get_advance_account_and_partner()
+        journal = self._get_journal_from_account()
         amount_to_pay = self.expense_difference
 
         move = self.env['account.move'].create({
-            'journal_id': self.journal_id.id,
+            'journal_id': journal.id,
             'date': fields.Date.today(),
             'ref': f"Driver Balance Payment - {self.name}",
             'line_ids': [
@@ -260,9 +275,8 @@ class DriverAdvance(models.Model):
             'target': 'current',
         }
 
-    # ── CASE 3: In Settlement + Driver owes Company ───────────────────────────────
+    # ── CASE 3: In Settlement + Driver owes Company ───────────────
     def action_collect_driver_refund(self):
-        """Called when in_settlement and driver owes company: records cash refund."""
         self.ensure_one()
         if self.state != 'in_settlement':
             raise UserError(_("This action is only allowed in In Settlement state!"))
@@ -270,13 +284,14 @@ class DriverAdvance(models.Model):
             raise UserError(_("The balance must be in the company's favor to use this action!"))
 
         advance_account, partner_id = self._get_advance_account_and_partner()
+        journal = self._get_journal_from_account()
         amount_to_refund = self.expense_difference
 
         if amount_to_refund <= 0:
             raise UserError(_("No amount to refund from driver!"))
 
         move = self.env['account.move'].create({
-            'journal_id': self.journal_id.id,
+            'journal_id': journal.id,
             'date': fields.Date.today(),
             'ref': f"Driver Refund - {self.name}",
             'line_ids': [

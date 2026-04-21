@@ -86,6 +86,9 @@ class TripExpense(models.Model):
     account_id = fields.Many2one(
         'account.account',
         string='Account',
+        related='advance_id.payment_account_id',
+        store=True,
+        readonly=True,
         tracking=True
     )
 
@@ -130,10 +133,9 @@ class TripExpense(models.Model):
             advance_account = self.env['account.account'].browse(advance_account_id)
             journal = self.env['account.journal'].browse(journal_id)
 
-            # Use proper Expense Account (from field) for Debit
             expense_account = rec.account_id
             if not expense_account:
-                raise UserError(_("Please select an Expense Account!"))
+                raise UserError(_("No payment account found on the related advance!"))
 
             move = self.env['account.move'].create({
                 'journal_id': journal.id,

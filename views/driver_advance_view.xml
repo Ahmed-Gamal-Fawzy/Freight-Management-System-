@@ -14,7 +14,6 @@
                 <field name="driver_id"/>
                 <field name="date"/>
                 <field name="amount"/>
-                <field name="journal_id"/>
                 <field name="state" widget="badge"
                        decoration-info="state == 'draft'"
                        decoration-warning="state == 'in_settlement'"
@@ -111,9 +110,6 @@
                                    readonly="state != 'draft'"/>
                             <field name="payment_account_id" readonly="state != 'draft'"/>
                             <field name="currency_id"
-                                   options="{'no_create': True}"
-                                   readonly="state != 'draft'"/>
-                            <field name="journal_id"
                                    options="{'no_create': True}"
                                    readonly="state != 'draft'"/>
                         </group>
