@@ -23,3 +23,20 @@ Thumbs.db
 *.swp
 *.swo
 EOF
+
+# Odoo
+__pycache__
+.pytest_cache
+.venv
+.env
+venv
+env
+
+# Editor & OS
+.vscode
+.idea
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
