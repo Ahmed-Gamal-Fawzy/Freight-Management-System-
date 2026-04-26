@@ -11,17 +11,19 @@
     "depends": ["base", "fleet", "mail", "hr", "whatsapp", "accountant", "account", "web","sale","sale_management"],
     "data": [
         "data/ir_sequence_data.xml",
-        "data/mail_template_data.xml",
         "security/security_group.xml",
         "security/ir.model.access.csv",
         "reports/report_waybill.xml",
+        "data/mail_template_data.xml",
+        # ─── Views ───
         "views/freight_trip_view.xml",
         "views/driver_advance_view.xml",
         "views/trip_expense_views.xml",
         "views/res_config_settings_views.xml",
-        "views/freight_dashboard_view.xml",
         "wizard/send_mail_view.xml",
-        "views/menu_item_view.xml"
+        # ─── Menus───
+        "views/menu_item_view.xml",
+        "views/freight_dashboard_view.xml",
     ],
     "assets": {
         "web.assets_backend": [
